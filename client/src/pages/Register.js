@@ -1,16 +1,19 @@
 import React from 'react'
 import { Form, Button, Input } from "antd";
+import { Link } from "react-router-dom";
 
 
 function Register() {
+  const onFinish = async (values) => {
+    console.log('Receive values form: ', values)
+  }
+
   return (
     <div className="authentication">
       <div className="authentication-form card p-3">
          <h1 className="card-title">Nice To Meet U</h1>
-         <Form layout="vertical">
-            <Form.Item label="Name" name="name"
-              // onFinish={onFinish}
-            >
+         <Form layout="vertical" onFinish={onFinish}>
+            <Form.Item label="Name" name="name" >
               <Input placeholder="Name" />
             </Form.Item>
             <Form.Item label="Email" name="email">
@@ -26,6 +29,9 @@ function Register() {
             >
               REGISTER
             </Button>
+            <Link to="/login" className="anchor mt-2">
+              CLICK HERE TO LOGIN
+            </Link>
         </Form>
       </div>
     </div>
