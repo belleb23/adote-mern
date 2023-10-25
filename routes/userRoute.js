@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
+const Volunter = require("../models/volunterModel");
+const Appointment = require ("../models/appointmentModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -83,4 +85,35 @@ router.post("/register", async (req, res) => {
     }
   });
   
+  router.post("/apply-volunter-account", authMiddleware, async (req, res) => {
+    try {
+      const newvolunter = new Volunter({ ...req.body, status: "pending" });
+      await newvolunter.save();
+      const adminUser = await User.findOne({ isAdmin: true });
+  
+      const unseenNotifications = adminUser.unseenNotifications;
+      unseenNotifications.push({
+        type: "new-volunter-request",
+        message: `${newvolunter.firstName} ${newvolunter.lastName} has applied for a volunter account`,
+        data: {
+          volunterId: newvolunter._id,
+          name: newvolunter.firstName + " " + newvolunter.lastName,
+        },
+        onClickPath: "/admin/volunteers",
+      });
+      await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
+      res.status(200).send({
+        success: true,
+        message: "Volunter account applied successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        message: "Error applying volunter account",
+        success: false,
+        error,
+      });
+    }
+  });
+
 module.exports = router;
