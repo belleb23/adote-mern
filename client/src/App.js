@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ApplyVolunter from "./pages/ApplyVolunter";
 
 
 
@@ -27,6 +28,14 @@ function App() {
         element={
           <ProtectedRoute>
             <Home />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/apply-volunter"
+        element={
+          <ProtectedRoute>
+            <ApplyVolunter />
           </ProtectedRoute>
         }
       />
