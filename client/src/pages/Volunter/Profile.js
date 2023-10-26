@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import VolunterForm from "../../components/VolunterForm";
-//import moment from "moment";
+import moment from "moment";
 
 function Profile() {
   const { user } = useSelector((state) => state.user);
@@ -22,10 +22,10 @@ function Profile() {
         {
           ...values,
           userId: user._id,
-        //   timings: [
-        //     moment(values.timings[0]).format("HH:mm"),
-        //     moment(values.timings[1]).format("HH:mm"),
-        //   ],
+          timings: [
+            moment(values.timings[0]).format("HH:mm"),
+            moment(values.timings[1]).format("HH:mm"),
+          ],
         },
         {
           headers: {

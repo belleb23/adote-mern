@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Row, TimePicker } from "antd";
-//import moment from "moment";
+import moment from "moment";
 import React from "react";
 
 function VolunterForm({ onFinish, initivalValues }) {
@@ -10,10 +10,10 @@ function VolunterForm({ onFinish, initivalValues }) {
        initialValues={{
          ...initivalValues,
          ...(initivalValues && {
-    //       timings: [
-    //         moment(initivalValues?.timings[0], "HH:mm"),
-    //         moment(initivalValues?.timings[1], "HH:mm"),
-    //       ],
+          timings: [
+            moment(initivalValues?.timings[0], "HH:mm"),
+            moment(initivalValues?.timings[1], "HH:mm"),
+          ],
          }),
        }}
     >
@@ -93,7 +93,7 @@ function VolunterForm({ onFinish, initivalValues }) {
             <Input placeholder="Reason"  />
           </Form.Item>
         </Col>
-        {/* <Col span={8} xs={24} sm={24} lg={8}>
+        <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
             label="Timings"
@@ -102,7 +102,7 @@ function VolunterForm({ onFinish, initivalValues }) {
           >
             <TimePicker.RangePicker format="HH:mm" />
           </Form.Item>
-        </Col> */}
+        </Col>
       </Row>
 
       <div className="d-flex justify-content-end">
