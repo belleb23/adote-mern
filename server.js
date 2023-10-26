@@ -5,9 +5,12 @@ const dbConfig = require("./config/dbConfig");
 app.use(express.json());
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
+const volunterRoute = require("./routes/volunterRoute");
+
 
 app.use("/api/user", userRoute);
 app.use("/api/admin", adminRoute);
+app.use("/api/volunter", volunterRoute);
 
 const port = process.env.PORT || 5001;
 

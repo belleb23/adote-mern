@@ -8,6 +8,7 @@ import ApplyVolunter from "./pages/ApplyVolunter";
 import Notifications from "./pages/Notifications";
 import Userslist from "./pages/Admin/Userslist";
 import VolunteersList from "./pages/Admin/VolunteersList";
+import Profile from "./pages/Volunter/Profile";
 
 
 import { Toaster } from "react-hot-toast";
@@ -66,6 +67,15 @@ function App() {
           element={
             <ProtectedRoute>
               <VolunteersList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/volunter/profile/:userId"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

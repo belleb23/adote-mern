@@ -7,15 +7,15 @@ function VolunterForm({ onFinish, initivalValues }) {
     <Form
       layout="vertical"
        onFinish={onFinish}
-    //   initialValues={{
-    //     ...initivalValues,
-    //     ...(initivalValues && {
+       initialValues={{
+         ...initivalValues,
+         ...(initivalValues && {
     //       timings: [
     //         moment(initivalValues?.timings[0], "HH:mm"),
     //         moment(initivalValues?.timings[1], "HH:mm"),
     //       ],
-    //     }),
-    //   }}
+         }),
+       }}
     >
       <h1 className="card-title mt-3">Personal Information</h1>
       <Row gutter={20}>
@@ -93,7 +93,7 @@ function VolunterForm({ onFinish, initivalValues }) {
             <Input placeholder="Reason"  />
           </Form.Item>
         </Col>
-        <Col span={8} xs={24} sm={24} lg={8}>
+        {/* <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
             label="Timings"
@@ -102,7 +102,7 @@ function VolunterForm({ onFinish, initivalValues }) {
           >
             <TimePicker.RangePicker format="HH:mm" />
           </Form.Item>
-        </Col>
+        </Col> */}
       </Row>
 
       <div className="d-flex justify-content-end">
