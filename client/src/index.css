@@ -30,6 +30,19 @@ label{
   border: 1px solid rgba(128, 128, 128, 0.521) !important;
   height: 40px !important;
 }
+
+.ant-modal-footer .ant-btn-primary {
+  background-color: #261160; 
+  border-color: #261160; 
+  color: #fff; 
+}
+
+.ant-modal-footer .ant-btn-primary:hover,
+.ant-modal-footer .ant-btn-primary:focus {
+  background-color: #4f3693 !important; 
+  border-color: #4f3693 !important; 
+}
+
 /* Common styling */
 
 .spinner-parent{
@@ -69,8 +82,8 @@ label{
   border-radius: 0 !important;
 }
 .primary-button{
-  background-color: #005555 !important;
-  border-color: #005555 !important;
+  background-color: #ffbc2c !important;
+  border-color: #ffbc2c !important;
   height: 40px !important;
   width: 100% !important;
   color: white !important;
@@ -108,7 +121,7 @@ p{
    display: flex;
    align-items: center;
    justify-content: center;
-   background-color: #005555;
+   background-color: #4f3693;
 }
 .authentication-form{
   width: 400px;
@@ -117,10 +130,14 @@ p{
 .authentication .card-title{
   font-size: 1.5rem;
   font-weight: bold;
-  background-color: orangered;
+  background-color: #ffbc2c;
   color: white !important;
   max-width: max-content !important;
   padding: 7px 15px;
   margin-left: -40px;
   border-bottom-left-radius: 10px;
+}
+
+.icon-large {
+  font-size: 1.5em; 
 }

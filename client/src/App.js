@@ -6,15 +6,18 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import ApplyVolunter from "./pages/ApplyVolunter";
 import Notifications from "./pages/Notifications";
-import Userslist from "./pages/Admin/Userslist";
-import VolunteersList from "./pages/Admin/VolunteersList";
+
 import Profile from "./pages/Volunter/Profile";
 import Appointments from "./pages/Appointments";
+import List from "./pages/Admin/List";
+import AccessDenied from "./pages/AccessDenied";
 
 
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+
 
 
 
@@ -56,19 +59,10 @@ function App() {
         }
       />
           <Route
-          path="/admin/userslist"
+          path="/admin/list"
           element={
             <ProtectedRoute>
-              <Userslist />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/admin/volunteerslist"
-          element={
-            <ProtectedRoute>
-              <VolunteersList />
+              <List />
             </ProtectedRoute>
           }
         />
@@ -90,6 +84,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+<Route path="/access-denied" element={<AccessDenied />} />
 
     </Routes>
 

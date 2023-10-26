@@ -72,6 +72,34 @@ router.post( "/change-volunter-account-status", authMiddleware, async (req, res)
       }
     }
   );
+
+  router.delete("/delete-user/:id", authMiddleware, async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const deletedUser = await User.findByIdAndRemove(userId);
+  
+      if (!deletedUser) {
+        return res.status(404).json({
+          message: "User not found",
+          success: false,
+        });
+      }
+  
+      res.status(200).json({
+        message: "User deleted successfully",
+        success: true,
+        data: deletedUser,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Error deleting user",
+        success: false,
+        error: error.message,
+      });
+    }
+  });
+  
   
 
 module.exports = router;

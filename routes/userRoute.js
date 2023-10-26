@@ -182,4 +182,18 @@ router.get("/get-all-approved-volunteers", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/check-is-admin", authMiddleware, (req, res) => {
+  try {
+    // Verifique se o usuário tem a propriedade isAdmin definida como true
+    if (req.user.isAdmin) {
+      res.json({ isAdmin: true });
+    } else {
+      res.json({ isAdmin: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao verificar status de administrador", isAdmin: false });
+  }
+});
+
 module.exports = router;

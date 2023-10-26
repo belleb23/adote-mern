@@ -13,71 +13,69 @@ function Layout({ children }) {
 
   const userMenu = [
     {
-      name: "Home",
+      name: "Início",
       path: "/",
       icon: "ri-home-line",
     },
     {
-      name: "Appointments",
+      name: "Adoções",
       path: "/appointments",
-      icon: "ri-file-list-line",
+      icon: "ri-heart-line",
     },
     {
-      name: "Application",
+      name: "Visitas",
       path: "/applications",
-      icon: "ri-hospital-line",
+      icon: "ri-calendar-line",
+    }
+    ,
+    {
+      name: "Doações",
+      path: "/applications",
+      icon: "ri-wallet-3-line",
     }
   ];
 
   const volunterMenu = [
     {
-      name: "Home",
+      name: "Início",
       path: "/",
       icon: "ri-home-line",
     },
     {
-      name: "Appointments",
+      name: "Pets",
       path: "/volunter/appointments",
-      icon: "ri-file-list-line",
+      icon: "ri-heart-line",
     },
     {
-      name: "Profile",
+      name: "Doações",
       path: `/volunter/profile/${user?._id}`,
-      icon: "ri-user-line",
+      icon: "ri-wallet-3-line",
     },
   ];
 
   const adminMenu = [
     {
-      name: "Home",
+      name: "Início",
       path: "/",
       icon: "ri-home-line",
     },
     {
-      name: "Users",
-      path: "/admin/userslist",
-      icon: "ri-user-line",
+      name: "Usuários",
+      path: "/admin/list",
+      icon: "ri-team-line",
     },
-    {
-      name: "Volunter",
-      path: "/admin/volunteerslist",
-      icon: "ri-user-star-line",
-    },
-    {
-      name: "Profile",
-      path: "/profile",
-      icon: "ri-user-line",
-    },
+   
   ];
 
   const menuToBeRendered = user?.isAdmin ? adminMenu : user?.isVolunter ? volunterMenu : userMenu;
-  const role = user?.isAdmin ? "Admin" : user?.isVolunter ? "Volunter" : "User";
+  const role = user?.isAdmin ? "Admin" : user?.isVolunter ? "Voluntário" : "Adotante";
+
   return (
     <div className="main">
       <div className="d-flex layout">
         <div className="sidebar">
           <div className="sidebar-header">
-            <h1 className="logo">SH</h1>
+            <h1 className="logo">AdoteVL</h1>
             <h1 className="role">{role}</h1>
           </div>
 

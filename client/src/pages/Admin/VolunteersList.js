@@ -5,7 +5,7 @@ import { showLoading, hideLoading } from "../../redux/alertsSlice";
 import {toast} from 'react-hot-toast'
 import axios from "axios";
 import { Table } from "antd";
-//import moment from "moment";
+import moment from "moment";
 
 function VolunteersList() {
   const [volunteers, setVolunteers] = useState([]);
@@ -69,7 +69,7 @@ function VolunteersList() {
     {
       title: "Created At",
       dataIndex: "createdAt",
-     // render: (record , text) => moment(record.createdAt).format("DD-MM-YYYY"),
+      render: (record , text) => moment(record.createdAt).format("DD-MM-YYYY"),
     },
     {
       title: "status",
@@ -88,6 +88,7 @@ function VolunteersList() {
               Approve
             </h1>
           )}
+          
           {record.status === "approved" && (
             <h1
               className="anchor"
@@ -101,11 +102,8 @@ function VolunteersList() {
     },
   ];
   return (
-    <Layout>
-      <h1 className="page-header">Volunteers List</h1>
-      <hr />
       <Table columns={columns} dataSource={volunteers} />
-    </Layout>
+
   );
 }
 

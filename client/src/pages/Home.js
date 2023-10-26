@@ -25,7 +25,7 @@ function Home() {
 
   return (
     <Layout>
-      <div>hOME</div>
+      <div>Home</div>
     </Layout>
     
   )
