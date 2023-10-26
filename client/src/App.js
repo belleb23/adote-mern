@@ -6,6 +6,8 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import ApplyVolunter from "./pages/ApplyVolunter";
 import Notifications from "./pages/Notifications";
+import Userslist from "./pages/Admin/Userslist";
+import VolunteersList from "./pages/Admin/VolunteersList";
 
 
 import { Toaster } from "react-hot-toast";
@@ -51,7 +53,24 @@ function App() {
           </ProtectedRoute>
         }
       />
+          <Route
+          path="/admin/userslist"
+          element={
+            <ProtectedRoute>
+              <Userslist />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/volunteerslist"
+          element={
+            <ProtectedRoute>
+              <VolunteersList />
+            </ProtectedRoute>
+          }
+        />
     </Routes>
+
    </BrowserRouter>
   );
 }
