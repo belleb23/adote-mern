@@ -99,7 +99,7 @@ router.post("/register", async (req, res) => {
           volunterId: newvolunter._id,
           name: newvolunter.firstName + " " + newvolunter.lastName,
         },
-        onClickPath: "/admin/volunteers",
+        onClickPath: "/admin/volunteerslist",
       });
       await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
       res.status(200).send({
@@ -153,6 +153,24 @@ router.post("/delete-all-notifications", authMiddleware, async (req, res) => {
       success: true,
       message: "All notifications cleared",
       data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error applying volunter account",
+      success: false,
+      error,
+    });
+  }
+});
+
+router.get("/get-all-approved-volunteers", authMiddleware, async (req, res) => {
+  try {
+    const volunteers = await Volunter.find({ status: "approved" });
+    res.status(200).send({
+      message: "Volunteers fetched successfully",
+      success: true,
+      data: volunteers,
     });
   } catch (error) {
     console.log(error);

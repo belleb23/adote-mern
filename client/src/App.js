@@ -9,6 +9,7 @@ import Notifications from "./pages/Notifications";
 import Userslist from "./pages/Admin/Userslist";
 import VolunteersList from "./pages/Admin/VolunteersList";
 import Profile from "./pages/Volunter/Profile";
+import Appointments from "./pages/Appointments";
 
 
 import { Toaster } from "react-hot-toast";
@@ -62,11 +63,21 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/admin/volunteerslist"
           element={
             <ProtectedRoute>
               <VolunteersList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/appointments"
+          element={
+            <ProtectedRoute>
+              <Appointments />
             </ProtectedRoute>
           }
         />
@@ -79,6 +90,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
     </Routes>
 
    </BrowserRouter>
