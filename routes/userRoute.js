@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require("../models/userModel");
 const Volunter = require("../models/volunterModel");
 const Appointment = require ("../models/appointmentModel");
+const Pet = require ("../models/petModel");
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -193,6 +195,39 @@ router.get("/check-is-admin", authMiddleware, (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Erro ao verificar status de administrador", isAdmin: false });
+  }
+});
+
+router.post('/pets', authMiddleware, async (req, res) => {
+  try {
+    const newpet = new Pet({ ...req.body});
+    await newpet.save();
+
+    res.status(201).json({
+      message: 'Pet created successfully',
+      data: newpet,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get("/pets", authMiddleware, async (req, res) => {
+  try {
+    const pets = await Pet.find({});
+    res.status(200).send({
+      message: "Pets fetched successfully",
+      success: true,
+      data: pets,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error fetching pets",
+      success: false,
+      error,
+    });
   }
 });
 

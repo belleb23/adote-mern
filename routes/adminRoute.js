@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const Volunter = require("../models/volunterModel");
+const Pet = require("../models/petModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 router.get("/get-all-volunteers", authMiddleware, async (req, res) => {
@@ -100,6 +101,32 @@ router.post( "/change-volunter-account-status", authMiddleware, async (req, res)
     }
   });
   
+  router.delete("/delete-pet/:id", authMiddleware, async (req, res) => {
+    try {
+      const petId = req.params.id;
+      const deletedPet = await Pet.findByIdAndRemove(petId);
+  
+      if (!deletedPet) {
+        return res.status(404).json({
+          message: "Pet not found",
+          success: false,
+        });
+      }
+  
+      res.status(200).json({
+        message: "Pet deleted successfully",
+        success: true,
+        data: deletedPet,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Error deleting pet",
+        success: false,
+        error: error.message,
+      });
+    }
+  });
   
 
 module.exports = router;

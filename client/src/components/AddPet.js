@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
+import { Form, message } from 'antd';
+import axios from "axios";
+import PetForm from "../components/PetForm";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import VolunterForm from "../components/VolunterForm";
 import moment from "moment";
 
-function ApplyVolunter() {
+
+function AddPet() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -17,14 +19,10 @@ function ApplyVolunter() {
     try {
       dispatch(showLoading());
       const response = await axios.post(
-        "/api/user/apply-volunter-account",
+        "/api/user/pets",
         {
           ...values,
-          userId: user._id,
-          timings: [
-            moment(values.timings[0]).format("HH:mm"),
-            moment(values.timings[1]).format("HH:mm"),
-          ],
+        //  userId: user._id,
         },
         {
           headers: {
@@ -37,7 +35,7 @@ function ApplyVolunter() {
         toast.success(response.data.message);
         navigate("/");
       } else {
-        toast.error(response.data.message);
+        toast(response.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
@@ -46,15 +44,20 @@ function ApplyVolunter() {
   };
 
   return (
+
+
     <Layout>
-    <h1 className="page-title">Apply Volunter</h1>
+    <h1 className="page-title">Pets</h1>
     <hr />
 
-    <VolunterForm 
-    onFinish={onFinish} 
-    />
+     <PetForm 
+     onFinish={onFinish} 
+    /> 
+
   </Layout>
+
+
   )
 }
 
-export default ApplyVolunter
+export default AddPet

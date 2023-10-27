@@ -13,7 +13,11 @@ function Home() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
+      console.log('alo')
         console.log(response.data);
+        console.log(response.data.data);
+        console.log(response.data.data.isAdmin);
+
     } catch (error) {
         console.log(error)
     }

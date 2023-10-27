@@ -33,6 +33,12 @@ function Layout({ children }) {
       path: "/applications",
       icon: "ri-wallet-3-line",
     }
+    ,
+    {
+      name: "Ser Voluntário",
+      path: "/apply-volunter",
+      icon: "ri-wallet-3-line",
+    }
   ];
 
   const volunterMenu = [
@@ -62,6 +68,11 @@ function Layout({ children }) {
     {
       name: "Usuários",
       path: "/admin/list",
+      icon: "ri-team-line",
+    },
+    {
+      name: "Pets",
+      path: "/pets",
       icon: "ri-team-line",
     },
    

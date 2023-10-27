@@ -7,14 +7,14 @@ function ProtectedRouteAdmin(props) {
 
   useEffect(() => {
     // Faça uma solicitação para verificar se o usuário é um administrador
-    axios.get("/api/user/check-is-admin", {
+    axios.post("/api/user/get-user-info-by-id", {}, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
     .then((response) => {
       console.log(response.data);
-      setIsAdmin(response.data.isAdmin);
+      setIsAdmin(response.data.data.isAdmin);
     })
     .catch((error) => {
       console.error(error);

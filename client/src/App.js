@@ -6,6 +6,8 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import ApplyVolunter from "./pages/ApplyVolunter";
 import Notifications from "./pages/Notifications";
+import Pets from "./pages/Pets";
+
 
 import Profile from "./pages/Volunter/Profile";
 import Appointments from "./pages/Appointments";
@@ -16,9 +18,7 @@ import AccessDenied from "./pages/AccessDenied";
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
-
-
-
+import ProtectedRouteAdmin from "./components/ProtectedRouteAdmin";
 
 
 function App() {
@@ -61,9 +61,9 @@ function App() {
           <Route
           path="/admin/list"
           element={
-            <ProtectedRoute>
+            <ProtectedRouteAdmin>
               <List />
-            </ProtectedRoute>
+            </ProtectedRouteAdmin>
           }
         />
 
@@ -84,6 +84,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/pets"
+          element={
+            <ProtectedRoute>
+              <Pets />
+            </ProtectedRoute>
+          }
+        />
+
+
 
 <Route path="/access-denied" element={<AccessDenied />} />
 
