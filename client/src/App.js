@@ -16,6 +16,7 @@ import AccessDenied from "./pages/AccessDenied";
 
 import Dashboard from "./pages/Dashboard";
 import PetDetails from "./pages/PetDetails";
+import DetailsPet from "./pages/DetailsPet";
 
 
 import { Toaster } from "react-hot-toast";
@@ -111,6 +112,15 @@ function App() {
           element={
             <ProtectedRoute>
               <PetDetails />
+            </ProtectedRoute>
+          }
+        />    
+
+<Route
+          path="/details-pet/:petId"
+          element={
+            <ProtectedRoute>
+              <DetailsPet />
             </ProtectedRoute>
           }
         />    

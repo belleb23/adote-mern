@@ -1,35 +1,46 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "../components/Layout";
+import { Col, Row } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { showLoading, hideLoading } from "../redux/alertsSlice";
+import Pet from "../components/Pet";
 
 function Home() {
+  const [pets, setPets] = useState([]);
+  const dispatch = useDispatch();
 
-  const getData = async () => {
+  const getPetsData = async () => {
     try {
-      const response = await axios.post(
-        "/api/user/get-user-info-by-id", {},
-        {
+      dispatch(showLoading());
+      const response = await axios.get("/api/user/pets", {
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log('alo')
-        console.log(response.data);
-        console.log(response.data.data);
-        console.log(response.data.data.isAdmin);
-
+      dispatch(hideLoading());
+      console.log(response.data.data)
+      if (response.data.success) {
+        setPets(response.data.data);
+      }
     } catch (error) {
-        console.log(error)
+      dispatch(hideLoading());
     }
   };
 
   useEffect(() => {
-    getData();
+    getPetsData();
   }, []);
 
   return (
     <Layout>
-      <div>Home</div>
+      <Row gutter={20}>
+        {pets.map((pet) => (
+          <Col span={8} xs={24} sm={24} lg={8}>
+            <Pet pet={pet} />
+          </Col>
+        ))}
+      </Row>   
     </Layout>
     
   )

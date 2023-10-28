@@ -231,4 +231,19 @@ router.get("/pets", authMiddleware, async (req, res) => {
   }
 });
 
+router.post("/get-pet-info-by-id", authMiddleware, async (req, res) => {
+  try {
+    const pet = await Pet.findOne({ _id: req.body.petId });
+    res.status(200).send({
+      success: true,
+      message: "Pet info fetched successfully",
+      data: pet,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Error getting pet info", success: false, error });
+  }
+});
+
 module.exports = router;
