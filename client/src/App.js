@@ -14,6 +14,9 @@ import Appointments from "./pages/Appointments";
 import List from "./pages/Admin/List";
 import AccessDenied from "./pages/AccessDenied";
 
+import Dashboard from "./pages/Dashboard";
+import PetDetails from "./pages/PetDetails";
+
 
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -94,6 +97,23 @@ function App() {
           }
         />
 
+<Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />    
+
+<Route
+          path="/pet/:id"
+          element={
+            <ProtectedRoute>
+              <PetDetails />
+            </ProtectedRoute>
+          }
+        />    
 
 
 <Route path="/access-denied" element={<AccessDenied />} />
