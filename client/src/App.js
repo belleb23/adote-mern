@@ -23,6 +23,7 @@ import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedRouteAdmin from "./components/ProtectedRouteAdmin";
+import NewPet from "./pages/NewPet";
 
 
 function App() {
@@ -121,6 +122,15 @@ function App() {
           element={
             <ProtectedRoute>
               <DetailsPet />
+            </ProtectedRoute>
+          }
+        />    
+
+<Route
+          path="/new-pet"
+          element={
+            <ProtectedRoute>
+              <NewPet />
             </ProtectedRoute>
           }
         />    

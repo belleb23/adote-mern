@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import VolunterForm from "../components/VolunterForm";
 import moment from "moment";
 
@@ -12,6 +12,11 @@ function ApplyVolunter() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const enviado = 'enviado';
+
+  const params = useParams();
+  const [volunter, setVolunter] = useState(null);
+
 
   const onFinish = async (values) => {
     try {
@@ -25,6 +30,7 @@ function ApplyVolunter() {
             moment(values.timings[0]).format("HH:mm"),
             moment(values.timings[1]).format("HH:mm"),
           ],
+          status: enviado
         },
         {
           headers: {
@@ -45,14 +51,61 @@ function ApplyVolunter() {
     }
   };
 
+  const getVolunterData = async () => {
+    try {
+      dispatch(showLoading());
+      const response = await axios.post(
+        "/api/volunter/get-volunter-info-by-user-id",
+        {
+          userId: params.userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      dispatch(hideLoading());
+      if (response.data.success) {
+        setVolunter(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(hideLoading());
+    }
+  };
+
+  useEffect(() => {
+    getVolunterData();
+  }, []);
+
   return (
     <Layout>
-    <h1 className="page-title">Apply Volunter</h1>
+    <h1 className="page-title">Voluntário Adote um Vira Lata</h1>
     <hr />
 
-    <VolunterForm 
-    onFinish={onFinish} 
-    />
+    {!volunter && 
+      <div>
+        <p>
+          Você tem tempo livre, ama cães e gatos, é comprometido, pontual, tem atitude, organização, sabe trabalhar em equipe, 
+          se adapta quando necessário e se comunica bem? Então venha nos ajudar com o nosso lindo trabalho... 
+          VEM SER UM VOLUNTÁRIO!! 
+        </p>
+        <hr />
+        <VolunterForm onFinish={onFinish} btn="enviar"/> 
+      </div>
+    }
+
+    {volunter && 
+        <p>Voce já aplicou para ser um <space/>
+            <Link to={`/volunter/profile/${user?._id}`} className="anchor mt-2">
+            voluntário
+            </Link> <space/>
+          espere o retorno do administrador</p>
+    }
+
+
   </Layout>
   )
 }

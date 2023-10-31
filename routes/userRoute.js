@@ -4,12 +4,11 @@ const User = require("../models/userModel");
 const Volunter = require("../models/volunterModel");
 const Appointment = require ("../models/appointmentModel");
 const Pet = require ("../models/petModel");
+const Application = require ("../models/applicationModel");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
-
-
 
 router.post("/register", async (req, res) => {
         try {
@@ -96,10 +95,10 @@ router.post("/register", async (req, res) => {
       const unseenNotifications = adminUser.unseenNotifications;
       unseenNotifications.push({
         type: "new-volunter-request",
-        message: `${newvolunter.firstName} ${newvolunter.lastName} has applied for a volunter account`,
+        message: `${newvolunter.name} has applied for a volunter account`,
         data: {
           volunterId: newvolunter._id,
-          name: newvolunter.firstName + " " + newvolunter.lastName,
+          name: newvolunter.name,
         },
         onClickPath: "/admin/volunteerslist",
       });
@@ -243,6 +242,60 @@ router.post("/get-pet-info-by-id", authMiddleware, async (req, res) => {
     res
       .status(500)
       .send({ message: "Error getting pet info", success: false, error });
+  }
+});
+
+router.post("/update-pet", authMiddleware, async (req, res) => {
+  try {
+    const pet = await Pet.findOneAndUpdate(
+      { petId: req.body.petId },
+      req.body
+    );
+    res.status(200).send({
+      success: true,
+      message: "Pet updated successfully",
+      data: pet,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Error getting pet info", success: false, error });
+  }
+});
+
+router.post("/applications", authMiddleware, async (req, res) => {
+  try {
+    const {nome, userId, petId, status} = req.body
+    const newapplication = new Application({ 
+      userId, petId, status, nome
+    });
+    await newapplication.save();
+
+    res.status(201).json({
+      message: 'Aplicattion created successfully',
+      data: newapplication,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get('/check-application', authMiddleware, async (req, res) => {
+  try {
+    const { petId, userId } = req.query;
+
+    // Verifique se existe uma aplicação com base no petId e userId
+    const existingApplication = await Application.findOne({ petId, userId });
+
+    if (existingApplication) {
+      res.status(200).json({ applied: true });
+    } else {
+      res.status(200).json({ applied: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ applied: false, error: error.message });
   }
 });
 

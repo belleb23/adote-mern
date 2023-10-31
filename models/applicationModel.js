@@ -2,13 +2,17 @@ const mongoose = require("mongoose");
 
 const applicationSchema = new mongoose.Schema(
     {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "users",
+        userId: {
+          type: String,
+          required: true,
         },
-        pet: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "pets",
+        petId:{
+          type: String,
+          required: true,
+        },
+        nome:{
+          type: String,
+          required: true,
         },
         status: {
           type: String,

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Layout from "../../components/Layout";
 import { showLoading, hideLoading } from "../../redux/alertsSlice";
 import {toast} from 'react-hot-toast'
 import axios from "axios";
-import { Table } from "antd";
+import { Table, Modal, Tooltip, Tabs } from "antd";
 import moment from "moment";
 
 function VolunteersList() {
   const [volunteers, setVolunteers] = useState([]);
   const dispatch = useDispatch();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedVolunteer, setSelectedVolunteer] = useState(null);
+
   const getVolunteersData = async () => {
     try {
       dispatch(showLoading());
@@ -58,7 +60,7 @@ function VolunteersList() {
       dataIndex: "name",
       render: (text, record) => (
         <span>
-          {record.firstName} {record.lastName}
+          {record.name} 
         </span>
       ),
     },
@@ -81,29 +83,79 @@ function VolunteersList() {
       render: (text, record) => (
         <div className="d-flex">
           {record.status === "pending" && (
-            <h1
-              className="anchor"
-              onClick={() => changeVolunterStatus(record, "approved")}
-            >
-              Approve
-            </h1>
+           <Tooltip title="Aprovar">
+              <i
+                className="ri-check-fill icon-large"
+                onClick={() => changeVolunterStatus(record, "approved")}
+              ></i>
+            </Tooltip>
           )}
           
           {record.status === "approved" && (
-            <h1
-              className="anchor"
-              onClick={() => changeVolunterStatus(record, "blocked")}
-            >
-              Block
-            </h1>
+            <Tooltip title="Bloquear">
+              <i
+                className="ri-close-fill icon-large"
+                onClick={() => changeVolunterStatus(record, "blocked")}
+              ></i>
+            </Tooltip>
           )}
+          <Tooltip title="Visualizar">
+            <i
+              className="ri-eye-line icon-large"
+              onClick={() => handleOpenModal(record)}
+            ></i>
+          </Tooltip>
         </div>
       ),
     },
   ];
-  return (
-      <Table columns={columns} dataSource={volunteers} />
 
+  const handleOpenModal = (volunteer) => {
+    setSelectedVolunteer(volunteer);
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+  
+  
+
+  return (
+    <div>
+      <Table columns={columns} dataSource={volunteers} />
+      <Modal
+        title="Detalhes do Usuário"
+        visible={isModalVisible}
+        onOk={handleModalClose}
+        onCancel={handleModalClose}
+        width={800}
+      >
+        {selectedVolunteer && (
+          <Tabs defaultActiveKey="personalInfo">
+            <Tabs.TabPane tab="Informações Pessoais" key="personalInfo">
+              <div>
+                <p>Nome: {selectedVolunteer.name}</p>
+                <p>Email: {selectedVolunteer.email}</p>
+                <p>Número: {selectedVolunteer.phoneNumber}</p>
+                <p>Data Nascimento: {selectedVolunteer.birth}</p>
+                <p>Endereço: {selectedVolunteer.address}</p>
+              </div>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Informações de Voluntariado" key="volunterInfo">
+              <div>
+                <p>Profissão: {selectedVolunteer.work}</p>
+                <p>Empresa: {selectedVolunteer.company}</p>
+                <p>Carteira de motorista: {selectedVolunteer.driverLicense}</p>
+                <p>Carro: {selectedVolunteer.car}</p>
+                <p>Motivo: {selectedVolunteer.reason}</p>
+                <p>Horários: {selectedVolunteer.activities}</p>
+              </div>
+            </Tabs.TabPane>
+          </Tabs>
+        )}
+    </Modal>
+</div>
   );
 }
 

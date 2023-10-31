@@ -1,8 +1,10 @@
-import { Button, Col, Form, Input, Row, TimePicker } from "antd";
+import { Button, Col, Form, Input, Row, TimePicker, Checkbox, Select } from "antd";
 import moment from "moment";
 import React from "react";
 
-function VolunterForm({ onFinish, initivalValues }) {
+function VolunterForm({ onFinish, initivalValues, btn }) {
+  const { Option } = Select;
+
   return (
     <Form
       layout="vertical"
@@ -14,100 +16,149 @@ function VolunterForm({ onFinish, initivalValues }) {
             moment(initivalValues?.timings[0], "HH:mm"),
             moment(initivalValues?.timings[1], "HH:mm"),
           ],
+        
          }),
        }}
     >
-      <h1 className="card-title mt-3">Personal Information</h1>
+      <h1 className="card-title mt-3">Informações Pessoais</h1>
       <Row gutter={20}>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
-            required
-            label="First Name"
-            name="firstName"
+            label="Nome"
+            name="name"
             rules={[{ required: true }]}
           >
-            <Input placeholder="First Name" />
+            <Input placeholder='Nome' />
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Last Name"
-            name="lastName"
+            label="Email"
+            name="email"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Last Name" />
+            <Input placeholder="Email" />
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Phone Number"
+            label="Telefone"
             name="phoneNumber"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Phone Number" />
+            <Input placeholder="Telefone" />
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Linkedin"
-            name="linkedin"
+            label="Data de nascimento"
+            name="birth"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Website" />
+            <Input placeholder="Data de nascimento" />
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Address"
+            label="Endereço"
             name="address"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Address" />
+            <Input placeholder="Endereço" />
           </Form.Item>
         </Col>
       </Row>
+
       <hr />
-      <h1 className="card-title mt-3">Volunteering Information</h1>
+      <h1 className="card-title mt-3">Informações Voluntariado</h1>
       <Row gutter={20}>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Work"
+            label="Profissão"
             name="work"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Work" />
+            <Input placeholder="Profissão" />
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Reason"
+            label="Empresa que trabalha"
+            name="company"
+            rules={[{ required: true }]}
+          >
+            <Input placeholder="Empresa" />
+          </Form.Item>
+        </Col>
+        <Col span={8} xs={24} sm={24} lg={8}>
+         <Form.Item name="driverLicense" label="Possui habilitação?" rules={[{ required: true }]} required>
+            <Select
+              placeholder="Habilitação"
+              allowClear
+            >
+              <Option value={true} selected>Sim</Option>
+              <Option value={false}>Não</Option>
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={8} xs={24} sm={24} lg={8}>
+         <Form.Item name="car" label="Possui carro?" rules={[{ required: true }]} required>
+            <Select
+              placeholder="Carro"
+              allowClear
+            >
+              <Option value={true} selected>Sim</Option>
+              <Option value={false}>Não</Option>
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={8} xs={24} sm={24} lg={8}>
+          <Form.Item
+            required
+            label="Motivo para ser voluntário"
             name="reason"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Reason"  />
+            <Input placeholder="Motivo"  />
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item
             required
-            label="Timings"
+            label="Horários disponíveis"
             name="timings"
             rules={[{ required: true }]}
           >
             <TimePicker.RangePicker format="HH:mm" />
           </Form.Item>
         </Col>
+        <Col span={24} xs={24} sm={24} lg={24}>
+          <Form.Item
+            required
+            label="Assinale a opção para as atividades em que deseja voluntariar"
+            name="activities"
+            rules={[{ required: true }]}
+          >
+              <Checkbox.Group>
+              <Checkbox value="postagem">Postagem redes sociais</Checkbox>
+              <Checkbox value="doacoes">Retirar doações</Checkbox>
+              <Checkbox value="recepcionar">Recepcionar visitantes</Checkbox>
+              <Checkbox value="postar">Apoio feira de adoção</Checkbox>
+              <Checkbox value="escritorio">Atividades de escritório</Checkbox>
+            </Checkbox.Group>
+          </Form.Item>
+        </Col>
       </Row>
 
       <div className="d-flex justify-content-end">
         <Button className="primary-button" htmlType="submit">
-          SUBMIT
+          {btn}
         </Button>
       </div>
     </Form>

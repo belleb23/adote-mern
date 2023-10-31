@@ -12,7 +12,6 @@ function Userslist() {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-
   const dispatch = useDispatch();
   
   const getUsersData = async () => {
@@ -78,8 +77,6 @@ function Userslist() {
     setUserToDelete(user);
     setIsDeleteModalVisible(true);
   };
-
-
 
   const handleDeleteUserConfirmation = async () => {
     // Exclua o usuário e atualize a lista

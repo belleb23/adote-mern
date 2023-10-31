@@ -14,6 +14,7 @@ function Profile() {
   const [volunter, setVolunter] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const onFinish = async (values) => {
     try {
       dispatch(showLoading());
@@ -77,9 +78,11 @@ function Profile() {
   
   return (
     <Layout>
-      <h1 className="page-title">Volunter Profile</h1>
+      <h1 className="page-title">Perfil</h1>
       <hr />
-      {volunter && <VolunterForm onFinish={onFinish} initivalValues={volunter} />}
+      {volunter && <VolunterForm onFinish={onFinish} initivalValues={volunter} btn="salvar"/>}
+      {!volunter && <p>perfil</p>}
+      
     </Layout>
   );
 }

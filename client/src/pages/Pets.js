@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import { Table, Tooltip, Modal, Button } from "antd";
 
 function Pets() {
+  const navigate = useNavigate();
+
   const [pets, setPets] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [petToDelete, setPetToDelete] = useState(null);
+  const [editingPet, setEditingPet] = useState(null); 
 
   const dispatch = useDispatch();
 
@@ -30,6 +35,8 @@ function Pets() {
       dispatch(hideLoading());
     }
   };
+
+
 
   useEffect(() => {
     getPetsData();
@@ -58,6 +65,12 @@ function Pets() {
               onClick={() => handleViewPet(record)}
             ></i>
           </Tooltip>
+          <Tooltip title="Editar">
+            <i
+              className="ri-pencil-line icon-large"
+              //onClick={() => updatePet(record)}
+            ></i>
+          </Tooltip>
         </div>
       ),
     },
@@ -69,7 +82,6 @@ function Pets() {
   };
 
   const handleDeletePetConfirmation = async () => {
-    // Exclua o usuário e atualize a lista
     await handleDeleteUser(petToDelete);
     setIsDeleteModalVisible(false);
   };
@@ -106,11 +118,10 @@ function Pets() {
 
   return (
     <Layout>
-      <div style={{ marginBottom: "16px" }}>
+      <div style={{ marginBottom: "16px", textAlign:"right" }}>
         <Button
           type="primary"
-         // onClick={() => handleAddPet()}
-          
+          onClick={() => navigate("/new-pet")}
         >
           Adicionar um Pet
         </Button>
@@ -118,7 +129,7 @@ function Pets() {
       <Table columns={columns} dataSource={pets} />
 
       {isModalVisible && (
-        // Aqui você pode renderizar um modal para exibir informações detalhadas do pet
+        
         <Modal
           title="Detalhes do Pet"
           visible={isModalVisible}
@@ -129,7 +140,6 @@ function Pets() {
             <div>
               <p>Nome: {selectedPet.name}</p>
               <p>Porte: {selectedPet.petSize}</p>
-              {/* Adicione mais informações do pet aqui */}
             </div>
           )}
         </Modal>
