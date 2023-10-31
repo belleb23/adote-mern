@@ -7,6 +7,8 @@ import Home from "./pages/Home";
 import ApplyVolunter from "./pages/ApplyVolunter";
 import Notifications from "./pages/Notifications";
 import Pets from "./pages/Pets";
+import UserAdoptions from "./pages/UserAdoptions";
+
 
 
 import Profile from "./pages/Volunter/Profile";
@@ -133,7 +135,18 @@ function App() {
               <NewPet />
             </ProtectedRoute>
           }
-        />    
+        />  
+
+<Route
+          path="/user-adoptions"
+          element={
+            <ProtectedRoute>
+              <UserAdoptions />
+            </ProtectedRoute>
+          }
+        />  
+
+          
 
 
 <Route path="/access-denied" element={<AccessDenied />} />

@@ -299,4 +299,17 @@ router.get('/check-application', authMiddleware, async (req, res) => {
   }
 });
 
+
+router.get('/user-adoptions', authMiddleware, async (req, res) => {
+  try {
+    const { userId } = req.query; 
+    const userAdoptions = await Application.find({ userId });
+    res.status(200).json({ success: true, data: userAdoptions });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
 module.exports = router;

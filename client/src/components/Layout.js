@@ -19,7 +19,7 @@ function Layout({ children }) {
     },
     {
       name: "Adoções",
-      path: "/appointments",
+      path: "/user-adoptions",
       icon: "ri-heart-line",
     },
     {
