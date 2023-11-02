@@ -9,6 +9,10 @@ const Application = require ("../models/applicationModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
+const moment = require("moment");
+const dayjs = require("dayjs");
+const { subHours, addHours, format } = require('date-fns');
+
 
 router.post("/register", async (req, res) => {
         try {
@@ -270,7 +274,19 @@ router.post("/applications", authMiddleware, async (req, res) => {
       userId, petId, status, nome
     });
     await newapplication.save();
+    const volunterUser = await User.findOne({isVolunter: true});
 
+    const unseenNotifications = volunterUser.unseenNotifications;
+    unseenNotifications.push({
+      type: "new-apllication-request",
+      message: `${newapplication.nome} has applied for a adoption `,
+      data: {
+        volunterId: newapplication._id,
+        name: newapplication.nome,
+      },
+      onClickPath: "/volunter/applications",
+    });
+    await User.findByIdAndUpdate(volunterUser._id, { unseenNotifications });
     res.status(201).json({
       message: 'Aplicattion created successfully',
       data: newapplication,
@@ -299,7 +315,6 @@ router.get('/check-application', authMiddleware, async (req, res) => {
   }
 });
 
-
 router.get('/user-adoptions', authMiddleware, async (req, res) => {
   try {
     const { userId } = req.query; 
@@ -311,5 +326,132 @@ router.get('/user-adoptions', authMiddleware, async (req, res) => {
   }
 });
 
+router.get('/all-applications', async (req, res) => {
+  try {
+    // Busque todas as adoções no banco de dados
+    const adoptions = await Application.find();
+
+    res.status(200).json({
+      success: true,
+      data: adoptions,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+router.post("/book-appointment", authMiddleware, async (req, res) => {
+  try {
+    req.body.status = "pending";
+
+    const newAppointment = new Appointment(req.body);
+    await newAppointment.save();
+   
+    const user = await User.findOne({ _id: req.body.volunterInfo.userId });
+    user.unseenNotifications.push({
+      type: "new-appointment-request",
+      message: `A new appointment request has been made by ${req.body.userInfo.name}`,
+      onClickPath: "/volunter/appointments",
+    });
+    await user.save();
+    res.status(200).send({
+      message: "Appointment booked successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error booking appointment",
+      success: false,
+      error,
+    });
+  }
+});
+
+router.post("/check-booking-avilability", authMiddleware, async (req, res) => {
+  try {
+  
+    const date = req.body.date;
+    const time = req.body.time;
+    const [year, month, day] = date.split('-').map(Number);
+    const [hour, minute] = time.split(':').map(Number);
+
+    let startHour = hour - 1;
+    let startMinute = minute;
+
+    if (startHour < 0) {
+      startHour = 23;
+      day -= 1;
+
+      if (day < 1) {
+        startHour = 0;
+        day = 1;
+        month -= 1;
+
+        if (month < 1) {
+          month = 12;
+          year -= 1;
+        }
+      }
+    }
+
+    let endHour = hour + 1;
+    let endMinute = minute;
+
+    if (endHour > 23) {
+    
+      endHour = 0;
+      day += 1;
+
+      if (day > 31) {
+      
+        day = 1;
+        month += 1;
+
+        if (month > 12) {
+          
+          month = 1;
+          year += 1;
+        }
+      }
+    }
+
+    // const formattedStartTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}`;
+    // const formattedEndTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}`;
+    
+    const fromTime = `${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}`;
+    const toTime = `${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}`;
+
+    const volunterId = req.body.volunterId;
+    const appointments = await Appointment.find({
+      volunterId,
+      date,
+      time: { $gte: fromTime, $lte: toTime },
+    });
+    if (appointments.length > 0) {
+      return res.status(200).send({
+        message: "Appointments not available",
+        success: false,
+      });
+    } else {
+      return res.status(200).send({
+        message: "Appointments available",
+        success: true,
+        fromTime
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error booking appointment",
+      success: false,
+      error,
+    });
+  }
+});
 
 module.exports = router;

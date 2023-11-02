@@ -7,8 +7,12 @@ import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import VolunterForm from "../components/VolunterForm";
 import moment from "moment";
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
 
 function ApplyVolunter() {
+  dayjs.extend(customParseFormat);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -17,9 +21,9 @@ function ApplyVolunter() {
   const params = useParams();
   const [volunter, setVolunter] = useState(null);
 
-
   const onFinish = async (values) => {
     try {
+      
       dispatch(showLoading());
       const response = await axios.post(
         "/api/user/apply-volunter-account",
@@ -27,8 +31,8 @@ function ApplyVolunter() {
           ...values,
           userId: user._id,
           timings: [
-            moment(values.timings[0]).format("HH:mm"),
-            moment(values.timings[1]).format("HH:mm"),
+            dayjs(values.timings[0]).format("HH:mm"),
+            dayjs(values.timings[1]).format("HH:mm"),
           ],
           status: enviado
         },

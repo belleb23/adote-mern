@@ -26,6 +26,10 @@ import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedRouteAdmin from "./components/ProtectedRouteAdmin";
 import NewPet from "./pages/NewPet";
+import Applications from "./pages/Volunter/Applications";
+import FormTeste from "./pages/FormTeste";
+import BookAppointment from "./pages/BookAppointment";
+
 
 
 function App() {
@@ -146,7 +150,32 @@ function App() {
           }
         />  
 
-          
+<Route
+          path="/volunter/applications"
+          element={
+            <ProtectedRoute>
+              <Applications />
+            </ProtectedRoute>
+          }
+        /> 
+
+        <Route
+          path="/formteste"
+          element={
+            <ProtectedRoute>
+              <FormTeste />
+            </ProtectedRoute>
+          }
+        />  
+ 
+ <Route
+          path="/book-appointment/:volunterId"
+          element={
+            <ProtectedRoute>
+              <BookAppointment />
+            </ProtectedRoute>
+          }
+        />
 
 
 <Route path="/access-denied" element={<AccessDenied />} />

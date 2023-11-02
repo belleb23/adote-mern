@@ -7,6 +7,8 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import VolunterForm from "../../components/VolunterForm";
 import moment from "moment";
+import dayjs from 'dayjs';
+
 
 function Profile() {
   const { user } = useSelector((state) => state.user);
@@ -24,8 +26,8 @@ function Profile() {
           ...values,
           userId: user._id,
           timings: [
-            moment(values.timings[0]).format("HH:mm"),
-            moment(values.timings[1]).format("HH:mm"),
+            dayjs(values.timings[0]).format("HH:mm"),
+            dayjs(values.timings[1]).format("HH:mm"),
           ],
         },
         {

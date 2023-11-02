@@ -9,7 +9,7 @@ function Volunter({ volunter }) {
       onClick={() => navigate(`/book-appointment/${volunter._id}`)}
     >
       <h1 className="card-title">
-        {volunter.firstName} {volunter.lastName}
+        {volunter.name} 
       </h1>
       <hr />
       <p>

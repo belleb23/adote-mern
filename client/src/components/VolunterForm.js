@@ -1,6 +1,7 @@
 import { Button, Col, Form, Input, Row, TimePicker, Checkbox, Select } from "antd";
 import moment from "moment";
 import React from "react";
+import dayjs from 'dayjs';
 
 function VolunterForm({ onFinish, initivalValues, btn }) {
   const { Option } = Select;
@@ -13,8 +14,8 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
          ...initivalValues,
          ...(initivalValues && {
           timings: [
-            moment(initivalValues?.timings[0], "HH:mm"),
-            moment(initivalValues?.timings[1], "HH:mm"),
+            dayjs(initivalValues?.timings[0], "HH:mm"),
+            dayjs(initivalValues?.timings[1], "HH:mm"),
           ],
         
          }),
@@ -23,8 +24,7 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
       <h1 className="card-title mt-3">Informações Pessoais</h1>
       <Row gutter={20}>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
-            label="Nome"
+          <Form.Item label="Nome"
             name="name"
             rules={[{ required: true }]}
           >
@@ -32,9 +32,8 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
+          <Form.Item label="Email"
             required
-            label="Email"
             name="email"
             rules={[{ required: true }]}
           >
@@ -42,9 +41,8 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
+          <Form.Item label="Telefone"
             required
-            label="Telefone"
             name="phoneNumber"
             rules={[{ required: true }]}
           >
@@ -52,9 +50,8 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
+          <Form.Item label="Data de nascimento"
             required
-            label="Data de nascimento"
             name="birth"
             rules={[{ required: true }]}
           >
@@ -62,9 +59,8 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
+          <Form.Item label="Endereço"
             required
-            label="Endereço"
             name="address"
             rules={[{ required: true }]}
           >
@@ -77,9 +73,8 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
       <h1 className="card-title mt-3">Informações Voluntariado</h1>
       <Row gutter={20}>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
+          <Form.Item label="Profissão"
             required
-            label="Profissão"
             name="work"
             rules={[{ required: true }]}
           >
@@ -87,9 +82,8 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
+          <Form.Item label="Empresa que trabalha"
             required
-            label="Empresa que trabalha"
             name="company"
             rules={[{ required: true }]}
           >
@@ -97,7 +91,10 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-         <Form.Item name="driverLicense" label="Possui habilitação?" rules={[{ required: true }]} required>
+         <Form.Item label="Possui habilitação?" 
+            rules={[{ required: true }]} required 
+            name="driverLicense"
+            >
             <Select
               placeholder="Habilitação"
               allowClear
@@ -108,7 +105,9 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-         <Form.Item name="car" label="Possui carro?" rules={[{ required: true }]} required>
+         <Form.Item label="Possui carro?" 
+            name="car"
+            rules={[{ required: true }]} required>
             <Select
               placeholder="Carro"
               allowClear
@@ -119,9 +118,8 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
+          <Form.Item label="Motivo para ser voluntário"
             required
-            label="Motivo para ser voluntário"
             name="reason"
             rules={[{ required: true }]}
           >
@@ -129,19 +127,17 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item
+          <Form.Item label="Horários disponíveis"
             required
-            label="Horários disponíveis"
             name="timings"
-            rules={[{ required: true }]}
+            rules={[{ type: 'array', required: true }]}
           >
             <TimePicker.RangePicker format="HH:mm" />
           </Form.Item>
         </Col>
         <Col span={24} xs={24} sm={24} lg={24}>
-          <Form.Item
+          <Form.Item label="Assinale a opção para as atividades em que deseja voluntariar"
             required
-            label="Assinale a opção para as atividades em que deseja voluntariar"
             name="activities"
             rules={[{ required: true }]}
           >

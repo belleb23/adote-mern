@@ -24,10 +24,9 @@ function Layout({ children }) {
     },
     {
       name: "Visitas",
-      path: "/applications",
+      path: `/appointments`,
       icon: "ri-calendar-line",
-    }
-    ,
+    },
     {
       name: "Doações",
       path: "/applications",
@@ -49,7 +48,12 @@ function Layout({ children }) {
     },
     {
       name: "Pets",
-      path: "/volunter/appointments",
+      path: "/pets",
+      icon: "ri-heart-line",
+    },
+    {
+      name: "Adoções",
+      path: "/volunter/applications",
       icon: "ri-heart-line",
     },
     {
@@ -57,6 +61,7 @@ function Layout({ children }) {
       path: `/volunter/profile/${user?._id}`,
       icon: "ri-wallet-3-line",
     },
+
   ];
 
   const adminMenu = [
@@ -74,6 +79,11 @@ function Layout({ children }) {
       name: "Pets",
       path: "/pets",
       icon: "ri-team-line",
+    },
+    {
+      name: "Visitas",
+      path: `/appointments`,
+      icon: "ri-wallet-3-line",
     },
    
   ];
