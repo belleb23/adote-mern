@@ -29,6 +29,8 @@ import NewPet from "./pages/NewPet";
 import Applications from "./pages/Volunter/Applications";
 import FormTeste from "./pages/FormTeste";
 import BookAppointment from "./pages/BookAppointment";
+import ListAppointments from "./pages/ListAppointments";
+import VolunterAppointments from "./pages/Volunter/VolunterAppointments";
 
 
 
@@ -173,6 +175,24 @@ function App() {
           element={
             <ProtectedRoute>
               <BookAppointment />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/list-appointments"
+          element={
+            <ProtectedRoute>
+              <ListAppointments />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/volunter/appointments"
+          element={
+            <ProtectedRoute>
+              <VolunterAppointments />
             </ProtectedRoute>
           }
         />
