@@ -3,6 +3,7 @@ import "../layout.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Badge } from "antd";
+import UserDropdown from "./UserDropdown";
 
 function Layout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -61,6 +62,11 @@ function Layout({ children }) {
       path: `/volunter/profile/${user?._id}`,
       icon: "ri-wallet-3-line",
     },
+    {
+      name: "Visitas",
+      path: "/calendario-teste",
+      icon: "ri-calendar-line",
+    },
 
   ];
 
@@ -78,12 +84,12 @@ function Layout({ children }) {
     {
       name: "Pets",
       path: "/pets",
-      icon: "ri-team-line",
+      icon: "ri-heart-line",
     },
     {
       name: "Visitas",
       path: `/appointments`,
-      icon: "ri-wallet-3-line",
+      icon: "ri-calendar-line",
     },
    
   ];
@@ -97,7 +103,8 @@ function Layout({ children }) {
         <div className="sidebar">
           <div className="sidebar-header">
             <h1 className="logo">AdoteVL</h1>
-            <h1 className="role">{role}</h1>
+            <br/>
+            <h1 className="role">{user?.name} - {role}</h1>
           </div>
 
           <div className="menu">
@@ -124,6 +131,7 @@ function Layout({ children }) {
               <i className="ri-logout-circle-line"></i>
               {!collapsed && <Link to="/login">Logout</Link>}
             </div>
+
           </div>
         </div>
 
@@ -149,9 +157,14 @@ function Layout({ children }) {
                 <i className="ri-notification-line header-action-icon px-3"></i>
               </Badge>
 
-              <Link className="anchor mx-2" to={`/volunter/profile/${user?._id}`}>
+              <i className="ri-chat-1-line header-action-icon px-3"></i>
+
+
+              {/* <Link className="anchor mx-2" to={`/volunter/profile/${user?._id}`}>
                 {user?.name}
-              </Link>
+              </Link> */}
+              
+               <UserDropdown user={user} /> 
             </div>
           </div>
 

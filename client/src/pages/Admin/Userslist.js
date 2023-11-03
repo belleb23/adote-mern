@@ -69,6 +69,12 @@ function Userslist() {
               onClick={() => handleViewUser(record)}
             ></i>
           </Tooltip>
+          <Tooltip title="Aplicações">
+            <i
+              className="ri-file-list-3-line icon-large"
+              onClick={() => handleViewUser(record)}
+            ></i>
+          </Tooltip>
         </div>
       )
     },

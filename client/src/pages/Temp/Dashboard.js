@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { showLoading, hideLoading } from "../redux/alertsSlice";
+import { showLoading, hideLoading } from "../../redux/alertsSlice";
 import { useDispatch } from "react-redux";
 import { Row, Col } from "antd";
-import PetCard from "../components/pets/PetCard";
+import PetCard from "../../components/pets/PetCard";
 
 const Dashboard = () => {
   const [pets, setPets] = useState([]);

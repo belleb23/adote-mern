@@ -118,12 +118,15 @@ function Pets() {
 
   return (
     <Layout>
+      <h1 className="page-title">Pets</h1>
+      <hr />
       <div style={{ marginBottom: "16px", textAlign:"right" }}>
         <Button
           type="primary"
+          className="primary-button"
           onClick={() => navigate("/new-pet")}
         >
-          Adicionar um Pet
+           + Add Pet
         </Button>
       </div>
       <Table columns={columns} dataSource={pets} />

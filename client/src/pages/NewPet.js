@@ -43,7 +43,7 @@ function NewPet() {
 
   return (
     <Layout>
-      <h1 className="page-title">Adicionar Pet</h1>
+      <h1 className="page-title">Novo Pet</h1>
       <hr />
 
       <PetForm onFinish={onFinish} /> 

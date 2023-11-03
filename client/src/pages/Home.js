@@ -5,6 +5,7 @@ import { Col, Row } from "antd";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
 import Pet from "../components/Pet";
+import CardAdmin from "../components/CardAdmin";
 
 function Home() {
   const [pets, setPets] = useState([]);
@@ -41,6 +42,7 @@ function Home() {
           </Col>
         ))}
       </Row>   
+      <CardAdmin/>
     </Layout>
     
   )

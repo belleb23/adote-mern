@@ -175,3 +175,7 @@ p {
 .icon-large {
   font-size: 1.5em;
 }
+
+.bg-custom {
+  background-color: #ffbc2c;
+}

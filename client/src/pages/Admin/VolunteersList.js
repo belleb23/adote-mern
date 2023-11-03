@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../../redux/alertsSlice";
 import {toast} from 'react-hot-toast'
 import axios from "axios";
-import { Table, Modal, Tooltip, Tabs } from "antd";
+import { Table, Modal, Tooltip, Tabs, Tag } from "antd";
 import moment from "moment";
 
 function VolunteersList() {
@@ -51,12 +51,14 @@ function VolunteersList() {
       dispatch(hideLoading());
     }
   };
+
   useEffect(() => {
     getVolunteersData();
   }, []);
+  
   const columns = [
     {
-      title: "Name",
+      title: "Nome",
       dataIndex: "name",
       render: (text, record) => (
         <span>
@@ -65,18 +67,27 @@ function VolunteersList() {
       ),
     },
     {
-      title: "Phone",
-      dataIndex: "phoneNumber",
-    },
-    {
-      title: "Created At",
+      title: "Data",
       dataIndex: "createdAt",
       render: (record , text) => moment(record.createdAt).format("DD-MM-YYYY"),
     },
     {
-      title: "status",
-      dataIndex: "status",
-    },
+        title: "Status",
+        dataIndex: "status",
+        render: (text, record) => (
+          <Tag
+            color={
+              record.status === "pending"
+                ? "orange"
+                : record.status === "approved"
+                ? "green"
+                : "red"
+            }
+          >
+            {record.status}
+          </Tag>
+        ),
+      },
     {
       title: "Actions",
       dataIndex: "actions",

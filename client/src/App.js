@@ -9,17 +9,13 @@ import Notifications from "./pages/Notifications";
 import Pets from "./pages/Pets";
 import UserAdoptions from "./pages/UserAdoptions";
 
-
-
 import Profile from "./pages/Volunter/Profile";
 import Appointments from "./pages/Appointments";
 import List from "./pages/Admin/List";
 import AccessDenied from "./pages/AccessDenied";
 
-import Dashboard from "./pages/Dashboard";
 import PetDetails from "./pages/PetDetails";
 import DetailsPet from "./pages/DetailsPet";
-
 
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -31,8 +27,8 @@ import FormTeste from "./pages/FormTeste";
 import BookAppointment from "./pages/BookAppointment";
 import ListAppointments from "./pages/ListAppointments";
 import VolunterAppointments from "./pages/Volunter/VolunterAppointments";
-
-
+import TesteLayout from "./pages/Temp/TesteLayout";
+import CalendarTeste from "./pages/CalendarTeste";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -107,14 +103,7 @@ function App() {
           }
         />
 
-<Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />    
+ 
 
 <Route
           path="/pet/:id"
@@ -196,6 +185,26 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+<Route
+          path="/teste-layout"
+          element={
+            <ProtectedRoute>
+              <TesteLayout />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/calendario-teste"
+          element={
+            <ProtectedRoute>
+              <CalendarTeste />
+            </ProtectedRoute>
+          }
+        />
+
+
 
 
 <Route path="/access-denied" element={<AccessDenied />} />
