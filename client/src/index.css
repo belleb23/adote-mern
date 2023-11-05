@@ -179,3 +179,9 @@ p {
 .bg-custom {
   background-color: #ffbc2c;
 }
+
+.upload-button {
+  width: 172%;
+  height: 40px;
+  border-radius: 0;
+}

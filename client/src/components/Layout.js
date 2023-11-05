@@ -55,18 +55,19 @@ function Layout({ children }) {
     {
       name: "Adoções",
       path: "/volunter/applications",
-      icon: "ri-heart-line",
-    },
-    {
-      name: "Doações",
-      path: `/volunter/profile/${user?._id}`,
-      icon: "ri-wallet-3-line",
+      icon: "ri-hand-heart-line",
     },
     {
       name: "Visitas",
       path: "/calendario-teste",
       icon: "ri-calendar-line",
     },
+    {
+      name: "Doações",
+      path: `/volunter/profile/${user?._id}`,
+      icon: "ri-wallet-3-line",
+    },
+
 
   ];
 

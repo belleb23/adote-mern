@@ -33,13 +33,15 @@ function NewPet() {
         toast.success(response.data.message);
         navigate("/");
       } else {
-        toast(response.data.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
       toast.error("Something went wrong");
     }
   };
+
+
 
   return (
     <Layout>

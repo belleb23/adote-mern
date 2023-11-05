@@ -31,6 +31,12 @@ function Applications() {
           <Tooltip title="Ver Detalhes">
             <Button onClick={() => handleViewDetails(record)}>Detalhes</Button>
           </Tooltip>
+          <Tooltip title="Pdf">
+            <i
+              className="ri-download-line icon-large"
+              //onClick={() => updatePet(record)}
+            ></i>
+          </Tooltip>
         </div>
       ),
     },

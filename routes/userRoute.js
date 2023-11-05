@@ -207,6 +207,7 @@ router.post('/pets', authMiddleware, async (req, res) => {
     await newpet.save();
 
     res.status(201).json({
+      success: true,
       message: 'Pet created successfully',
       data: newpet,
     });

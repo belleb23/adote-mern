@@ -36,8 +36,6 @@ function Pets() {
     }
   };
 
-
-
   useEffect(() => {
     getPetsData();
   }, []);

@@ -12,6 +12,12 @@ function Pet({ pet }) {
         {pet.name} 
       </h1>
       <hr />
+      <div className="pet-image">
+        <img
+          src={pet.profilePic} 
+          
+        />
+      </div>
       {/* <p>
         <b>Phone Number : </b>
         {doctor.phoneNumber}

@@ -42,7 +42,7 @@ function Home() {
           </Col>
         ))}
       </Row>   
-      <CardAdmin/>
+      {/* <CardAdmin/> */}
     </Layout>
     
   )
