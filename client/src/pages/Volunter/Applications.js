@@ -6,17 +6,19 @@ import { showLoading, hideLoading } from '../../redux/alertsSlice';
 import { Table, Radio, Tooltip, Tag, Modal, Tabs } from 'antd';
 import {toast} from 'react-hot-toast'
 import moment from "moment";
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+
+// import { useReactToPrint } from 'react-to-print';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function Applications() {
   const [adoptions, setAdoptions] = useState([]);
   const [filter, setFilter] = useState('all'); // 'all', 'approved', or 'pending'
   const [selectedApplication, setSelectedApplication] = useState(null);
-  const [approvalStatus, setApprovalStatus] = useState('pending'); // 'approved' or 'pending'
+  const [isPdfModalVisible, setPdfModalVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  
   const dispatch = useDispatch();
-
   const columns = [
     {
       title: 'Pet',
@@ -91,10 +93,10 @@ function Applications() {
            
           </Tooltip>
           {record.status === "approved" && (
-            <Tooltip title="Pdf">
+            <Tooltip title="PDF">
               <i
                 className="ri-download-line icon-large"
-                // onClick={() => handleGeneratePdf(record)} // Adicione a função para gerar PDF aqui
+                 onClick={() => generatePdf(record)} 
               ></i>
             </Tooltip>
           )}
@@ -103,7 +105,6 @@ function Applications() {
     },
     
   ];
-
   const getApplicationsData = async () => {
     try {
       dispatch(showLoading());
@@ -120,7 +121,6 @@ function Applications() {
       dispatch(hideLoading());
     }
   };
-
   const changeApplicationStatus = async (record, status) => {
     try {
       dispatch(showLoading());
@@ -158,6 +158,14 @@ function Applications() {
     setSelectedApplication(null);
   }; 
 
+  const handleViewPdf = () => {
+    setPdfModalVisible(true);
+  };
+  
+  const handlePdfModalClose = () => {
+    setPdfModalVisible(false);
+  };
+
   const filteredAdoptions = adoptions.filter((adoption) => {
     if (filter === 'approved') {
       return adoption.status === 'approved';
@@ -166,6 +174,73 @@ function Applications() {
     }
     return true; // 'all'
   });
+
+  const generatePdf = (record) => {
+    const documentDefinition = {
+      content: [
+        { text: 'Contrato de Adoção', style: 'header' },
+        { text: `Adotante: ${record.userInfo.name}`, style: 'subheader' },
+        { text: `Animal Adotado: ${record.petInfo.name}`, style: 'subheader' },
+        {
+          text: 'Termos e Condições:',
+          style: 'subheader',
+          margin: [0, 20, 0, 10], // Espaçamento
+        },
+        'Ao assinar este contrato, o adotante reconhece a responsabilidade de cuidar do animal adotado e concorda com os seguintes termos:',
+        {
+          ul: [
+            'O adotante é responsável por fornecer cuidados adequados, alimentação e abrigo ao animal adotado.',
+            'O adotante concorda em não abandonar o animal ou transferi-lo a terceiros sem consentimento prévio da organização de adoção.',
+            'O adotante concorda em cumprir todas as leis e regulamentos locais relacionados à posse de animais de estimação.',
+            'A organização de adoção não assume responsabilidade por quaisquer danos causados pelo animal após a adoção.',
+          ],
+        },
+        'Ao assinar abaixo, o adotante confirma que leu e concorda com os termos deste contrato e está ciente das responsabilidades associadas à adoção do animal.',
+        {
+          text: 'Assinatura do Adotante:',
+          style: 'subheader',
+          margin: [0, 20, 0, 10],
+        },
+        { text: '', style: 'signature' }, 
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 0, 0, 20],
+        },
+        subheader: {
+          fontSize: 14,
+          bold: true,
+          margin: [0, 15, 0, 5],
+        },
+        signature: {
+          fontSize: 12,
+          italics: true,
+          margin: [0, 0, 0, 40],
+          alignment: 'center',
+        },
+      },
+    };
+
+    const pdfDocGenerator = pdfMake.createPdf(documentDefinition);
+
+    pdfDocGenerator.getBlob((blob) => {
+      // Você tem o Blob do PDF aqui, pode fazer o que quiser com ele
+      // Por exemplo, você pode salvá-lo como um arquivo ou exibi-lo em um modal
+      // Certifique-se de usar a biblioteca apropriada ou método para manipular o Blob
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'detalhes_adotante.pdf';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    });
+  };
 
   return (
     <Layout>
