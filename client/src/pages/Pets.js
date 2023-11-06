@@ -3,6 +3,8 @@ import Layout from "../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
+
 
 import axios from "axios";
 import { Table, Tooltip, Modal, Button } from "antd";
@@ -15,7 +17,10 @@ function Pets() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [petToDelete, setPetToDelete] = useState(null);
-  const [editingPet, setEditingPet] = useState(null); 
+
+  const handleEditPet = (pet) => {
+    navigate(`/edit-pet/${pet._id}`);
+  };
 
   const dispatch = useDispatch();
 
@@ -42,10 +47,25 @@ function Pets() {
 
   const columns = [
     {
+      title: "",
+      dataIndex: "urlPic",
+      render: (urlPic) => (
+        <img src={urlPic} alt="Imagem do Pet" style={{ width: '50px', height: '50px' }} />
+      ),
+    },
+    {
       title: "Nome",
       dataIndex: "name",
     },
- 
+    {
+      title: "Data",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <span>
+          {moment(record.date).format("DD-MM-YYYY")} {record.time}
+        </span>
+      ),
+    },
     {
       title: "",
       dataIndex: "actions",
@@ -66,7 +86,7 @@ function Pets() {
           <Tooltip title="Editar">
             <i
               className="ri-pencil-line icon-large"
-              //onClick={() => updatePet(record)}
+              onClick={() => handleEditPet(record)}
             ></i>
           </Tooltip>
         </div>
@@ -116,9 +136,9 @@ function Pets() {
 
   return (
     <Layout>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
       <h1 className="page-title">Pets</h1>
-      <hr />
-      <div style={{ marginBottom: "16px", textAlign:"right" }}>
+      
         <Button
           type="primary"
           className="primary-button"
@@ -126,7 +146,11 @@ function Pets() {
         >
            + Add Pet
         </Button>
+        
+        
       </div>
+     
+      <hr/>
       <Table columns={columns} dataSource={pets} />
 
       {isModalVisible && (
@@ -138,9 +162,25 @@ function Pets() {
           onCancel={() => setIsModalVisible(false)}
         >
           {selectedPet && (
-            <div>
-              <p>Nome: {selectedPet.name}</p>
-              <p>Porte: {selectedPet.petSize}</p>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div>
+                <p><strong>Nome:</strong> {selectedPet.name}</p>
+                <p><strong>Porte:</strong> {selectedPet.petSize}</p>
+                <p><strong>Idade:</strong> {selectedPet.age}</p>
+                <p><strong>Idade (em meses/anos):</strong> {selectedPet.ageNumber}</p>
+                <p><strong>Raça:</strong> {selectedPet.race}</p>
+                <p><strong>Sexo:</strong> {selectedPet.sex}</p>
+                <p><strong>Castrado:</strong> {selectedPet.castration ? 'Sim' : 'Não'}</p>
+                <p><strong>Vacinas Recebidas:</strong> {selectedPet.vaccine.join(', ')}</p>
+                <p><strong>Possui Alguma Deficiência:</strong> {selectedPet.illness ? 'Sim' : 'Não'}</p>
+                {selectedPet.illness && <p><strong>Tipo de Deficiência:</strong> {selectedPet.illnessType}</p>}
+                <p><strong>Descrição:</strong> {selectedPet.description}</p>
+                <p><strong>Tipo de Pet:</strong> {selectedPet.petType}</p>
+              </div>
+              {selectedPet.urlPic && 
+                <img src={selectedPet.urlPic} style={{ width: '220px', height: 'auto', marginLeft: '16px' }} alt="Foto do Pet" 
+              />}
+
             </div>
           )}
         </Modal>

@@ -270,9 +270,9 @@ router.post("/update-pet", authMiddleware, async (req, res) => {
 
 router.post("/applications", authMiddleware, async (req, res) => {
   try {
-    const {nome, userId, petId, status} = req.body
+    const {nome, userId, petId, status, userInfo, petInfo} = req.body
     const newapplication = new Application({ 
-      userId, petId, status, nome
+      userId, petId, userInfo, petInfo, status, nome
     });
     await newapplication.save();
     const volunterUser = await User.findOne({isVolunter: true});
@@ -295,6 +295,31 @@ router.post("/applications", authMiddleware, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
+  }
+});
+
+router.post('/change-application-status', authMiddleware, async (req, res) => {
+  try {
+    const { applicationId, status } = req.body;
+   
+    const application = await Application.findByIdAndUpdate(
+      applicationId,
+      { status },
+      { new: true } 
+    );
+
+    res.status(200).send({
+      message: 'Status da aplicação atualizado com sucesso',
+      success: true,
+      data: application,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: 'Erro ao atualizar o status da aplicação',
+      success: false,
+      error,
+    });
   }
 });
 

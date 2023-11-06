@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
-import { useDispatch, useSelector } from 'react-redux';
-import { Table, Radio } from 'antd';
+import { useSelector } from 'react-redux';
+import { Table, Radio, Tag, DatePicker } from 'antd';
+import moment from "moment";
+
 
 function UserAdoptions() {
   const { user } = useSelector((state) => state.user);
@@ -22,6 +24,7 @@ function UserAdoptions() {
 
       if (response.data.success) {
         const userAdoptions = response.data.data;
+        console.log(userAdoptions);
         setAdoptions(userAdoptions);
       }
     } catch (error) {
@@ -30,22 +33,46 @@ function UserAdoptions() {
   };
 
   useEffect(() => {
-    // Busque as adoções do usuário
     fetchUserAdoptions();
   }, []);
 
   const columns = [
     {
-      title: 'Nome do Animal',
-      dataIndex: 'nome',
-      key: 'nome',
+      title: 'Pet',
+      dataIndex: 'petInfo',
+      key: 'petName',
+      render: (petInfo) => petInfo.name,
+    },
+    {
+      title: "Data aplicação",
+      dataIndex: "createdAt",
+      render: (record , text) => moment(record.createdAt).format("DD-MM-YYYY"),
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      render: (status) => {
+        let color = 'orange'; 
+        if (status === 'approved') {
+          color = 'green'; 
+        } else if (status === 'Recusado') {
+          color = 'red'; 
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
     },
-    // Adicione mais colunas conforme necessário
+    {
+      title: "Retirar Pet",
+      dataIndex: "retirarData",
+      render: (text, record) => (
+        <DatePicker
+          placeholder="Selecione a data"
+          format="DD-MM-YYYY"
+         // onChange={(date, dateString) => handleRetirarPet(record, dateString)}
+        />
+      ),
+    },
   ];
 
   const filteredAdoptions = adoptions.filter((adoption) => {
@@ -54,20 +81,26 @@ function UserAdoptions() {
     } else if (filter === 'pending') {
       return adoption.status === 'pending';
     }
-    return true; // 'all'
+    return true; 
   });
 
   return (
     <Layout>
-      <h2>Adoções</h2>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <h1 className="page-title">Minhas Adoções</h1>
+      
       <Radio.Group
         onChange={(e) => setFilter(e.target.value)}
         value={filter}
+        
       >
         <Radio.Button value="all">Todas</Radio.Button>
         <Radio.Button value="approved">Aprovadas</Radio.Button>
         <Radio.Button value="pending">Pendentes</Radio.Button>
       </Radio.Group>
+      
+      </div>
+      <hr/>
       <Table dataSource={filteredAdoptions} columns={columns} />
     </Layout>
   );

@@ -29,6 +29,7 @@ import ListAppointments from "./pages/ListAppointments";
 import VolunterAppointments from "./pages/Volunter/VolunterAppointments";
 import TesteLayout from "./pages/Temp/TesteLayout";
 import CalendarTeste from "./pages/CalendarTeste";
+import EditPet from "./pages/EditPet";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -200,6 +201,15 @@ function App() {
           element={
             <ProtectedRoute>
               <CalendarTeste />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/edit-pet/:petId"
+          element={
+            <ProtectedRoute>
+              <EditPet />
             </ProtectedRoute>
           }
         />

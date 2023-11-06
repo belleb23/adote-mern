@@ -130,8 +130,6 @@ function VolunteersList() {
     setIsModalVisible(false);
   };
   
-  
-
   return (
     <div>
       <Table columns={columns} dataSource={volunteers} />
@@ -165,7 +163,7 @@ function VolunteersList() {
             </Tabs.TabPane>
           </Tabs>
         )}
-    </Modal>
+      </Modal>
 </div>
   );
 }

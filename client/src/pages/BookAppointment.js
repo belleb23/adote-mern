@@ -48,11 +48,6 @@ function BookAppointment() {
         }
       };
 
-    //   const checkAvailability = async () => {
-    //     console.log(date)
-    //     console.log(time)
-    //   }
-
       const checkAvailability = async () => {
         try {
             console.log("data")

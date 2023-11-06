@@ -55,13 +55,13 @@ function Notifications() {
   }
   return (
     <Layout>
-      <h1 className="page-title">Notifications</h1>
+      <h1 className="page-title">Notificações</h1>
       <hr />
 
       <Tabs>
-        <Tabs.TabPane tab="Unseen" key={0}>
+        <Tabs.TabPane tab="Não visto" key={0}>
           <div className="d-flex justify-content-end">
-            <h1 className="anchor" onClick={()=>markAllAsSeen()}>Mark all as seen</h1>
+            <h1 className="anchor" onClick={()=>markAllAsSeen()}>Marcar como visto</h1>
           </div>
 
           {user?.unseenNotifications.map((notification) => (
@@ -70,9 +70,9 @@ function Notifications() {
             </div>
           ))}
         </Tabs.TabPane>
-        <Tabs.TabPane tab="seen" key={1}>
+        <Tabs.TabPane tab="Visto" key={1}>
           <div className="d-flex justify-content-end">
-            <h1 className="anchor" onClick={()=>deleteAll()}>Delete all</h1>
+            <h1 className="anchor" onClick={()=>deleteAll()}>Apagar todas</h1>
           </div>
           {user?.seenNotifications.map((notification) => (
             <div className="card p-2 mt-2" onClick={()=>navigate(notification.onClickPath)}>

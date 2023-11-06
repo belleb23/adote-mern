@@ -10,6 +10,14 @@ const applicationSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        userInfo: {
+          type: Object,
+          required: false,
+        },
+        petInfo: {
+          type: Object,
+          required: false,
+        },
         nome:{
           type: String,
           required: true,
