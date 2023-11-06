@@ -35,9 +35,16 @@ function CalendarAppointments() {
     fetchData();
   }, []);
 
+   const views = {
+    month: true,
+    agenda: true,
+    // week: true,
+    // day: true, 
+  };
+
   return (
     <div>
-      <h1 className="page-header">Appointments</h1>
+      <h1 className="page-header">Visitas</h1>
       <hr />
       <Calendar
         localizer={localizer}
@@ -45,6 +52,7 @@ function CalendarAppointments() {
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500 }}
+         views={views}
       />
     </div>
   );
