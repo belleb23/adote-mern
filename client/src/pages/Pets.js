@@ -107,7 +107,6 @@ function Pets() {
 
   const handleDeleteUser = async (pet) => {
     try {
-
       dispatch(showLoading());
       const response = await axios.delete(`/api/admin/delete-pet/${pet._id}`, {
         headers: {

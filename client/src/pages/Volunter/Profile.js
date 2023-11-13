@@ -20,7 +20,7 @@ function Profile() {
   const onFinish = async (values) => {
     try {
       dispatch(showLoading());
-      const response = await axios.post(
+      const response = await axios.put(
         "/api/volunter/update-volunter-profile",
         {
           ...values,
@@ -52,11 +52,8 @@ function Profile() {
   const getVolunterData = async () => {
     try {
       dispatch(showLoading());
-      const response = await axios.post(
-        "/api/volunter/get-volunter-info-by-user-id",
-        {
-          userId: params.userId,
-        },
+      const response = await axios.get(
+        `/api/volunter/get-volunter-info-by-user-id/${params.userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -73,6 +70,31 @@ function Profile() {
       dispatch(hideLoading());
     }
   };
+
+  // const getVolunterData = async () => {
+  //   try {
+  //     dispatch(showLoading());
+  //     const response = await axios.post(
+  //       "/api/volunter/get-volunter-info-by-user-id",
+  //       {
+  //         userId: params.userId,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     );
+
+  //     dispatch(hideLoading());
+  //     if (response.data.success) {
+  //       setVolunter(response.data.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     dispatch(hideLoading());
+  //   }
+  // };
 
   useEffect(() => {
     getVolunterData();

@@ -21,32 +21,28 @@ function BookAppointment() {
 
     const dispatch = useDispatch();
     const params = useParams();
-
-
-    const getVolunterData = async () => {
-        try {
-          dispatch(showLoading());
-          const response = await axios.post(
-            "/api/volunter/get-volunter-info-by-id",
-            {
-              volunterId: params.volunterId,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
     
-          dispatch(hideLoading());
-          if (response.data.success) {
-            setVolunter(response.data.data);
+    const getVolunterData = async () => {
+      try {
+        dispatch(showLoading());
+        const response = await axios.get(
+          `/api/volunter/get-volunter-info-by-id/${params.volunterId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
-        } catch (error) {
-          console.log(error);
-          dispatch(hideLoading());
+        );
+  
+        dispatch(hideLoading());
+        if (response.data.success) {
+          setVolunter(response.data.data);
         }
-      };
+      } catch (error) {
+        console.log(error);
+        dispatch(hideLoading());
+      }
+    };
 
       const checkAvailability = async () => {
         try {

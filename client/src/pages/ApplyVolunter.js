@@ -58,18 +58,27 @@ function ApplyVolunter() {
   const getVolunterData = async () => {
     try {
       dispatch(showLoading());
-      const response = await axios.post(
-        "/api/volunter/get-volunter-info-by-user-id",
-        {
-          userId: params.userId,
-        },
+      if (!user) {
+        console.error("User is null or undefined");
+        dispatch(hideLoading());
+        return;
+      }
+      const userId = user._id;
+
+      if (!userId) {
+        console.error("UserID is null or undefined");
+        dispatch(hideLoading());
+        return;
+      }
+
+      const response = await axios.get(
+        `/api/volunter/get-volunter-info-by-user-id/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-
       dispatch(hideLoading());
       if (response.data.success) {
         setVolunter(response.data.data);
@@ -80,9 +89,36 @@ function ApplyVolunter() {
     }
   };
 
+
+  // const getVolunterData = async () => {
+  //   try {
+  //     dispatch(showLoading());
+  //     console.log(params.userId)
+  //     const response = await axios.post(
+  //       "/api/volunter/get-volunter-info-by-user-id",
+  //       {
+  //         userId: params.userId,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     );
+
+  //     dispatch(hideLoading());
+  //     if (response.data.success) {
+  //       setVolunter(response.data.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     dispatch(hideLoading());
+  //   }
+  // };
+
   useEffect(() => {
     getVolunterData();
-  }, []);
+  }, [user]);
 
   return (
     <Layout>

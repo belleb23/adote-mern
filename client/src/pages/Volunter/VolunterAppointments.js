@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/Layout";
 import { showLoading, hideLoading } from "../../redux/alertsSlice";
 import { toast } from "react-hot-toast";
@@ -10,11 +10,14 @@ function VolunterAppointments() {
   const [appointments, setAppointments] = useState([]);
   const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => state.user);
+
+
   const getAppointmentsData = async () => {
     try {
       dispatch(showLoading());
       const resposne = await axios.get(
-        "/api/volunter/get-appointments-by-volunter-id",
+        `/api/volunter/get-appointments-by-volunter-id/${user._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -33,7 +36,7 @@ function VolunterAppointments() {
   const changeAppointmentStatus = async (record, status) => {
     try {
       dispatch(showLoading());
-      const resposne = await axios.post(
+      const resposne = await axios.put(
         "/api/volunter/change-appointment-status",
         { appointmentId : record._id, status: status },
         {
@@ -108,7 +111,7 @@ function VolunterAppointments() {
   ];
   useEffect(() => {
     getAppointmentsData();
-  }, []);
+  }, [user]);
 
   
   return (
