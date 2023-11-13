@@ -14,7 +14,6 @@ import Appointments from "./pages/Appointments";
 import List from "./pages/Admin/List";
 import AccessDenied from "./pages/AccessDenied";
 
-import PetDetails from "./pages/PetDetails";
 import DetailsPet from "./pages/DetailsPet";
 
 import { Toaster } from "react-hot-toast";
@@ -27,7 +26,7 @@ import FormTeste from "./pages/FormTeste";
 import BookAppointment from "./pages/BookAppointment";
 import ListAppointments from "./pages/ListAppointments";
 import VolunterAppointments from "./pages/Volunter/VolunterAppointments";
-import TesteLayout from "./pages/Temp/TesteLayout";
+
 import CalendarTeste from "./pages/CalendarTeste";
 import EditPet from "./pages/EditPet";
 import Dashboard from "./pages/Temp/Dashboard";
@@ -103,18 +102,7 @@ function App() {
               <Pets />
             </ProtectedRoute>
           }
-        />
-
- 
-
-<Route
-          path="/pet/:id"
-          element={
-            <ProtectedRoute>
-              <PetDetails />
-            </ProtectedRoute>
-          }
-        />    
+        /> 
 
 <Route
           path="/details-pet/:petId"
@@ -188,14 +176,6 @@ function App() {
           }
         />
 
-<Route
-          path="/teste-layout"
-          element={
-            <ProtectedRoute>
-              <TesteLayout />
-            </ProtectedRoute>
-          }
-        />
 
 <Route
           path="/calendario-teste"

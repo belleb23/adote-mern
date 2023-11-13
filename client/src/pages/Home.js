@@ -4,8 +4,7 @@ import Layout from "../components/Layout";
 import { Col, Row } from "antd";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
-import Pet from "../components/Pet";
-import CardAdmin from "../components/CardAdmin";
+import Pet from "../components/pet/Pet";
 
 function Home() {
   const [pets, setPets] = useState([]);

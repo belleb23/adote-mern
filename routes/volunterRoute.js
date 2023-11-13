@@ -6,7 +6,6 @@ const Appointment = require ("../models/appointmentModel");
 const User = require("../models/userModel");
 
 
-
 router.post("/get-volunter-info-by-user-id", authMiddleware, async (req, res) => {
   try {
     const volunter = await Volunter.findOne({ userId: req.body.userId });

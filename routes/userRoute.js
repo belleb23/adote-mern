@@ -341,11 +341,20 @@ router.get('/check-application', authMiddleware, async (req, res) => {
   }
 });
 
-router.get('/user-adoptions', authMiddleware, async (req, res) => {
+router.post('/user-adoptions', authMiddleware, async (req, res) => {
   try {
-    const { userId } = req.query; 
-    const userAdoptions = await Application.find({ userId });
-    res.status(200).json({ success: true, data: userAdoptions });
+    // const userId = await User.findOne({ _id: req.body.userId });
+    // const userAdoptions = await Application.find({ userId });
+
+    console.log(req.body.userId)
+    const user = await User.findOne({ _id: req.body.userId });
+    const applications = await Application.find({ userId: user._id });
+   
+    res.status(200).json({ 
+      message: "Applications fetched successfully",
+      success: true, 
+      data: applications, 
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -354,7 +363,7 @@ router.get('/user-adoptions', authMiddleware, async (req, res) => {
 
 router.get('/all-applications', async (req, res) => {
   try {
-    // Busque todas as adoções no banco de dados
+    
     const adoptions = await Application.find();
 
     res.status(200).json({

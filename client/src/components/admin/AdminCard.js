@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Row, Col } from "antd";
 import { AppleOutlined, AndroidOutlined, WindowsOutlined } from "@ant-design/icons";
 
-const CardAdmin = () => {
+const AdminCard = () => {
   return (
     <Row gutter={16}>
       <Col span={8}>
@@ -42,4 +42,4 @@ const CardAdmin = () => {
   );
 };
 
-export default CardAdmin;
+export default AdminCard;

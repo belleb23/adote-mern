@@ -1,5 +1,5 @@
 
-import ApplicationForm from '../components/ApplicationForm'; // Importe o componente
+import ApplicationForm from '../components/user/ApplicationForm'; 
 import { Button, Col, DatePicker, Form, Input, Row, TimePicker } from "antd";
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";

@@ -5,7 +5,7 @@ import { showLoading, hideLoading } from "../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import PetForm from "../components/PetForm";
+import PetForm from "../components/pet/PetForm";
 import moment from "moment";
 
 function NewPet() {

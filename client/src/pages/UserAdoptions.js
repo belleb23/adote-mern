@@ -1,39 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Table, Radio, Tag, DatePicker } from 'antd';
 import moment from "moment";
+import { showLoading, hideLoading } from '../redux/alertsSlice';
+import { useNavigate, useParams } from "react-router-dom";
 
 
 function UserAdoptions() {
-  const { user } = useSelector((state) => state.user);
   const [adoptions, setAdoptions] = useState([]);
-  const [filter, setFilter] = useState('all'); // 'all', 'approved', or 'pending'
+  const [filter, setFilter] = useState('all');
+  const dispatch = useDispatch();
 
-  const fetchUserAdoptions = async () => {
+  const params = useParams();
+  const { user } = useSelector((state) => state.user);
+
+  const getUserData = async () => {
     try {
-      const response = await axios.get('/api/user/user-adoptions', {
-        params: {
-          userId: user._id,
+      dispatch(showLoading());
+      const response = await axios.post(
+        '/api/user/user-adoptions',
+        {
+          userId: params.userId,
         },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+      dispatch(hideLoading());
       if (response.data.success) {
-        const userAdoptions = response.data.data;
-        console.log(userAdoptions);
-        setAdoptions(userAdoptions);
+        setAdoptions(response.data.data);
       }
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      dispatch(hideLoading());
+      
     }
   };
 
   useEffect(() => {
-    fetchUserAdoptions();
+    getUserData();
   }, []);
 
   const columns = [

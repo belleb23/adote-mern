@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "../components/Layout";
 import { Col, Row } from "antd";
-import Volunter from "../components/Volunter";
+import Volunter from "../components/volunter/Volunter";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
 

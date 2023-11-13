@@ -16,8 +16,8 @@ function Applications() {
   const [filter, setFilter] = useState('all');
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  
   const dispatch = useDispatch();
+
   const columns = [
     {
       title: 'Pet',
@@ -104,6 +104,7 @@ function Applications() {
     },
     
   ];
+
   const getApplicationsData = async () => {
     try {
       dispatch(showLoading());
@@ -156,7 +157,6 @@ function Applications() {
     setIsModalVisible(false);
     setSelectedApplication(null);
   }; 
-
 
   const filteredAdoptions = adoptions.filter((adoption) => {
     if (filter === 'approved') {

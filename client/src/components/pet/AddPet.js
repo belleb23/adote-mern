@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Layout from "../components/Layout";
+import Layout from "../Layout";
 import { Form, message } from 'antd';
 import axios from "axios";
-import PetForm from "../components/PetForm";
+import PetForm from "./PetForm";
 import { useDispatch, useSelector } from "react-redux";
-import { showLoading, hideLoading } from "../redux/alertsSlice";
+import { showLoading, hideLoading } from "../../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";

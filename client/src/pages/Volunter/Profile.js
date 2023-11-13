@@ -5,7 +5,7 @@ import { showLoading, hideLoading } from "../../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import VolunterForm from "../../components/VolunterForm";
+import VolunterForm from "../../components/volunter/VolunterForm";
 import moment from "moment";
 import dayjs from 'dayjs';
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import CalendarAppointments from '../components/CalendarAppointments'
+import CalendarAppointments from '../components/volunter/CalendarAppointments'
 import Layout from '../components/Layout'
 
 function CalendarTeste() {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PetForm from '../components/PetForm';
+import PetForm from '../components/pet/PetForm';
 import Layout from '../components/Layout';
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
