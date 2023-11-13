@@ -28,12 +28,12 @@ function Layout({ children }) {
       path: `/appointments`,
       icon: "ri-calendar-line",
     },
-    {
-      name: "Doações",
-      path: "/applications",
-      icon: "ri-wallet-3-line",
-    }
-    ,
+    // {
+    //   name: "Doações",
+    //   path: "/applications",
+    //   icon: "ri-wallet-3-line",
+    // }
+    // ,
     {
       name: "Ser Voluntário",
       path: "/apply-volunter",
@@ -62,11 +62,11 @@ function Layout({ children }) {
       path: "/calendario-teste",
       icon: "ri-calendar-line",
     },
-    {
-      name: "Doações",
-      path: `/volunter/profile/${user?._id}`,
-      icon: "ri-wallet-3-line",
-    },
+    // {
+    //   name: "Doações",
+    //   path: `/volunter/profile/${user?._id}`,
+    //   icon: "ri-wallet-3-line",
+    // },
 
 
   ];
@@ -89,7 +89,7 @@ function Layout({ children }) {
     },
     {
       name: "Visitas",
-      path: `/appointments`,
+      path: `/calendario-teste`,
       icon: "ri-calendar-line",
     },
    
@@ -158,7 +158,7 @@ function Layout({ children }) {
                 <i className="ri-notification-line header-action-icon px-3"></i>
               </Badge>
 
-              <i className="ri-chat-1-line header-action-icon px-3"></i>
+              {/* <i className="ri-chat-1-line header-action-icon px-3"></i> */}
 
 
               {/* <Link className="anchor mx-2" to={`/volunter/profile/${user?._id}`}>
@@ -171,6 +171,7 @@ function Layout({ children }) {
 
           <div className="body">{children}</div>
         </div>
+        
       </div>
     </div>
   );

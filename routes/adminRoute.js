@@ -42,91 +42,90 @@ router.get("/get-all-users", authMiddleware, async (req, res) => {
 });
 
 router.post( "/change-volunter-account-status", authMiddleware, async (req, res) => {
-      try {
-        const { volunterId, status } = req.body;
-        const volunter = await Volunter.findByIdAndUpdate(volunterId, {
-          status,
-        });
-  
-        const user = await User.findOne({ _id: volunter.userId });
-        const unseenNotifications = user.unseenNotifications;
-        unseenNotifications.push({
-          type: "new-volunter-request-changed",
-          message: `Your volunter account has been ${status}`,
-          onClickPath: "/notifications",
-        });
-        user.isVolunter = status === "approved" ? true : false;
-        await user.save();
-  
-        res.status(200).send({
-          message: "Volunter status updated successfully",
-          success: true,
-          data: volunter,
-        });
-      } catch (error) {
-        console.log(error);
-        res.status(500).send({
-          message: "Error applying volunter account",
-          success: false,
-          error,
-        });
-      }
-    }
-  );
+    try {
+      const { volunterId, status } = req.body;
+      const volunter = await Volunter.findByIdAndUpdate(volunterId, {
+        status,
+      });
 
-  router.delete("/delete-user/:id", authMiddleware, async (req, res) => {
-    try {
-      const userId = req.params.id;
-      const deletedUser = await User.findByIdAndRemove(userId);
-  
-      if (!deletedUser) {
-        return res.status(404).json({
-          message: "User not found",
-          success: false,
-        });
-      }
-  
-      res.status(200).json({
-        message: "User deleted successfully",
+      const user = await User.findOne({ _id: volunter.userId });
+      const unseenNotifications = user.unseenNotifications;
+      unseenNotifications.push({
+        type: "new-volunter-request-changed",
+        message: `Your volunter account has been ${status}`,
+        onClickPath: "/notifications",
+      });
+      user.isVolunter = status === "approved" ? true : false;
+      await user.save();
+
+      res.status(200).send({
+        message: "Volunter status updated successfully",
         success: true,
-        data: deletedUser,
+        data: volunter,
       });
     } catch (error) {
       console.log(error);
-      res.status(500).json({
-        message: "Error deleting user",
+      res.status(500).send({
+        message: "Error applying volunter account",
         success: false,
-        error: error.message,
+        error,
       });
     }
-  });
-  
-  router.delete("/delete-pet/:id", authMiddleware, async (req, res) => {
-    try {
-      const petId = req.params.id;
-      const deletedPet = await Pet.findByIdAndRemove(petId);
-  
-      if (!deletedPet) {
-        return res.status(404).json({
-          message: "Pet not found",
-          success: false,
-        });
-      }
-  
-      res.status(200).json({
-        message: "Pet deleted successfully",
-        success: true,
-        data: deletedPet,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({
-        message: "Error deleting pet",
+});
+
+router.delete("/delete-user/:id", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const deletedUser = await User.findByIdAndRemove(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({
+        message: "User not found",
         success: false,
-        error: error.message,
       });
     }
-  });
+
+    res.status(200).json({
+      message: "User deleted successfully",
+      success: true,
+      data: deletedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Error deleting user",
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+router.delete("/delete-pet/:id", authMiddleware, async (req, res) => {
+  try {
+    const petId = req.params.id;
+    const deletedPet = await Pet.findByIdAndRemove(petId);
+
+    if (!deletedPet) {
+      return res.status(404).json({
+        message: "Pet not found",
+        success: false,
+      });
+    }
+
+    res.status(200).json({
+      message: "Pet deleted successfully",
+      success: true,
+      data: deletedPet,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Error deleting pet",
+      success: false,
+      error: error.message,
+    });
+  }
+});
   
 
 module.exports = router;

@@ -21,7 +21,7 @@ function EditPet() {
             "/api/user/update-pet",
             {
             ...values,
-            userId: user._id,
+            petId: params.petId,
             },
             {
             headers: {

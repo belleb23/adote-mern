@@ -7,9 +7,16 @@ const { Option } = Select;
 function PetForm({ onFinish, initivalValues }) {
 
   const [showIllnessType, setShowIllnessType] = React.useState(false);
-  
+  const [showFivQuestion, setShowFivQuestion] = React.useState(false);
+  const [showVermQuestion, setShowVermQuestion] = React.useState(false);
+
   const handleIllnessChange = (value) => {
     setShowIllnessType(value === true);
+  };
+
+  const handlePetTypeChange = (value) => {
+    setShowFivQuestion(value === 'gato');
+    setShowVermQuestion(value === 'cachorro');
   };
 
   return (
@@ -34,10 +41,10 @@ function PetForm({ onFinish, initivalValues }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Tamanho" name="petSize"
-          rules={[{ required: true, message: 'Por favor, selecione o tamanho do pet' }]}
+          <Form.Item label="Porte" name="petSize"
+          rules={[{ required: true, message: 'Por favor, selecione o porte do pet' }]}
           >
-            <Select placeholder="Tamanho">
+            <Select placeholder="Porte">
               <Option value="pequeno">Pequeno</Option>
               <Option value="médio">Médio</Option>
               <Option value="grande">Grande</Option>
@@ -66,10 +73,10 @@ function PetForm({ onFinish, initivalValues }) {
           <Form.Item label="Tipo" name="petType"
           rules={[{ required: true, message: 'Por favor, insira o tipo do pet' }]}
           >
-            <Select placeholder="Tipo">
+            <Select placeholder="Tipo" onChange={handlePetTypeChange}>
               <Option value="gato">gato</Option>
-              <Option value="cachorroo">cachorro</Option>
-              <Option value="cachorroo">outro</Option>
+              <Option value="cachorro">cachorro</Option>
+              <Option value="outro">outro</Option>
             </Select>
         </Form.Item>
         </Col>
@@ -95,24 +102,45 @@ function PetForm({ onFinish, initivalValues }) {
             rules={[{ required: true, message: 'Por favor, insira resposta' }]}
             >
             <Select placeholder="Castrado">
-              <Option value={true}>Sim</Option>
-              <Option value={false}>Nao</Option>
+              <Option value='adotante'>Por conta do adotante</Option>
+              <Option value='adote'>Custeado pela adote</Option>
             </Select>          
           </Form.Item>
         </Col>
-        <Col span={16} xs={24} sm={24} lg={16}>
-          <Form.Item label="Vacinas recebidas" name="vaccine"
-            rules={[{ required: true, message: 'Por favor, selecione as vacinas recebidas' }]}
+        <Col span={8} xs={24} sm={24} lg={8}>
+          <Form.Item label="Vacinado ?" name="vaccine"
+            rules={[{ required: true, message: 'Por favor, insira resposta' }]}
             >
-              <Checkbox.Group>
-                <Checkbox value="v1">Vacina 1</Checkbox>
-                <Checkbox value="v2">Vacina 2</Checkbox>
-                <Checkbox value="v3">Vacina 3</Checkbox>
-                <Checkbox value="v4">Vacina 4</Checkbox>
-                <Checkbox value="no">Nenhuma</Checkbox>
-            </Checkbox.Group>
+            <Select placeholder="Vacina">
+              <Option value='adotante'>Por conta do adotante</Option>
+              <Option value='adote'>Custeado pela adote</Option>
+            </Select>          
           </Form.Item>
         </Col>
+        {showFivQuestion && (
+          <Col span={8} xs={24} sm={24} lg={8}>
+            <Form.Item label="Fiv ?" name="fiv"
+              rules={[{ required: true, message: 'Por favor, insira resposta' }]}
+              >
+              <Select placeholder="Fiv">
+                <Option value={true}>Positivo</Option>
+                <Option value={false}>Negativo</Option>
+              </Select>          
+            </Form.Item>
+          </Col>
+        )}
+        {showVermQuestion && (
+          <Col span={8} xs={24} sm={24} lg={8}>
+            <Form.Item label="Vermífugo e antipugas ?" name="verm"
+              rules={[{ required: true, message: 'Por favor, insira resposta' }]}
+              >
+              <Select placeholder="Vermífugo e antipugas">
+                <Option value='positivo'>Por conta do adotante</Option>
+                <Option value='negativo'>Custeado pela adote</Option>
+              </Select>          
+            </Form.Item>
+          </Col>
+        )}
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item label="O pet possui alguma deficiência?" name="illness"
             rules={[{ required: true, message: 'Por favor, selecione a doença do pet' }]}

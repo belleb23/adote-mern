@@ -33,7 +33,8 @@ function Appointments() {
 
   return (
     <Layout>
-      <p>Selecione o voluntário que voce deseja marcar uma visita</p>
+      <p>Selecione o voluntário para te acompanhar na visita.</p>
+      <br/>
       <Row gutter={20}>
         {volunteers.map((volunter) => (
           <Col span={8} xs={24} sm={24} lg={8}>

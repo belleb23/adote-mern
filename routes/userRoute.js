@@ -253,7 +253,7 @@ router.post("/get-pet-info-by-id", authMiddleware, async (req, res) => {
 router.post("/update-pet", authMiddleware, async (req, res) => {
   try {
     const pet = await Pet.findOneAndUpdate(
-      { petId: req.body.petId },
+      { _id: req.body.petId },
       req.body
     );
     res.status(200).send({

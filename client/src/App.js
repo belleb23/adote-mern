@@ -30,6 +30,7 @@ import VolunterAppointments from "./pages/Volunter/VolunterAppointments";
 import TesteLayout from "./pages/Temp/TesteLayout";
 import CalendarTeste from "./pages/CalendarTeste";
 import EditPet from "./pages/EditPet";
+import Dashboard from "./pages/Temp/Dashboard";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -214,6 +215,14 @@ function App() {
           }
         />
 
+<Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
 
 

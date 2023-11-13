@@ -9,15 +9,14 @@ import moment from "moment";
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 
-// import { useReactToPrint } from 'react-to-print';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function Applications() {
   const [adoptions, setAdoptions] = useState([]);
-  const [filter, setFilter] = useState('all'); // 'all', 'approved', or 'pending'
+  const [filter, setFilter] = useState('all');
   const [selectedApplication, setSelectedApplication] = useState(null);
-  const [isPdfModalVisible, setPdfModalVisible] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  
   const dispatch = useDispatch();
   const columns = [
     {
@@ -158,13 +157,6 @@ function Applications() {
     setSelectedApplication(null);
   }; 
 
-  const handleViewPdf = () => {
-    setPdfModalVisible(true);
-  };
-  
-  const handlePdfModalClose = () => {
-    setPdfModalVisible(false);
-  };
 
   const filteredAdoptions = adoptions.filter((adoption) => {
     if (filter === 'approved') {

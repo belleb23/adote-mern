@@ -31,11 +31,11 @@ const petSchema = new mongoose.Schema(
       required: true,
     },
     castration:{
-      type: Boolean,
+      type: String,
       required:true 
     }, 
     vaccine:{
-      type: Array,
+      type: String,
       required:true 
     },
     illness: {
@@ -46,13 +46,23 @@ const petSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    fiv: {
+      type: Boolean,
+      required: false,
+    },
+    verm:{
+      type: String,
+      required: false,
+    },
     description: {
       type: String,
       required: true,
     },
     petType:{
       type: String,
-      required: true
+      required: true,
+      enum:['cachorro', 'gato', 'outro'],
+      default: 'cachorro'
     },
     profilePic: {
       type: String,

@@ -18,10 +18,6 @@ function Pets() {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [petToDelete, setPetToDelete] = useState(null);
 
-  const handleEditPet = (pet) => {
-    navigate(`/edit-pet/${pet._id}`);
-  };
-
   const dispatch = useDispatch();
 
   const getPetsData = async () => {
@@ -134,6 +130,11 @@ function Pets() {
     setIsModalVisible(true);
   };
 
+  const handleEditPet = (pet) => {
+    navigate(`/edit-pet/${pet._id}`);
+  };
+
+
   return (
     <Layout>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -171,7 +172,8 @@ function Pets() {
                 <p><strong>Raça:</strong> {selectedPet.race}</p>
                 <p><strong>Sexo:</strong> {selectedPet.sex}</p>
                 <p><strong>Castrado:</strong> {selectedPet.castration ? 'Sim' : 'Não'}</p>
-                <p><strong>Vacinas Recebidas:</strong> {selectedPet.vaccine.join(', ')}</p>
+                {/* <p><strong>Vacinas Recebidas:</strong> {selectedPet.vaccine.join(', ')}</p> */}
+                <p><strong>Vacinas Recebidas:</strong> {selectedPet.vaccine}</p>
                 <p><strong>Possui Alguma Deficiência:</strong> {selectedPet.illness ? 'Sim' : 'Não'}</p>
                 {selectedPet.illness && <p><strong>Tipo de Deficiência:</strong> {selectedPet.illnessType}</p>}
                 <p><strong>Descrição:</strong> {selectedPet.description}</p>
