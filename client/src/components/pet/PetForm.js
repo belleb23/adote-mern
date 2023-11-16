@@ -52,7 +52,7 @@ function PetForm({ onFinish, initivalValues }) {
         </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Idade" name="age"
+          <Form.Item label="Idade" name="ageRange"
           rules={[{ required: true, message: 'Por favor, selecione a idade do pet' }]}
           >
             <Select placeholder="Idade">
@@ -63,7 +63,7 @@ function PetForm({ onFinish, initivalValues }) {
         </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Idade em meses/anos" name="ageNumber"
+          <Form.Item label="Idade em meses/anos" name="age"
           rules={[{ required: true, message: 'Por favor, insira a idade do pet' }]}
           >
             <Input placeholder="Idade" type="number"/>
@@ -102,8 +102,8 @@ function PetForm({ onFinish, initivalValues }) {
             rules={[{ required: true, message: 'Por favor, insira resposta' }]}
             >
             <Select placeholder="Castrado">
-              <Option value='adotante'>Por conta do adotante</Option>
-              <Option value='adote'>Custeado pela adote</Option>
+              <Option value='por conta do adotante'>Por conta do adotante</Option>
+              <Option value='custeado pela adote'>Custeado pela adote</Option>
             </Select>          
           </Form.Item>
         </Col>
@@ -112,8 +112,8 @@ function PetForm({ onFinish, initivalValues }) {
             rules={[{ required: true, message: 'Por favor, insira resposta' }]}
             >
             <Select placeholder="Vacina">
-              <Option value='adotante'>Por conta do adotante</Option>
-              <Option value='adote'>Custeado pela adote</Option>
+              <Option value='por conta do adotante'>Por conta do adotante</Option>
+              <Option value='custeado pela adote'>Custeado pela adote</Option>
             </Select>          
           </Form.Item>
         </Col>
@@ -146,8 +146,8 @@ function PetForm({ onFinish, initivalValues }) {
             rules={[{ required: true, message: 'Por favor, selecione a doença do pet' }]}
             >
               <Select placeholder="Deficiência" onChange={handleIllnessChange}>
+                <Option value={false}>Não</Option>
                 <Option value={true}>Sim</Option>
-                <Option value={false}>Nao</Option>
               </Select> 
           </Form.Item>
         </Col>

@@ -42,6 +42,19 @@ function CalendarAppointments() {
     // day: true, 
   };
 
+  const messages = {
+    allDay: 'Dia Inteiro',
+    previous: 'Anterior',
+    next: 'Próximo',
+    today: 'Hoje',
+    month: 'Mês', // Alteração de 'month' para 'Mês'
+    week: 'Semana',
+    day: 'Dia',
+    agenda: 'Agenda',
+    date: 'Data',
+    time: 'Hora',
+  };
+
   return (
     <div>
       <h1 className="page-header">Visitas</h1>

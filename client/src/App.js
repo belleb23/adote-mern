@@ -26,6 +26,7 @@ import FormTeste from "./pages/FormTeste";
 import BookAppointment from "./pages/BookAppointment";
 import ListAppointments from "./pages/ListAppointments";
 import VolunterAppointments from "./pages/Volunter/VolunterAppointments";
+import UserAppointments from "./pages/UserAppointments";
 
 import CalendarTeste from "./pages/CalendarTeste";
 import EditPet from "./pages/EditPet";
@@ -200,6 +201,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+<Route
+          path="/user-appointments"
+          element={
+            <ProtectedRoute>
+              <UserAppointments />
             </ProtectedRoute>
           }
         />

@@ -1,13 +1,13 @@
 import React from 'react'
+import Layout from "../components/Layout";
 import CalendarAppointments from '../components/volunter/CalendarAppointments'
-import Layout from '../components/Layout'
 
-function CalendarTeste() {
+function UserAppointments() {
   return (
     <Layout>
-        <CalendarAppointments />
+       <CalendarAppointments/>
     </Layout>
   )
 }
 
-export default CalendarTeste
+export default UserAppointments

@@ -4,11 +4,11 @@ const applicationSchema = new mongoose.Schema(
     {
         userId: {
           type: String,
-          required: true,
+          required: false,
         },
         petId:{
           type: String,
-          required: true,
+          required: false,
         },
         userInfo: {
           type: Object,
@@ -18,12 +18,89 @@ const applicationSchema = new mongoose.Schema(
           type: Object,
           required: false,
         },
-        nome:{
+        age: {
+          type: Number,
+          required: false,
+        },
+        birth: {
           type: String,
-          required: true,
+          required: false,
+        },
+        cpf: {
+          type: String,
+          required: false,
+        },
+        address: {
+          type: String,
+          required: false,
+        },
+        cep: {
+          type: String,
+          required: false,
+        },
+        phone: {
+          type: String,
+          required: false,
+        },
+        work: {
+          type: String,
+          required: false,
+        },
+        havePet: {
+          type: Boolean,
+          required: false,
+        },
+        qtyPet: {
+          type: Number,
+          required: false,
+        },
+        vaciPet: {
+          type: String,
+          required: false,
+        },
+        castPet: {
+          type: String,
+          required: false,
+        },
+        condPet: {
+          type: String,
+          required: false,
+        },
+        residenceType: {
+          type: String,
+          required: false,
+        },
+        resiBill: {
+          type: String,
+          required: false,
+        },
+        resiAdult: {
+          type: Number,
+          required: false,
+        },
+        adultAgree: {
+          type: String,
+          required: false,
+        },
+        allergy: {
+          type: String,
+          required: false,
+        },
+        updatePet: {
+          type: String,
+          required: false,
+        },
+        move: {
+          type: String,
+          required: false,
+        },
+        agree: {
+          type: String,
+          required: false,
         },
         status: {
           type: String,
+          default: "pending",
           enum: ["pending", "shortlisted", "rejected"],
         },
       },

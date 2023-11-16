@@ -5,14 +5,6 @@ const volunterSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
     phoneNumber: {
       type: String,
       required: true,
@@ -25,25 +17,23 @@ const volunterSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    socialMedia: {
+      type: String,
+      required: true,
+    },
     work: {
       type: String,
       required: true,
     },
-    company: {
+    reason: {
       type: String,
       required: true,
     },
-    driverLicense: {
-      type: Boolean,
+    situation:{
+      type: String,
       required: true,
-      default: false
     },
-    car: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    reason: {
+    group:{
       type: String,
       required: true,
     },

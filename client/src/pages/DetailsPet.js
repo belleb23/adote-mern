@@ -1,6 +1,6 @@
 
 import ApplicationForm from '../components/user/ApplicationForm'; 
-import { Button, Col, DatePicker, Form, Input, Row, TimePicker } from "antd";
+import { Button, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,22 @@ function DetailsPet() {
   const [pet, setPet] = useState(null);
   const [isApplying, setIsApplying] = useState(false); 
   const [hasApplied, setHasApplied] = useState(false);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isIntroModalVisible, setIsIntroModalVisible] = useState(false);
+
+const handleIntroModalOk = () => {
+  setIsIntroModalVisible(false);
+  setIsModalVisible(true);
+};
+
+  const handleApplyClick = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const params = useParams();
   const dispatch = useDispatch();
@@ -69,7 +85,7 @@ function DetailsPet() {
     checkIfUserApplied();
   }, []);
 
-  const onApply = async (formData) => {
+  const onApplyPet = async (formData) => {
     try {
       dispatch(showLoading());
       const response = await axios.post('/api/user/applications', {
@@ -113,11 +129,38 @@ function DetailsPet() {
           <br/>
 
           {hasApplied ? (
-            <p>Você já aplicou para essa adoção. Aguarde a resposta do voluntário.</p>
-          ) : isApplying ? (
-            <ApplicationForm onSubmit={onApply} />
+            <p style={{ textDecoration: 'underline' }}>Você já aplicou para essa adoção. Aguarde a resposta do voluntário.</p>
           ) : (
-            <Button className="primary-button" onClick={() => setIsApplying(true)}>Adotar</Button>
+            <>
+              <Button className="primary-button" onClick={() => setIsIntroModalVisible(true)}>
+                Adotar
+              </Button>
+              <Modal
+                title="Responsabilidades da Adoção"
+                visible={isIntroModalVisible}
+                onOk={handleIntroModalOk}
+                onCancel={() => setIsIntroModalVisible(false)}
+              >
+                <p>
+                Todos os dados que você informar nesse questionário serão usados única e exclusivamente pela Equipe da Adote um Vira-Lata para análise de compatibilidade com os requisitos de adoção.
+                </p>
+                <br/>
+                <p>
+                *Pedimos que leia com atenção: esse é o questionário para adoção de um dos nossos resgatados, ele não garante a reserva do animal, além disso, para respondê-lo e poder adotar você precisa ter, pelo menos, 18 anos completos. 
+                Caso contrário, encaminhe o questionário para o seu responsável legal preencher com as informações dele(a). Pedimos que responda todas as perguntas com sinceridade porque não toleramos adoções irresponsáveis. 
+                Adote com responsabilidade, pense antes de querer assumir esse compromisso com um animal, porque é pra vida toda, nós doamos o nosso tempo pra eles e buscamos pelo lar aonde recebam todo o amor possível.*
+                </p>
+              </Modal>
+              <Modal
+                title="Formulário de Aplicação"
+                visible={isModalVisible}
+                onCancel={handleCancel}
+                footer={null}
+                width={650}
+              >
+                <ApplicationForm onSubmit={onApplyPet} />
+              </Modal>
+            </>
           )}
 
         </div>

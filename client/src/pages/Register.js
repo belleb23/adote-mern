@@ -10,7 +10,8 @@ import { hideLoading, showLoading } from "../redux/alertsSlice";
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const onFinish = async (values) => {
+
+  const onRegister = async (values) => {
     try{
       dispatch(showLoading());
       const response = await axios.post("/api/user/register", values);
@@ -32,7 +33,7 @@ function Register() {
     <div className="authentication">
       <div className="authentication-form card p-3">
          <h1 className="card-title">Adote um Vira Lata</h1>
-         <Form layout="vertical" onFinish={onFinish}>
+         <Form layout="vertical" onFinish={onRegister}>
             <Form.Item label="Nome" name="name" >
               <Input placeholder="Nome" />
             </Form.Item>

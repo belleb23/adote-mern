@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "../components/Layout";
-import { Col, Row } from "antd";
+import { Col, Row, Button } from "antd";
 import Volunter from "../components/volunter/Volunter";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
+import { useNavigate } from "react-router-dom";
 
 function Appointments() {
   const [volunteers, setVolunteers] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
 
   const getData = async () => {
     try {
@@ -33,7 +36,22 @@ function Appointments() {
 
   return (
     <Layout>
-      <p>Selecione o voluntário para te acompanhar na visita.</p>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h1 className="page-title">Visita ao Projeto </h1>        
+        <Button
+          type="primary"
+          className="primary-button"
+           onClick={() => navigate("/user-appointments")}
+        >
+            Minhas visitas
+        </Button>
+      </div>  
+      <hr/>
+      <p>
+        Agradecemos seu interesse em visitar nosso projeto de adoção e conhecer nossos animais em busca de um lar amoroso.
+        Para garantir uma experiência agradável e informativa durante sua visita, solicitamos que selecione um voluntário para acompanhá-lo. 
+      </p>
+      <hr/>
       <br/>
       <Row gutter={20}>
         {volunteers.map((volunter) => (

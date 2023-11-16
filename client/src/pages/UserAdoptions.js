@@ -71,17 +71,7 @@ function UserAdoptions() {
         return <Tag color={color}>{status}</Tag>;
       },
     },
-    {
-      title: "Retirar Pet",
-      dataIndex: "retirarData",
-      render: (text, record) => (
-        <DatePicker
-          placeholder="Selecione a data"
-          format="DD-MM-YYYY"
-         // onChange={(date, dateString) => handleRetirarPet(record, dateString)}
-        />
-      ),
-    },
+    
   ];
 
   const filteredAdoptions = adoptions.filter((adoption) => {

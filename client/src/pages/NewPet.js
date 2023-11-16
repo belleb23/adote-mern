@@ -13,7 +13,7 @@ function NewPet() {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
-  const onFinish = async (values) => {
+  const addPet = async (values) => {
     try {
       dispatch(showLoading());
       const response = await axios.post(
@@ -48,7 +48,7 @@ function NewPet() {
       <h1 className="page-title">Novo Pet</h1>
       <hr />
 
-      <PetForm onFinish={onFinish} /> 
+      <PetForm onFinish={addPet} /> 
     </Layout>
   )
 }

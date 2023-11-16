@@ -15,13 +15,17 @@ function ApplyVolunter() {
   dayjs.extend(customParseFormat);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+
+  console.log('user')
+  console.log(user);
+
   const navigate = useNavigate();
   const enviado = 'enviado';
 
   const params = useParams();
   const [volunter, setVolunter] = useState(null);
 
-  const onFinish = async (values) => {
+  const onApply = async (values) => {
     try {
       
       dispatch(showLoading());
@@ -89,33 +93,6 @@ function ApplyVolunter() {
     }
   };
 
-
-  // const getVolunterData = async () => {
-  //   try {
-  //     dispatch(showLoading());
-  //     console.log(params.userId)
-  //     const response = await axios.post(
-  //       "/api/volunter/get-volunter-info-by-user-id",
-  //       {
-  //         userId: params.userId,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     );
-
-  //     dispatch(hideLoading());
-  //     if (response.data.success) {
-  //       setVolunter(response.data.data);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     dispatch(hideLoading());
-  //   }
-  // };
-
   useEffect(() => {
     getVolunterData();
   }, [user]);
@@ -133,7 +110,7 @@ function ApplyVolunter() {
           VEM SER UM VOLUNTÁRIO!! 
         </p>
         <hr />
-        <VolunterForm onFinish={onFinish} btn="enviar"/> 
+        <VolunterForm onFinish={onApply} btn="enviar"/> 
       </div>
     }
 

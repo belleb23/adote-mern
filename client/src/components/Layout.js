@@ -37,7 +37,7 @@ function Layout({ children }) {
     {
       name: "Ser Voluntário",
       path: "/apply-volunter",
-      icon: "ri-wallet-3-line",
+      icon: "ri-hand-heart-line",
     }
   ];
 

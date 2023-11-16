@@ -14,11 +14,11 @@ const petSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    age: {
+    ageRange: {
       type: String,
       required: true,
     },
-    ageNumber:{
+    age:{
       type: Number,
       required: true,
     },
@@ -61,8 +61,6 @@ const petSchema = new mongoose.Schema(
     petType:{
       type: String,
       required: true,
-      enum:['cachorro', 'gato', 'outro'],
-      default: 'cachorro'
     },
     profilePic: {
       type: String,
@@ -71,6 +69,12 @@ const petSchema = new mongoose.Schema(
     urlPic: {
       type: String,
       required: false,
+    },
+    status:{
+      type: String,
+      required: true,
+      enum:['adotado', 'pendente', 'disponivel'],
+      default: 'disponivel'
     },
   },
   {

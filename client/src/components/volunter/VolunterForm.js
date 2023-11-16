@@ -67,11 +67,6 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
             <Input placeholder="Endereço" />
           </Form.Item>
         </Col>
-      </Row>
-
-      <hr />
-      <h1 className="card-title mt-3">Informações Voluntariado</h1>
-      <Row gutter={20}>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item label="Profissão"
             required
@@ -82,59 +77,50 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           </Form.Item>
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Empresa que trabalha"
+          <Form.Item label="Rede Social"
             required
-            name="company"
+            name="socialMedia"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Empresa" />
+            <Input placeholder="Rede Social"  />
           </Form.Item>
         </Col>
+      </Row>
+
+      <hr />
+      <h1 className="card-title mt-3">Informações Voluntariado</h1>
+      <Row gutter={20}>
+
         <Col span={8} xs={24} sm={24} lg={8}>
-         <Form.Item label="Possui habilitação?" 
-            rules={[{ required: true }]} required 
-            name="driverLicense"
-            >
-            <Select
-              placeholder="Habilitação"
-              allowClear
-            >
-              <Option value={true} selected>Sim</Option>
-              <Option value={false}>Não</Option>
-            </Select>
+          <Form.Item label="Como você lidaria em uma situação de resgate de um animal ?"
+            required
+            name="situation"
+            rules={[{ required: true }]}
+          >
+            <Input.TextArea placeholder="Situacao de Resgate" rows={3}/>
           </Form.Item>
         </Col>
+
         <Col span={8} xs={24} sm={24} lg={8}>
-         <Form.Item label="Possui carro?" 
-            name="car"
-            rules={[{ required: true }]} required>
-            <Select
-              placeholder="Carro"
-              allowClear
-            >
-              <Option value={true} selected>Sim</Option>
-              <Option value={false}>Não</Option>
-            </Select>
+          <Form.Item label="Como você se sente trabalhando em equipe ?"
+            required
+            name="group"
+            rules={[{ required: true }]}
+          >
+            <Input.TextArea placeholder="Trabalho em equipe" rows={3}/>
           </Form.Item>
         </Col>
+
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Motivo para ser voluntário"
+          <Form.Item label="Motivo para fazer parte do projeto AdoteVL ?"
             required
             name="reason"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Motivo"  />
+            <Input.TextArea placeholder="Motivo" rows={3} />
           </Form.Item>
         </Col>
-        <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Horários disponíveis"
-            required
-            name="timings"
-            rules={[{ type: 'array', required: true }]}
-          >
-            <TimePicker.RangePicker format="HH:mm" />
-          </Form.Item>
-        </Col>
+
         <Col span={24} xs={24} sm={24} lg={24}>
           <Form.Item label="Assinale a opção para as atividades em que deseja voluntariar"
             required
@@ -146,10 +132,25 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
               <Checkbox value="doacoes">Retirar doações</Checkbox>
               <Checkbox value="recepcionar">Recepcionar visitantes</Checkbox>
               <Checkbox value="postar">Apoio feira de adoção</Checkbox>
-              <Checkbox value="escritorio">Atividades de escritório</Checkbox>
             </Checkbox.Group>
           </Form.Item>
         </Col>
+
+        <Col span={8} xs={24} sm={24} lg={8}>
+          <Form.Item label="Horários disponíveis"
+            required
+            name="timings"
+            rules={[{ type: 'array', required: true }]}
+          >
+            <TimePicker.RangePicker 
+              format="HH:mm" 
+              placeholder={['Hora de início', 'Hora de fim']}
+              className="largerTimePicker"
+              />
+          </Form.Item>
+        </Col>
+
+
       </Row>
 
       <div className="d-flex justify-content-end">

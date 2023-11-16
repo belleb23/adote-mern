@@ -124,8 +124,8 @@ function Applications() {
   const changeApplicationStatus = async (record, status) => {
     try {
       dispatch(showLoading());
-      const resposne = await axios.post(
-        "/api/user/change-application-status",
+      const resposne = await axios.put(
+        "/api/volunter/change-application-status",
         { applicationId: record._id, status: status },
         {
           headers: {

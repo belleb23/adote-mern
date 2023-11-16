@@ -55,11 +55,7 @@ function Pets() {
     {
       title: "Data",
       dataIndex: "createdAt",
-      render: (text, record) => (
-        <span>
-          {moment(record.date).format("DD-MM-YYYY")} {record.time}
-        </span>
-      ),
+      render: (createdAt) => moment(createdAt).format('YYYY-MM-DD'),
     },
     {
       title: "",
@@ -95,7 +91,7 @@ function Pets() {
   };
 
   const handleDeletePetConfirmation = async () => {
-    await handleDeleteUser(petToDelete);
+    await handleDeletePet(petToDelete);
     setIsDeleteModalVisible(false);
   };
   
@@ -105,10 +101,10 @@ function Pets() {
   };
 
 
-  const handleDeleteUser = async (pet) => {
+  const handleDeletePet = async (pet) => {
     try {
       dispatch(showLoading());
-      const response = await axios.delete(`/api/admin/delete-pet/${pet._id}`, {
+      const response = await axios.delete(`/api/volunter/delete-pet/${pet._id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -121,7 +117,6 @@ function Pets() {
       dispatch(hideLoading());
     }
   };
-
 
   const handleViewPet = (pet) => {
     setSelectedPet(pet);
@@ -136,18 +131,16 @@ function Pets() {
   return (
     <Layout>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <h1 className="page-title">Pets</h1>
-      
+        <h1 className="page-title">Pets</h1>
+        
         <Button
           type="primary"
           className="primary-button"
           onClick={() => navigate("/new-pet")}
         >
-           + Add Pet
+            + Add Pet
         </Button>
-        
-        
-      </div>
+      </div>    
      
       <hr/>
       <Table columns={columns} dataSource={pets} />

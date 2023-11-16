@@ -9,7 +9,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import dayjs from 'dayjs';
 
-
 function BookAppointment() {
     const [isAvailable, setIsAvailable] = useState(false);
     const navigate = useNavigate();
@@ -44,98 +43,101 @@ function BookAppointment() {
       }
     };
 
-      const checkAvailability = async () => {
-        try {
-            console.log("data")
-            console.log(date)
-            console.log("time")
-            console.log(time)
-          dispatch(showLoading());
-          const response = await axios.post(
-            "/api/user/check-booking-avilability",
-            {
-              volunterId: params.volunterId,
-              date: date,
-              time: time,
+    const checkAvailability = async () => {
+      try {
+          console.log("data")
+          console.log(date)
+          console.log("time")
+          console.log(time)
+        dispatch(showLoading());
+        const response = await axios.post(
+          "/api/user/check-booking-avilability",
+          {
+            volunterId: params.volunterId,
+            date: date,
+            time: time,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
-          dispatch(hideLoading());
-          if (response.data.success) {
-            toast.success(response.data.message);
-            setIsAvailable(true);
-          } else {
-            toast.error(response.data.message);
           }
-        } catch (error) {
-          toast.error("Error booking appointment");
-          dispatch(hideLoading());
+        );
+        dispatch(hideLoading());
+        if (response.data.success) {
+          toast.success(response.data.message);
+          setIsAvailable(true);
+        } else {
+          toast.error(response.data.message);
         }
-      };
+      } catch (error) {
+        toast.error("Error booking appointment");
+        dispatch(hideLoading());
+      }
+    };
 
-      const bookNow = async () => {
-        setIsAvailable(false);
-        try {
-          dispatch(showLoading());
-          const response = await axios.post(
-            "/api/user/book-appointment",
-            {
-              volunterId: params.volunterId,
-              userId: user._id,
-              volunterInfo: volunter,
-              userInfo: user,
-              date: date,
-              time: time,
+    const bookNow = async () => {
+      setIsAvailable(false);
+      try {
+        dispatch(showLoading());
+        const response = await axios.post(
+          "/api/user/book-appointment",
+          {
+            volunterId: params.volunterId,
+            userId: user._id,
+            volunterInfo: volunter,
+            userInfo: user,
+            date: date,
+            time: time,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          );
-    
-          dispatch(hideLoading());
-          if (response.data.success) {
-            
-            toast.success(response.data.message);
-            navigate('/appointments')
           }
-        } catch (error) {
-          toast.error("Error booking appointment");
-          dispatch(hideLoading());
+        );
+  
+        dispatch(hideLoading());
+        if (response.data.success) {
+          
+          toast.success(response.data.message);
+          navigate('/appointments')
         }
-      };
+      } catch (error) {
+        toast.error("Error booking appointment");
+        dispatch(hideLoading());
+      }
+    };
 
-      useEffect(() => {
-        getVolunterData();
-      }, []);
+    useEffect(() => {
+      getVolunterData();
+    }, []);
 
   return (
     <Layout>
+        <h1 className="page-title">Acompanhante da Visita</h1>
+        <hr/>
         {volunter && ( 
-            <div>
-                <p>{volunter.name}</p>
-                <Row gutter={20} className="mt-5" align="middle">
-                <Col span={8} sm={24} xs={24} lg={8}>
-                    <h1 className="normal-text">
-                        <b>Timings :</b> {volunter.timings[0]} - {volunter.timings[1]}
-                    </h1>
+            <div className="center-content">
+                <Row gutter={20} className="mt-2 outlined-row" align="middle">
+                <Col >
+                    <h2 className="normal-text" >Voluntária: {volunter.name}</h2>
+                    <h3 className="normal-text">
+                        <b>Horários Disponíveis :</b> {volunter.timings[0]} - {volunter.timings[1]}
+                    </h3>
                     <p>
-                        <b>Phone Number : </b>
+                        <b>Telefone : </b>
                         {volunter.phoneNumber}
                     </p>
                     <p>
-                        <b>Address : </b>
+                        <b>Endereço : </b>
                         {volunter.address}
                     </p>
 
                 <div className="d-flex flex-column pt-2 mt-2">
                     <DatePicker
                     format="DD-MM-YYYY"
+                    placeholder={'Selecionar data'}
                      onChange={(value) => {
                          setDate(dayjs(value).format("DD-MM-YYYY"));
                          setIsAvailable(false);
@@ -144,6 +146,7 @@ function BookAppointment() {
                     <TimePicker
                     format="HH:mm"
                     className="mt-3"
+                    placeholder={'Selecionar horário'}
                      onChange={(value) => {
                          setIsAvailable(false);
                          setTime(dayjs(value).format("HH:mm"));
@@ -153,7 +156,7 @@ function BookAppointment() {
                   className="primary-button mt-3 full-width-button"
                   onClick={checkAvailability}
                 >
-                  Check Availability
+                  Verificar Disponibilidade
                 </Button>}
 
                 {isAvailable && (
@@ -161,7 +164,7 @@ function BookAppointment() {
                     className="primary-button mt-3 full-width-button"
                     onClick={bookNow}
                   >
-                    Book Now
+                    Marcar
                   </Button>
                 )}
                 </div>
@@ -169,6 +172,7 @@ function BookAppointment() {
                 </Row>
             </div>
         )}
+        
     </Layout>
   )
 }

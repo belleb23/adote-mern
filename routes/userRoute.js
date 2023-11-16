@@ -38,114 +38,113 @@ router.post("/register", async (req, res) => {
         .status(500)
         .send({ message: "Error creating user", success: false, error });
     }
-  });
+});
 
-  router.post("/login", async (req, res) => {
-    try {
-      const user = await User.findOne({ email: req.body.email });
-      if (!user) {
-        return res
-          .status(200)
-          .send({ message: "User does not exist", success: false });
-      }
-      const isMatch = await bcrypt.compare(req.body.password, user.password);
-      if (!isMatch) {
-        return res
-          .status(200)
-          .send({ message: "Password is incorrect", success: false });
-      } else {
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-          expiresIn: "1d",
-        });
-        res
-          .status(200)
-          .send({ message: "Login successful", success: true, data: token });
-      }
-    } catch (error) {
-      console.log(error);
+router.post("/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res
+        .status(200)
+        .send({ message: "User does not exist", success: false });
+    }
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    if (!isMatch) {
+      return res
+        .status(200)
+        .send({ message: "Password is incorrect", success: false });
+    } else {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1d",
+      });
       res
-        .status(500)
-        .send({ message: "Error logging in", success: false, error });
+        .status(200)
+        .send({ message: "Login successful", success: true, data: token });
     }
-  });
-
-  router.post("/get-user-info-by-id", authMiddleware, async (req, res) => {
-    try {
-      const user = await User.findOne({ _id: req.body.userId });
-      user.password = undefined;
-      if (!user) {
-        return res
-          .status(200)
-          .send({ message: "User does not exist", success: false });
-      } else {
-        res.status(200).send({
-          success: true,
-          data: user,
-        });
-      }
-    } catch (error) {
-      res
-        .status(500)
-        .send({ message: "Error getting user info", success: false, error });
-    }
-  });
-  
-  router.post("/apply-volunter-account", authMiddleware, async (req, res) => {
-    try {
-      const newvolunter = new Volunter({ ...req.body, status: "pending" });
-      await newvolunter.save();
-      const adminUser = await User.findOne({ isAdmin: true });
-  
-      const unseenNotifications = adminUser.unseenNotifications;
-      unseenNotifications.push({
-        type: "new-volunter-request",
-        message: `${newvolunter.name} has applied for a volunter account`,
-        data: {
-          volunterId: newvolunter._id,
-          name: newvolunter.name,
-        },
-        onClickPath: "/admin/volunteerslist",
-      });
-      await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
-      res.status(200).send({
-        success: true,
-        message: "Volunter account applied successfully",
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        message: "Error applying volunter account",
-        success: false,
-        error,
-      });
-    }
-  });
-
-  router.post("/mark-all-notifications-as-seen", authMiddleware, async (req, res) => {
-    try {
-      const user = await User.findOne({ _id: req.body.userId });
-      const unseenNotifications = user.unseenNotifications;
-      const seenNotifications = user.seenNotifications;
-      seenNotifications.push(...unseenNotifications);
-      user.unseenNotifications = [];
-      user.seenNotifications = seenNotifications;
-      const updatedUser = await user.save();
-      updatedUser.password = undefined;
-      res.status(200).send({
-        success: true,
-        message: "All notifications marked as seen",
-        data: updatedUser,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
-        message: "Error applying volunter account",
-        success: false,
-        error,
-      });
-    }
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .send({ message: "Error logging in", success: false, error });
   }
-);
+});
+
+router.post("/get-user-info-by-id", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.userId });
+    user.password = undefined;
+    if (!user) {
+      return res
+        .status(200)
+        .send({ message: "User does not exist", success: false });
+    } else {
+      res.status(200).send({
+        success: true,
+        data: user,
+      });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Error getting user info", success: false, error });
+  }
+});
+  
+router.post("/apply-volunter-account", authMiddleware, async (req, res) => {
+  try {
+    const newvolunter = new Volunter({ ...req.body, status: "pending" });
+    await newvolunter.save();
+    const adminUser = await User.findOne({ isAdmin: true });
+
+    const unseenNotifications = adminUser.unseenNotifications;
+    unseenNotifications.push({
+      type: "new-volunter-request",
+      message: `${newvolunter.name} has applied for a volunter account`,
+      data: {
+        volunterId: newvolunter._id,
+        name: newvolunter.name,
+      },
+      onClickPath: "/admin/volunteerslist",
+    });
+    await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
+    res.status(200).send({
+      success: true,
+      message: "Volunter account applied successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error applying volunter account",
+      success: false,
+      error,
+    });
+  }
+});
+
+router.post("/mark-all-notifications-as-seen", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.userId });
+    const unseenNotifications = user.unseenNotifications;
+    const seenNotifications = user.seenNotifications;
+    seenNotifications.push(...unseenNotifications);
+    user.unseenNotifications = [];
+    user.seenNotifications = seenNotifications;
+    const updatedUser = await user.save();
+    updatedUser.password = undefined;
+    res.status(200).send({
+      success: true,
+      message: "All notifications marked as seen",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error applying volunter account",
+      success: false,
+      error,
+    });
+  }
+});
 
 router.post("/delete-all-notifications", authMiddleware, async (req, res) => {
   try {
@@ -250,30 +249,9 @@ router.post("/get-pet-info-by-id", authMiddleware, async (req, res) => {
   }
 });
 
-router.post("/update-pet", authMiddleware, async (req, res) => {
-  try {
-    const pet = await Pet.findOneAndUpdate(
-      { _id: req.body.petId },
-      req.body
-    );
-    res.status(200).send({
-      success: true,
-      message: "Pet updated successfully",
-      data: pet,
-    });
-  } catch (error) {
-    res
-      .status(500)
-      .send({ message: "Error getting pet info", success: false, error });
-  }
-});
-
 router.post("/applications", authMiddleware, async (req, res) => {
   try {
-    const {nome, userId, petId, status, userInfo, petInfo} = req.body
-    const newapplication = new Application({ 
-      userId, petId, userInfo, petInfo, status, nome
-    });
+    const newapplication = new Application({ ...req.body });
     await newapplication.save();
     const volunterUser = await User.findOne({isVolunter: true});
 
@@ -295,31 +273,6 @@ router.post("/applications", authMiddleware, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
-  }
-});
-
-router.post('/change-application-status', authMiddleware, async (req, res) => {
-  try {
-    const { applicationId, status } = req.body;
-   
-    const application = await Application.findByIdAndUpdate(
-      applicationId,
-      { status },
-      { new: true } 
-    );
-
-    res.status(200).send({
-      message: 'Status da aplicação atualizado com sucesso',
-      success: true,
-      data: application,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({
-      message: 'Erro ao atualizar o status da aplicação',
-      success: false,
-      error,
-    });
   }
 });
 

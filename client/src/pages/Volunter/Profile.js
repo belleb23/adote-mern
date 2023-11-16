@@ -17,7 +17,7 @@ function Profile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onFinish = async (values) => {
+  const onUpdate = async (values) => {
     try {
       dispatch(showLoading());
       const response = await axios.put(
@@ -53,7 +53,7 @@ function Profile() {
     try {
       dispatch(showLoading());
       const response = await axios.get(
-        `/api/volunter/get-volunter-info-by-user-id/${params.userId}`,
+        `/api/volunter/get-user-and-volunter-info/${params.userId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -104,7 +104,7 @@ function Profile() {
     <Layout>
       <h1 className="page-title">Perfil</h1>
       <hr />
-      {volunter && <VolunterForm onFinish={onFinish} initivalValues={volunter} btn="salvar"/>}
+      {volunter && <VolunterForm onFinish={onUpdate} initivalValues={volunter} btn="salvar"/>}
       {!volunter && <p>perfil</p>}
       
     </Layout>

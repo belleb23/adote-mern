@@ -17,8 +17,8 @@ function EditPet() {
     const onFinish = async (values) => {
         try {
         dispatch(showLoading());
-        const response = await axios.post(
-            "/api/user/update-pet",
+        const response = await axios.put(
+            "/api/volunter/update-pet",
             {
             ...values,
             petId: params.petId,

@@ -9,7 +9,8 @@ import { hideLoading, showLoading } from "../redux/alertsSlice";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const onFinish = async (values) => {
+
+  const onLogin = async (values) => {
     try {
       dispatch(showLoading());
       const response = await axios.post("/api/user/login", values);
@@ -31,7 +32,7 @@ function Login() {
     <div className="authentication">
       <div className="authentication-form card p-3">
          <h1 className="card-title">Adote um Vira Lata</h1>
-         <Form layout="vertical" onFinish={onFinish}>
+         <Form layout="vertical" onFinish={onLogin}>
             <Form.Item label="Email" name="email">
               <Input placeholder="Email" />
             </Form.Item>
