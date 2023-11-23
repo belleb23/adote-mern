@@ -4,12 +4,16 @@ import Layout from "../components/Layout";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { Table } from "antd";
+import { Table, Tag, Radio } from "antd";
 import moment from "moment";
 
 function ListAppointments() {
+
   const [appointments, setAppointments] = useState([]);
   const dispatch = useDispatch();
+  const [filter, setFilter] = useState('all');
+
+
   const getAppointmentsData = async () => {
     try {
       dispatch(showLoading());
@@ -26,13 +30,10 @@ function ListAppointments() {
       dispatch(hideLoading());
     }
   };
+
   const columns = [
     {
-        title: "Id",
-        dataIndex: "_id",
-    },
-    {
-      title: "Volunter",
+      title: "Voluntário",
       dataIndex: "name",
       render: (text, record) => (
         <span>
@@ -41,7 +42,7 @@ function ListAppointments() {
       ),
     },
     {
-      title: "Phone",
+      title: "Telefone",
       dataIndex: "phoneNumber",
       render: (text, record) => (
         <span>
@@ -50,27 +51,75 @@ function ListAppointments() {
       ),
     },
     {
-      title: "Date & Time",
+      title: "Data",
       dataIndex: "createdAt",
       render: (text, record) => (
         <span>
-          {moment(record.date).format("DD-MM-YYYY")} {record.time}
+          {record.date} 
+        </span>
+      ),
+    },
+    
+    {
+      title: "Hora",
+      dataIndex: "createdAt",
+      render: (text, record) => (
+        <span>
+          {record.time}
         </span>
       ),
     },
     {
-        title: "Status",
-        dataIndex: "status",
-    }
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => {
+        let color = 'orange';
+        if (status === 'approved') {
+          color = 'green';
+        } else if (status === 'Recusado') {
+          color = 'red';
+        }
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
   ];
+
+  const filteredAppointments = appointments.filter((appointment) => {
+    if (filter === 'visitar') {
+      return Array.isArray(appointment.appointmentType) && appointment.appointmentType.some(type => type.value === 'visita');
+    } else if (filter === 'buscar') {
+      return Array.isArray(appointment.appointmentType) && appointment.appointmentType.some(type => type.value === 'buscarPet');
+    }
+    return true; 
+  });
+
   useEffect(() => {
     getAppointmentsData();
   }, []);
-  return  <Layout>
-  <h1 className="page-title">Appointments</h1>
-  <hr />
-  <Table columns={columns} dataSource={appointments} />
-</Layout>
+
+  return (
+    <Layout>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h1 className="page-title">Visitas</h1>
+        
+        <Radio.Group
+          onChange={(e) => setFilter(e.target.value)}
+          value={filter}
+          
+        >
+          
+          <Radio.Button value="buscar">Buscar Pet</Radio.Button>
+          <Radio.Button value="all">Todas</Radio.Button>
+          <Radio.Button value="visitar">Visitas Abrigo</Radio.Button>
+
+        </Radio.Group>
+      
+      </div>
+      <hr/>
+      <Table columns={columns} dataSource={filteredAppointments} />
+    </Layout>
+  ) 
 }
 
 export default ListAppointments;

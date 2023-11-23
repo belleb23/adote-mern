@@ -41,7 +41,7 @@ function Appointments() {
         <Button
           type="primary"
           className="primary-button"
-           onClick={() => navigate("/user-appointments")}
+           onClick={() => navigate("/list-appointments")}
         >
             Minhas visitas
         </Button>

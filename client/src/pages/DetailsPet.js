@@ -119,12 +119,12 @@ const handleIntroModalOk = () => {
           <div className="page-title">{pet.name}</div>
           <hr/>
           <p style={{fontSize:"20px"}}>
-            O pet {pet.name.toLowerCase()} é {pet.description}, tem {pet.ageNumber} anos,
-            é castrado, e está a procura de um lar.
+            A {pet.name.toLowerCase()} é {pet.description}, tem {pet.age} meses,
+            é castrada, e está a procura de um lar.
           </p>
           <br/>
           <p style={{fontSize:"20px"}}>
-            Nos ajude a encontrar um lar para ele :)
+            Nos ajude a encontrar um lar para ela :)
           </p>
           <br/>
 

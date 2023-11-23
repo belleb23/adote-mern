@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Row, TimePicker } from "antd";
+import { Button, Col, DatePicker, Row, TimePicker, Radio, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,20 +6,84 @@ import { showLoading, hideLoading } from "../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import moment from "moment";
 import dayjs from 'dayjs';
 
+const { Option } = Select;
+
 function BookAppointment() {
+
     const [isAvailable, setIsAvailable] = useState(false);
     const navigate = useNavigate();
     const [date, setDate] = useState();
     const [time, setTime] = useState();
+    const [appointmentType, setAppointmentType] = useState();
+    const [takePet, setTakePet] = useState();
+
+
+    const [optionsFromAPI, setOptionsFromAPI] = useState([]);
+
+    const [adoptions, setAdoptions] = useState([]);
+
 
     const [volunter, setVolunter] = useState(null);
     const { user } = useSelector((state) => state.user);
 
     const dispatch = useDispatch();
     const params = useParams();
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+      setIsModalVisible(true);
+    };
+  
+    const handleRadioChange = (e) => {
+      setAppointmentType(e.target)
+      if (e.target.value === 'buscarPet') {
+        showModal();
+      }
+    };
+  
+    const handleModalOk = () => {
+      setIsModalVisible(false);
+    };
+  
+    const handleModalCancel = () => {
+      setIsModalVisible(false);
+    };
+
+    const getUserData = async () => {
+      try {
+        dispatch(showLoading());
+        const response = await axios.post(
+          '/api/user/user-adoptions',
+          {
+            userId: params.userId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        );
+        dispatch(hideLoading());
+        if (response.data.success) {
+          const approvedAdoptions = response.data.data.filter(adoption => adoption.status === 'approved');
+          setAdoptions(approvedAdoptions);
+
+          const options = approvedAdoptions.map(adoption => ({
+            value: adoption.petInfo.name, 
+            label: adoption.petInfo.name 
+          }));
+          setOptionsFromAPI(options)
+         
+        }
+      } catch (error) {
+        console.log(error);
+        dispatch(hideLoading());
+        
+      }
+    };
     
     const getVolunterData = async () => {
       try {
@@ -89,6 +153,8 @@ function BookAppointment() {
             userInfo: user,
             date: date,
             time: time,
+            appointmentType: appointmentType,
+            takePet: takePet
           },
           {
             headers: {
@@ -99,9 +165,8 @@ function BookAppointment() {
   
         dispatch(hideLoading());
         if (response.data.success) {
-          
           toast.success(response.data.message);
-          navigate('/appointments')
+          navigate('/list-appointments')
         }
       } catch (error) {
         toast.error("Error booking appointment");
@@ -111,6 +176,7 @@ function BookAppointment() {
 
     useEffect(() => {
       getVolunterData();
+      getUserData();
     }, []);
 
   return (
@@ -121,6 +187,7 @@ function BookAppointment() {
             <div className="center-content">
                 <Row gutter={20} className="mt-2 outlined-row" align="middle">
                 <Col >
+                
                     <h2 className="normal-text" >Voluntária: {volunter.name}</h2>
                     <h3 className="normal-text">
                         <b>Horários Disponíveis :</b> {volunter.timings[0]} - {volunter.timings[1]}
@@ -135,6 +202,29 @@ function BookAppointment() {
                     </p>
 
                 <div className="d-flex flex-column pt-2 mt-2">
+
+                  <Radio.Group defaultValue="visita" onChange={handleRadioChange}>
+                    <Radio value="visita" >Visitar Abrigo</Radio>
+                    <Radio value="buscarPet" >Buscar Pet</Radio>
+                  </Radio.Group>
+
+                  <Modal
+                    title="Selecione o Pet"
+                    visible={isModalVisible}
+                    onOk={handleModalOk}
+                    onCancel={handleModalCancel}
+                  >
+                  
+                    <Select defaultValue="selecione" style={{ width: '100%' }} onChange={(value) => setTakePet(value)}>
+                      <Option value="selecione" disabled hidden>Selecione uma opção</Option>
+                      {optionsFromAPI.map(option => (
+                        <Option key={option.value} value={option.value}>{option.label}</Option>
+                      ))}
+                    </Select>
+                  </Modal>
+
+                  <br/>
+
                     <DatePicker
                     format="DD-MM-YYYY"
                     placeholder={'Selecionar data'}
@@ -152,7 +242,7 @@ function BookAppointment() {
                          setTime(dayjs(value).format("HH:mm"));
                      }}
                     />
-                                 {!isAvailable &&   <Button
+                {!isAvailable &&   <Button
                   className="primary-button mt-3 full-width-button"
                   onClick={checkAvailability}
                 >

@@ -25,6 +25,14 @@ const appointmentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    appointmentType:{
+      type: Array,
+      required: true,
+    },
+    takePet:{
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       required: true,

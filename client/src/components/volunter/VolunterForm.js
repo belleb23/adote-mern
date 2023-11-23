@@ -23,7 +23,7 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
     >
       <h1 className="card-title mt-3">Informações Pessoais</h1>
       <Row gutter={20}>
-        <Col span={8} xs={24} sm={24} lg={8}>
+        {/* <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item label="Nome"
             name="name"
             rules={[{ required: true }]}
@@ -39,7 +39,7 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
           >
             <Input placeholder="Email" />
           </Form.Item>
-        </Col>
+        </Col> */}
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item label="Telefone"
             required
@@ -128,10 +128,10 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
             rules={[{ required: true }]}
           >
               <Checkbox.Group>
-              <Checkbox value="postagem">Postagem redes sociais</Checkbox>
-              <Checkbox value="doacoes">Retirar doações</Checkbox>
-              <Checkbox value="recepcionar">Recepcionar visitantes</Checkbox>
-              <Checkbox value="postar">Apoio feira de adoção</Checkbox>
+                <Checkbox value="postagem">Postagem redes sociais</Checkbox>
+                <Checkbox value="doacoes">Retirar doações</Checkbox>
+                <Checkbox value="recepcionar">Recepcionar visitantes</Checkbox>
+                <Checkbox value="postar">Apoio feira de adoção</Checkbox>
             </Checkbox.Group>
           </Form.Item>
         </Col>

@@ -195,12 +195,13 @@ router.get("/get-user-and-volunter-info/:id", authMiddleware, async (req, res) =
     const userId = req.params.id;
     const volunter = await Volunter.findOne({userId});
 
-    const user = await User.findOne({_id: userId}, 'name email');
+    const user = await User.findOne({_id: userId}, 'name email isVolunter');
 
     const combinedInfo = {
       _id: user._id,
       name: user.name,
       email: user.email,
+      isVolunter: user.isVolunter,
       ...(volunter && {  
             phoneNumber: volunter.phoneNumber,
             birth: volunter.birth,

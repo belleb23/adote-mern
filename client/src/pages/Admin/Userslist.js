@@ -50,7 +50,7 @@ function Userslist() {
     {
       title: "Data",
       dataIndex: "createdAt",
-      render: (createdAt) => moment(createdAt).format('YYYY-MM-DD'),
+      render: (createdAt) => moment(createdAt).format('DD-MM-YYYY'),
     },
     {
       title: "",

@@ -347,13 +347,13 @@ router.post("/book-appointment", authMiddleware, async (req, res) => {
     });
     await user.save();
     res.status(200).send({
-      message: "Appointment booked successfully",
+      message: "Aguardar confirmação Voluntário",
       success: true,
     });
   } catch (error) {
     console.log(error);
     res.status(500).send({
-      message: "Error booking appointment",
+      message: "Erro ao marcar visita",
       success: false,
       error,
     });
@@ -422,12 +422,12 @@ router.post("/check-booking-avilability", authMiddleware, async (req, res) => {
     });
     if (appointments.length > 0) {
       return res.status(200).send({
-        message: "Appointments not available",
+        message: "Visita indisponível",
         success: false,
       });
     } else {
       return res.status(200).send({
-        message: "Appointments available",
+        message: "Visita disponível",
         success: true,
         fromTime
       });
@@ -460,4 +460,23 @@ router.get("/get-appointments-by-user-id", authMiddleware, async (req, res) => {
   }
 });
 
+router.put("/update-user-profile", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: req.body.userId },
+      req.body
+    );
+      
+
+    res.status(200).send({
+      success: true,
+      message: "Usuario editado com sucesso",
+      data: user,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Erro ao recuperar informacao do usuário", success: false, error });
+  }
+});
 module.exports = router;

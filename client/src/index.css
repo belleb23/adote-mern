@@ -227,3 +227,22 @@ p {
   align-items: center;
   margin-left: 1%;
 }
+
+.ant-radio-wrapper {
+  .ant-radio {
+    &.ant-radio-checked {
+      .ant-radio-inner {
+        background-color: #4f3693 !important;
+        border-color: #4f3693 !important;
+      }
+    }
+  }
+}
+
+.ant-radio-wrapper:hover {
+  .ant-radio {
+    .ant-radio-inner {
+      border-color: #4f3693 !important;
+    }
+  }
+}

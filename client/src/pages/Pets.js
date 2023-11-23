@@ -100,7 +100,6 @@ function Pets() {
     setIsDeleteModalVisible(false);
   };
 
-
   const handleDeletePet = async (pet) => {
     try {
       dispatch(showLoading());

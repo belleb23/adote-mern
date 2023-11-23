@@ -27,8 +27,9 @@ function Applications() {
     },
     {
       title: 'Adotante',
-      dataIndex: 'nome',
-      key: 'nome',
+      dataIndex: 'userInfo',
+      key: 'userInfo',
+      render: (userInfo) => userInfo.name,
     },
     {
       title: "Data",
@@ -80,7 +81,7 @@ function Applications() {
       ),
     },
     {
-      title: 'Ação',
+      title: 'Aplicação',
       key: 'action',
       render: (text, record) => (
         <div>
@@ -265,14 +266,27 @@ function Applications() {
           <Tabs defaultActiveKey="personalInfo">
             <Tabs.TabPane tab="Informações Pessoais" key="personalInfo">
               <div>
-              <p>Nome: {selectedApplication.userInfo.name}</p>
-              <p>Email: {selectedApplication.userInfo.email}</p>
+                <p>Nome: {selectedApplication.userInfo.name}</p>
+                <p>Email: {selectedApplication.userInfo.email}</p>
+                <p>Telefone: {selectedApplication.phone}</p>
+                <p>Profissão: {selectedApplication.work}</p>
+                <p>Endereço: {selectedApplication.address}</p>
+                <p>Idade: {selectedApplication.age} anos</p>
               </div>
             </Tabs.TabPane>
             <Tabs.TabPane tab="Informações da adoção" key="adoptionInfo">
               <div>
-                <p>Profissão</p>
-              
+                <p>Tem pets em casa: {selectedApplication.havePet ? 'Sim' : 'Não'} </p>            
+                <p>Quantidade de pets: {selectedApplication.qtyPet} </p>              
+                <p>Todos vacinados? {selectedApplication.vaciPet} </p>   
+                <p>Todos castrados? {selectedApplication.castPet} </p>
+                <p>Tem condições para ter um pet? {selectedApplication.condPet} </p>       
+                <p>Mora em: {selectedApplication.residenceType} </p>              
+                <p>É : {selectedApplication.resiBill} </p>              
+                <p>Quantos adultos? {selectedApplication.resiAdult} </p>   
+                <p>Todos concordam com a adoção? {selectedApplication.adultAgree} </p>
+                <p>Você concorda com todas as perguntas? {selectedApplication.vaciPet} </p>        
+
               </div>
             </Tabs.TabPane>
           </Tabs>
