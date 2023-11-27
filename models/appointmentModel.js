@@ -28,10 +28,12 @@ const appointmentSchema = new mongoose.Schema(
     appointmentType:{
       type: Array,
       required: true,
+      default: [{ value: 'visita' }]
     },
     takePet:{
       type: String,
       required: true,
+      default: "abrigo",
     },
     status: {
       type: String,

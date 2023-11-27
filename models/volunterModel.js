@@ -48,6 +48,14 @@ const volunterSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "pending",
+    },
+    userName: {
+      type: String,
+      required: false,
+    },
+    userEmail:{
+      type: String,
+      required: false,
     }
   },
   {

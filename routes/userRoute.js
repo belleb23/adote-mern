@@ -94,22 +94,23 @@ router.post("/apply-volunter-account", authMiddleware, async (req, res) => {
   try {
     const newvolunter = new Volunter({ ...req.body, status: "pending" });
     await newvolunter.save();
+
     const adminUser = await User.findOne({ isAdmin: true });
 
     const unseenNotifications = adminUser.unseenNotifications;
     unseenNotifications.push({
       type: "new-volunter-request",
-      message: `${newvolunter.name} has applied for a volunter account`,
+      message: `${newvolunter.userName} aplicou para ser voluntário`,
       data: {
         volunterId: newvolunter._id,
-        name: newvolunter.name,
+        name: newvolunter.userName,
       },
       onClickPath: "/admin/volunteerslist",
     });
     await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
     res.status(200).send({
       success: true,
-      message: "Volunter account applied successfully",
+      message: "Pedido de voluntário enviado com sucesso",
     });
   } catch (error) {
     console.log(error);
@@ -258,10 +259,10 @@ router.post("/applications", authMiddleware, async (req, res) => {
     const unseenNotifications = volunterUser.unseenNotifications;
     unseenNotifications.push({
       type: "new-apllication-request",
-      message: `${newapplication.nome} has applied for a adoption `,
+      message: `${newapplication.userInfo.name} aplicou para adoção `,
       data: {
         volunterId: newapplication._id,
-        name: newapplication.nome,
+        name: newapplication.userInfo.name,
       },
       onClickPath: "/volunter/applications",
     });
@@ -342,7 +343,7 @@ router.post("/book-appointment", authMiddleware, async (req, res) => {
     const user = await User.findOne({ _id: req.body.volunterInfo.userId });
     user.unseenNotifications.push({
       type: "new-appointment-request",
-      message: `A new appointment request has been made by ${req.body.userInfo.name}`,
+      message: `Uma nova visita foi agendado por ${req.body.userInfo.name}`,
       onClickPath: "/volunter/appointments",
     });
     await user.save();
@@ -479,4 +480,5 @@ router.put("/update-user-profile", authMiddleware, async (req, res) => {
       .send({ message: "Erro ao recuperar informacao do usuário", success: false, error });
   }
 });
+
 module.exports = router;

@@ -4,7 +4,7 @@ import Layout from "../../components/Layout";
 import { showLoading, hideLoading } from "../../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 
 function VolunterAppointments() {
   const [appointments, setAppointments] = useState([]);
@@ -56,22 +56,19 @@ function VolunterAppointments() {
     }
   };
   const columns = [
+
     {
-      title: "Id",
-      dataIndex: "_id",
-    },
-    {
-      title: "Patient",
+      title: "Adotante",
       dataIndex: "name",
       render: (text, record) => <span>{record.userInfo.name}</span>,
     },
     {
-      title: "Phone",
+      title: "Telefone",
       dataIndex: "phoneNumber",
       render: (text, record) => <span>{record.volunterInfo.phoneNumber}</span>,
     },
     {
-      title: "Date & Time",
+      title: "Data & Hora",
       dataIndex: "createdAt",
       render: (text, record) => (
         <span>
@@ -81,11 +78,36 @@ function VolunterAppointments() {
       ),
     },
     {
-      title: "Status",
-      dataIndex: "status",
+      title: 'Tipo Visita',
+      dataIndex: 'appointmentType',
+      render: (appointmentType) => {
+        const renderStyle = {
+          backgroundColor: appointmentType.some((item) => item.value === 'buscarPet') ? '#d8ccef' : '#ffee9a',
+          padding: '8px',
+          borderRadius: '4px',
+          color: 'white',
+        };
+
+        return (
+          <div>
+            {appointmentType.map((item, index) => (
+              <p key={index} style={renderStyle}>{item.value}</p>
+            ))}
+          </div>
+        );
+      },
     },
     {
-      title: "Actions",
+      title: "Status",
+      dataIndex: "status",
+      render: (status) => (
+        <Tag color={status === 'approved' ? 'green' : status === 'Recusado' ? 'red' : 'orange'}>
+          {status}
+        </Tag>
+      ),
+    },
+    {
+      title: "Ações",
       dataIndex: "actions",
       render: (text, record) => (
         <div className="d-flex">
@@ -95,13 +117,13 @@ function VolunterAppointments() {
                 className="anchor px-2"
                 onClick={() => changeAppointmentStatus(record, "approved")}
               >
-                Approve
+                Confirmar
               </h1>
               <h1
                 className="anchor"
                 onClick={() => changeAppointmentStatus(record, "rejected")}
               >
-                Reject
+                Rejeitar
               </h1>
             </div>
           )}
@@ -116,7 +138,7 @@ function VolunterAppointments() {
   
   return (
     <Layout>
-      <h1 className="page-header">Appointments</h1>
+      <h1 className="page-header">Visitas</h1>
       <hr />
       <Table columns={columns} dataSource={appointments} />
     </Layout>

@@ -70,6 +70,26 @@ function ListAppointments() {
       ),
     },
     {
+      title: 'Tipo Visita',
+      dataIndex: 'appointmentType',
+      render: (appointmentType) => {
+        const renderStyle = {
+          backgroundColor: appointmentType.some((item) => item.value === 'buscarPet') ? '#d8ccef' : '#FFF2B4',
+          padding: '8px',
+          borderRadius: '4px',
+          color: 'white',
+        };
+
+        return (
+          <div>
+            {appointmentType.map((item, index) => (
+              <p key={index} style={renderStyle}>{item.value}</p>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',

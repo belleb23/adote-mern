@@ -12,6 +12,7 @@ function NewPet() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const owner = '';
 
   const addPet = async (values) => {
     try {
@@ -20,7 +21,8 @@ function NewPet() {
         "/api/user/pets",
         {
           ...values,
-          userId: user._id
+          userId: user._id,
+          owner
         },
         {
           headers: {

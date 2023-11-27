@@ -49,7 +49,8 @@ function Appointments() {
       <hr/>
       <p>
         Agradecemos seu interesse em visitar nosso projeto de adoção e conhecer nossos animais em busca de um lar amoroso.
-        Para garantir uma experiência agradável e informativa durante sua visita, solicitamos que selecione um voluntário para acompanhá-lo. 
+        Para garantir uma experiência agradável e informativa durante sua visita, 
+        solicitamos que <span style={{ color: '#4f3693', fontWeight: 'bold', borderBottom: '1px solid #4f3693'}}>selecione um voluntário</span> para acompanhá-lo. 
       </p>
       <hr/>
       <br/>

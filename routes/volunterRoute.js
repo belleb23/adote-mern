@@ -130,6 +130,30 @@ router.put('/change-application-status', authMiddleware, async (req, res) => {
       { new: true } 
     );
 
+    if (status === 'approved'){
+      const status = 'adotado'
+      const petId = application.petInfo._id;
+      const owner = application.userInfo.name;
+
+      const user = await User.findOne({ _id : application.userId});
+      const unseenNotifications = user.unseenNotifications;
+
+      unseenNotifications.push({
+        type:"application-approved",
+        message: `A sua solicitação de adoção para o pet ${application.petInfo.name} foi aprovada`,
+        onClickPath: "/user-adoptions",
+      })
+
+      await User.findByIdAndUpdate(user._id, { unseenNotifications });
+      
+      const pet = await Pet.findByIdAndUpdate(
+        petId,
+        { status, owner },
+        { new: true } 
+      )
+
+    }
+
     res.status(200).send({
       message: 'Status da aplicação atualizado com sucesso',
       success: true,

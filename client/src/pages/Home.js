@@ -21,7 +21,12 @@ function Home() {
       dispatch(hideLoading());
       console.log(response.data.data)
       if (response.data.success) {
-        setPets(response.data.data);
+        // console.log(response.data.data);
+        // setPets(response.data.data);
+
+        const pets = response.data.data;
+        const petsDisponiveis = pets.filter((pet) => pet.status === 'disponivel');
+        setPets(petsDisponiveis);
       }
     } catch (error) {
       dispatch(hideLoading());

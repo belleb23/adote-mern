@@ -75,8 +75,7 @@ function CalendarAppointments() {
 
   return (
     <div>
-    <h1 className="page-header">Visitas</h1>
-    <hr />
+    
     <Calendar
       localizer={localizer}
       events={appointments}

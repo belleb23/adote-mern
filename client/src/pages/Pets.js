@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
 import axios from "axios";
-import { Table, Tooltip, Modal, Button } from "antd";
+import { Table, Tooltip, Modal, Button, Tag } from "antd";
 
 function Pets() {
   const navigate = useNavigate();
@@ -155,6 +155,7 @@ function Pets() {
           {selectedPet && (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div>
+              <p><strong>Status:</strong> <Tag color={selectedPet.status === 'disponivel' ? 'green' : 'orange'}>{selectedPet.status}</Tag></p>
                 <p><strong>Nome:</strong> {selectedPet.name}</p>
                 <p><strong>Porte:</strong> {selectedPet.petSize}</p>
                 <p><strong>Idade:</strong> {selectedPet.age}</p>

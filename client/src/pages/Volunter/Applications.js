@@ -122,6 +122,7 @@ function Applications() {
       dispatch(hideLoading());
     }
   };
+
   const changeApplicationStatus = async (record, status) => {
     try {
       dispatch(showLoading());
@@ -173,7 +174,7 @@ function Applications() {
       content: [
         { text: 'Contrato de Adoção', style: 'header' },
         { text: `Adotante: ${record.userInfo.name}`, style: 'subheader' },
-        { text: `Animal Adotado: ${record.petInfo.name}`, style: 'subheader' },
+        { text: `Pet Adotado: ${record.petInfo.name}`, style: 'subheader' },
         {
           text: 'Termos e Condições:',
           style: 'subheader',

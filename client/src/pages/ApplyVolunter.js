@@ -17,7 +17,9 @@ function ApplyVolunter() {
   const { user } = useSelector((state) => state.user);
 
   console.log('user')
-  console.log(user);
+  console.log(user.name);  
+  console.log(user.email);
+
 
   const navigate = useNavigate();
   const enviado = 'enviado';
@@ -34,6 +36,8 @@ function ApplyVolunter() {
         {
           ...values,
           userId: user._id,
+          userName: user.name,
+          userEmail: user.email,
           timings: [
             dayjs(values.timings[0]).format("HH:mm"),
             dayjs(values.timings[1]).format("HH:mm"),
