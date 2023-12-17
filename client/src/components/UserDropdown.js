@@ -1,7 +1,9 @@
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { clearUser } from "../redux/userSlice"; // Importe a action clearUser
 
 const items = [
   {
@@ -17,40 +19,49 @@ const items = [
 ];
 
 const linkStyle = {
-    textDecoration: "none", 
-    color: "black", 
-}
-
-const createMenu = (user) => {
-
-  return (
-    <Menu>
-      {items.map((item) => (
-        <Menu.Item key={item.key}>
-          {item.key === "1" ? (
-            <Link to={`/volunter/profile/${user._id}`} style={linkStyle}>
-                 <span>Perfil</span>
-            </Link>
-          ) : (
-            <Link to={`/login`} style={linkStyle}> 
-                <span onClick={() => {localStorage.clear(); }}>Log Out</span>
-            </Link>
-          )} 
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+  textDecoration: "none",
+  color: "black",
 };
 
 const UserDropdown = ({ user }) => {
+  const dispatch = useDispatch(); 
+
+  const handleLogout = () => {
+    dispatch(clearUser()); 
+    localStorage.clear(); 
+  };
+
+  const createMenu = (user) => {
+    return (
+      <Menu>
+        {items.map((item) => (
+          <Menu.Item key={item.key}>
+            {item.key === "1" ? (
+              <Link to={`/volunter/profile/${user._id}`} style={linkStyle}>
+                <span>Perfil</span>
+              </Link>
+            ) : (
+              <span onClick={handleLogout} style={linkStyle}>
+                Log Out
+              </span>
+            )}
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
+  };
+
   return (
     <Dropdown overlay={() => createMenu(user)} placement="bottomLeft">
       <a
-        href="#"
+        href="/#"
         className="ant-dropdown-link"
         onClick={(e) => e.preventDefault()}
       >
-        <UserOutlined className="header-action-icon" style={{ color: "black" }} />
+        <UserOutlined
+          className="header-action-icon"
+          style={{ color: "black" }}
+        />
       </a>
     </Dropdown>
   );

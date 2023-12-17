@@ -21,9 +21,6 @@ function Home() {
       dispatch(hideLoading());
       console.log(response.data.data)
       if (response.data.success) {
-        // console.log(response.data.data);
-        // setPets(response.data.data);
-
         const pets = response.data.data;
         const petsDisponiveis = pets.filter((pet) => pet.status === 'disponivel');
         setPets(petsDisponiveis);
@@ -41,7 +38,9 @@ function Home() {
     <Layout>
       <Row gutter={20}>
         {pets.map((pet) => (
-          <Col span={8} xs={24} sm={24} lg={8}>
+          <Col span={8} xs={24} sm={12} lg={8}
+            // key={pet.id}
+          >
             <Pet pet={pet} />
           </Col>
         ))}

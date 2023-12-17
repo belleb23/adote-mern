@@ -55,7 +55,7 @@ function Pets() {
     {
       title: "Data",
       dataIndex: "createdAt",
-      render: (createdAt) => moment(createdAt).format('YYYY-MM-DD'),
+      render: (createdAt) => moment(createdAt).format('DD-MM-YYYY'),
     },
     {
       title: "",
@@ -155,7 +155,12 @@ function Pets() {
           {selectedPet && (
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <div>
-              <p><strong>Status:</strong> <Tag color={selectedPet.status === 'disponivel' ? 'green' : 'orange'}>{selectedPet.status}</Tag></p>
+                <p><strong>Status:</strong> <Tag color={selectedPet.status === 'disponivel' ? 'green' : 'orange'}>{selectedPet.status}</Tag></p>
+                {selectedPet.status === "adotado" && (
+                  <p>
+                    <strong>Adotante:</strong> {selectedPet.owner}
+                  </p>
+                )}
                 <p><strong>Nome:</strong> {selectedPet.name}</p>
                 <p><strong>Porte:</strong> {selectedPet.petSize}</p>
                 <p><strong>Idade:</strong> {selectedPet.age}</p>

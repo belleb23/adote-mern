@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Layout from '../components/Layout';
 import { useSelector, useDispatch } from 'react-redux';
-import { Table, Radio, Tag, Tooltip, Modal } from 'antd';
+import { Table, Radio, Tag, Tooltip, Modal, Row, Col } from 'antd';
 import moment from "moment";
 import { showLoading, hideLoading } from '../redux/alertsSlice';
 import { useNavigate, useParams } from "react-router-dom";
@@ -120,20 +120,21 @@ function UserAdoptions() {
 
   return (
     <Layout>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <h1 className="page-title">Minhas Adoções</h1>
-      
-      <Radio.Group
-        onChange={(e) => setFilter(e.target.value)}
-        value={filter}
-        
-      >
-        <Radio.Button value="all">Todas</Radio.Button>
-        <Radio.Button value="approved">Aprovadas</Radio.Button>
-        <Radio.Button value="pending">Pendentes</Radio.Button>
-      </Radio.Group>
-      
-      </div>
+      <Row justify="space-between" align="middle" style={{ marginBottom: '16px' }}>
+        <Col flex="auto">
+          <h1 className="page-title">Minhas Adoções</h1>
+        </Col>
+        <Col flex="auto" lg={{ span: 12 }}>
+          <Radio.Group
+            onChange={(e) => setFilter(e.target.value)}
+            value={filter}
+          >
+            <Radio.Button value="all">Todas</Radio.Button>
+            <Radio.Button value="approved">Aprovadas</Radio.Button>
+            <Radio.Button value="pending">Pendentes</Radio.Button>
+          </Radio.Group>
+        </Col>
+      </Row>
       <hr/>
       <Table dataSource={filteredAdoptions} columns={columns} />
 

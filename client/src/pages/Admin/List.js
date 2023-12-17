@@ -11,13 +11,16 @@ function List() {
       <hr />
 
       <Tabs>
-        <Tabs.TabPane tab="Adotantes" key={0}>
+
+      <Tabs.TabPane tab="Voluntários" key={0}>
+            <VolunteersList />
+        </Tabs.TabPane>
+
+        <Tabs.TabPane tab="Adotantes" key={1}>
             <Userslist/>
         </Tabs.TabPane>
 
-        <Tabs.TabPane tab="Voluntários" key={1}>
-            <VolunteersList />
-        </Tabs.TabPane>
+
       </Tabs>
 
     </Layout>

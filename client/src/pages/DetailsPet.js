@@ -8,7 +8,6 @@ import { showLoading, hideLoading } from "../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import moment from "moment";
 
 function DetailsPet() {
   const { user } = useSelector((state) => state.user);
@@ -19,10 +18,13 @@ function DetailsPet() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isIntroModalVisible, setIsIntroModalVisible] = useState(false);
 
-const handleIntroModalOk = () => {
-  setIsIntroModalVisible(false);
-  setIsModalVisible(true);
-};
+  const params = useParams();
+  const dispatch = useDispatch();
+
+  const handleIntroModalOk = () => {
+    setIsIntroModalVisible(false);
+    setIsModalVisible(true);
+  };
 
   const handleApplyClick = () => {
     setIsModalVisible(true);
@@ -31,9 +33,6 @@ const handleIntroModalOk = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  const params = useParams();
-  const dispatch = useDispatch();
 
   const getPetData = async () => {
       try {
@@ -58,7 +57,7 @@ const handleIntroModalOk = () => {
         console.log(error);
         dispatch(hideLoading());
       }
-    };
+  };
 
   const checkIfUserApplied = async () => {
     try {
@@ -101,7 +100,6 @@ const handleIntroModalOk = () => {
         },
       });
       dispatch(hideLoading());
-      console.log(response);
       if (response.data.success) {
         toast(response.data.success);
       }
@@ -119,8 +117,13 @@ const handleIntroModalOk = () => {
           <div className="page-title">{pet.name}</div>
           <hr/>
           <p style={{fontSize:"20px"}}>
-            A {pet.name.toLowerCase()} é {pet.description}, tem {pet.age} meses,
-            é castrada, e está a procura de um lar.
+            {pet.name} é {pet.description.toLowerCase()} e está à procura de um lar. De porte {pet.petSize} e {pet.race.toLowerCase()}, 
+            tem aproximadamente {pet.age} {pet.ageRange.toLowerCase() === 'filhote' ? 'meses' : 'anos'},
+            é {pet.sex.toLowerCase()}.
+          </p>
+          <br/>
+          <p style={{fontSize:"20px"}}>
+            A castração será {pet.castration} e a vacinação {pet.vaccine} 
           </p>
           <br/>
           <p style={{fontSize:"20px"}}>

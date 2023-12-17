@@ -9,7 +9,6 @@ const ApplicationForm = ({ onSubmit }) => {
   const [form] = Form.useForm();
   const [applicationData, setApplicationData] = useState({});
   const [submitted, setSubmitted] = useState(false);
-
   const navigate = useNavigate();
 
   const handleFormChange = (changedValues) => {
@@ -17,6 +16,29 @@ const ApplicationForm = ({ onSubmit }) => {
       ...applicationData,
       ...changedValues,
     });
+  };
+
+  const validateCPF = (rule, value) => {
+    const cpfRegex = /^[0-9]{11}$/; 
+    if (!value || cpfRegex.test(value)) {
+      return Promise.resolve();
+    }
+    return Promise.reject('Por favor, digite um CPF válido!');
+  };
+
+  const validateCEP = (rule, value) => {
+    const cepRegex = /^[0-9]{5}-[0-9]{3}$/; 
+    if (!value || cepRegex.test(value)) {
+      return Promise.resolve();
+    }
+    return Promise.reject('Por favor, digite um CEP válido no formato XXXXX-XXX');
+  };
+
+  const validatePositiveNumber = (_, value) => {
+    if (value >= 0) {
+      return Promise.resolve();
+    }
+    return Promise.reject('O valor não pode ser negativo');
   };
 
   const onFinish = () => {
@@ -27,7 +49,6 @@ const ApplicationForm = ({ onSubmit }) => {
     navigate("/user-adoptions");
 
   };
-
 
   return (
     <div>
@@ -50,6 +71,9 @@ const ApplicationForm = ({ onSubmit }) => {
                     {
                       required: true,
                       message: 'Por favor, digite sua idade',
+                    },
+                    {
+                      validator: validatePositiveNumber,
                     },
                   ]}
                 >
@@ -79,6 +103,9 @@ const ApplicationForm = ({ onSubmit }) => {
                       required: true,
                       message: 'Por favor, digite seu CPF',
                     },
+                    {
+                      validator: validateCPF,
+                    },
                   ]}
                 >
                   <Input type="number" placeholder='digite seu CPF'/>
@@ -106,6 +133,9 @@ const ApplicationForm = ({ onSubmit }) => {
                     {
                       required: true,
                       message: 'Por favor, digite seu CEP',
+                    },
+                    {
+                      validator: validateCEP,
                     },
                   ]}
                 >
@@ -152,6 +182,9 @@ const ApplicationForm = ({ onSubmit }) => {
                       required: true,
                       message: 'Por favor, digite',
                     },
+                    {
+                      validator: validatePositiveNumber,
+                    },
                   ]}
                 >
                   <Select placeholder='selecione'>
@@ -168,6 +201,9 @@ const ApplicationForm = ({ onSubmit }) => {
                     {
                       required: true,
                       message: 'Por favor, digite',
+                    },
+                    {
+                      validator: validatePositiveNumber,
                     },
                   ]}
                 >
@@ -273,6 +309,9 @@ const ApplicationForm = ({ onSubmit }) => {
                     {
                       required: true,
                       message: 'Por favor, digite',
+                    },
+                    {
+                      validator: validatePositiveNumber,
                     },
                   ]}
                 >

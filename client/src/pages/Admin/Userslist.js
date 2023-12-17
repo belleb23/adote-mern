@@ -1,163 +1,139 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { showLoading, hideLoading } from "../../redux/alertsSlice";
-import axios from "axios";
-import { Table, Tooltip, Modal } from "antd";
-import moment from "moment";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Layout from '../../components/Layout';
+import { useDispatch } from 'react-redux';
+import { showLoading, hideLoading } from '../../redux/alertsSlice';
+import { Table, Tooltip, Modal, Tabs, Tag } from 'antd';
 
 function Userslist() {
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null); 
+  const [adoptions, setAdoptions] = useState([]);
+  const [selectedApplication, setSelectedApplication] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
-
   const dispatch = useDispatch();
-  
-  const getUsersData = async () => {
+
+  const getApplicationsData = async () => {
     try {
       dispatch(showLoading());
-      const response = await axios.get("/api/admin/get-all-users", {
+      const response = await axios.get('/api/user/all-applications', {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       dispatch(hideLoading());
       if (response.data.success) {
-        const filteredUsers = response.data.data.filter(
-          user=> !user.isVolunter && !user.isAdmin
-        );
-        setUsers(filteredUsers);
+        setAdoptions(response.data.data);
       }
     } catch (error) {
       dispatch(hideLoading());
     }
   };
 
-  useEffect(() => {
-    getUsersData();
-  }, []);
+  const groupApplicationsByUser = () => {
+    const groupedApplications = {};
+    adoptions.forEach((application) => {
+      const userId = application.userInfo._id;
+      if (!groupedApplications[userId]) {
+        groupedApplications[userId] = {
+          ...application.userInfo,
+          applications: [application],
+        };
+      } else {
+        groupedApplications[userId].applications.push(application);
+      }
+    });
+    return Object.values(groupedApplications);
+  };
+
+  const userApplications = groupApplicationsByUser();
 
   const columns = [
     {
-      title: "Nome",
-      dataIndex: "name",
+      title: 'Nome',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: "Email",
-      dataIndex: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
-      title: "Data",
-      dataIndex: "createdAt",
-      render: (createdAt) => moment(createdAt).format('DD-MM-YYYY'),
+      title: 'Número de Aplicações',
+      dataIndex: 'applications',
+      key: 'applications',
+      render: (applications) => applications.length,
     },
     {
-      title: "",
-      dataIndex: "actions",
-      render:(text, record) => (
-        <div className='d-flex'>
-          <Tooltip title="Deletar">
+      title: '',
+      key: 'action',
+      render: (text, record) => (
+        <>
+          <Tooltip title="Ver Aplicações">
+            <i
+              className="ri-file-list-3-line icon-large"
+              onClick={() => handleViewDetails(record.applications)}
+            ></i>
+          </Tooltip>
+          {/* <Tooltip title="Deletar">
             <i
               className="ri-delete-bin-line icon-large"
               onClick={()=>showDeleteConfirmation(record)} 
             ></i>
-          </Tooltip>
-          <Tooltip title="Visualizar">
-            <i
-              className="ri-eye-line icon-large"
-              onClick={() => handleViewUser(record)}
-            ></i>
-          </Tooltip>
-          <Tooltip title="Aplicações">
-            <i
-              className="ri-file-list-3-line icon-large"
-              onClick={() => handleViewUser(record)}
-            ></i>
-          </Tooltip>
-        </div>
-      )
+          </Tooltip> */}
+        </>
+      ),
     },
   ];
-  const showDeleteConfirmation = (user) => {
-    setUserToDelete(user);
-    setIsDeleteModalVisible(true);
+
+  const applicationColumns = [
+    {
+      title: 'Pet',
+      dataIndex: 'petInfo',
+      key: 'petInfo',
+      render: (petInfo) => petInfo.name,
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) =><Tag color={status === 'approved' ? 'green' : status === 'rejected' ? 'red' : 'orange'}> {status} </Tag>
+    },
+  ];
+
+  const handleViewDetails = (applications) => {
+    setSelectedApplication(applications);
+    setIsModalVisible(true);
   };
 
-  const handleDeleteUserConfirmation = async () => {
-    // Exclua o usuário e atualize a lista
-    await handleDeleteUser(userToDelete);
-    setIsDeleteModalVisible(false);
-  };
-  
-  const handleCancelDeleteConfirmation = () => {
-    setUserToDelete(null);
-    setIsDeleteModalVisible(false);
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedApplication(null);
   };
 
-  const handleDeleteUser = async (user) => {
-    try {
-      // Sua lógica de exclusão aqui
-      // Certifique-se de atualizar a lista de usuários após a exclusão bem-sucedida
-      dispatch(showLoading());
-      const response = await axios.delete(`/api/admin/delete-user/${user._id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      dispatch(hideLoading());
-      if (response.data.success) {
-        // Atualize a lista de usuários após a exclusão bem-sucedida
-        getUsersData();
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-    }
-  };
+  useEffect(() => {
+    getApplicationsData();
+  }, []);
 
-    const handleViewUser = (user) => {
-      setSelectedUser(user);
-      setIsModalVisible(true);
-    };
-  
-    const handleModalClose = () => {
-      setIsModalVisible(false);
-      setSelectedUser(null);
-    }; 
-  
   return (
+    <>
+      <Table dataSource={userApplications} columns={columns} />
 
-    <div>
-     <Table columns={columns} dataSource={users}/>
-
-        <Modal
-          title="Detalhes do Usuário"
-          visible={isModalVisible}
-          onOk={handleModalClose}
-          onCancel={handleModalClose}
-          width={800}
-        >
-          {selectedUser && (
-            <div>
-              <p>Nome: {selectedUser.name}</p>
-              <p>Email: {selectedUser.email}</p>
-              <p>Data de Criação: {moment(selectedUser.createdAt).format("DD-MM-YYYY")}</p>
-            </div>
-          )}
-        </Modal>
-        
       <Modal
-        title="Confirmar Exclusão"
-        visible={isDeleteModalVisible}
-        onOk={handleDeleteUserConfirmation}
-        onCancel={handleCancelDeleteConfirmation}
+        title="Detalhes do Adotante"
+        visible={isModalVisible}
+        onOk={handleModalClose}
+        onCancel={handleModalClose}
+        width={800}
       >
-        <p>Você tem certeza de que deseja excluir este usuário?</p>
+        {selectedApplication && (
+          <Tabs defaultActiveKey="personalInfo">
+            <Tabs.TabPane tab="Aplicações" key="applications">
+              <Table dataSource={selectedApplication} columns={applicationColumns} />
+            </Tabs.TabPane>
+          </Tabs>
+        )}
       </Modal>
-    </div>
-     
-
-      
+    </>
   );
 }
 

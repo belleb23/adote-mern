@@ -12,25 +12,19 @@ const { Option } = Select;
 
 function BookAppointment() {
 
-    const [isAvailable, setIsAvailable] = useState(false);
+    const dispatch = useDispatch();
+    const params = useParams();
+    const { user } = useSelector((state) => state.user);
     const navigate = useNavigate();
+    
+    const [isAvailable, setIsAvailable] = useState(false);
     const [date, setDate] = useState();
     const [time, setTime] = useState();
     const [appointmentType, setAppointmentType] = useState();
     const [takePet, setTakePet] = useState();
-
-
     const [optionsFromAPI, setOptionsFromAPI] = useState([]);
-
     const [adoptions, setAdoptions] = useState([]);
-
-
     const [volunter, setVolunter] = useState(null);
-    const { user } = useSelector((state) => state.user);
-
-    const dispatch = useDispatch();
-    const params = useParams();
-
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     const showModal = () => {
@@ -109,10 +103,6 @@ function BookAppointment() {
 
     const checkAvailability = async () => {
       try {
-          console.log("data")
-          console.log(date)
-          console.log("time")
-          console.log(time)
         dispatch(showLoading());
         const response = await axios.post(
           "/api/user/check-booking-avilability",
@@ -174,6 +164,11 @@ function BookAppointment() {
       }
     };
 
+    const disabledDate = (current) => {
+      return current && current < dayjs().startOf('day');
+    };
+
+
     useEffect(() => {
       getVolunterData();
       getUserData();
@@ -188,7 +183,7 @@ function BookAppointment() {
                 <Row gutter={20} className="mt-2 outlined-row" align="middle">
                 <Col >
                 
-                    <h2 className="normal-text" >Voluntária: {volunter.name}</h2>
+                    <h2 className="normal-text" >Voluntária: {volunter.userName}</h2>
                     <h3 className="normal-text">
                         <b>Horários Disponíveis :</b> {volunter.timings[0]} - {volunter.timings[1]}
                     </h3>
@@ -214,14 +209,26 @@ function BookAppointment() {
                     onOk={handleModalOk}
                     onCancel={handleModalCancel}
                   >
-                  
-                    <Select defaultValue="selecione" style={{ width: '100%' }} onChange={(value) => setTakePet(value)}>
-                      <Option value="selecione" disabled hidden>Selecione uma opção</Option>
-                      {optionsFromAPI.map(option => (
-                        <Option key={option.value} value={option.value}>{option.label}</Option>
-                      ))}
-                    </Select>
+                    {optionsFromAPI.length === 0 ? ( // Verifica se não há pets disponíveis
+                      <p>Você não tem pets para buscar</p> // Exibe a mensagem caso não haja pets
+                    ) : (
+                      <Select
+                        defaultValue="selecione"
+                        style={{ width: '100%' }}
+                        onChange={(value) => setTakePet(value)}
+                      >
+                        <Option value="selecione" disabled hidden>
+                          Selecione o pet
+                        </Option>
+                        {optionsFromAPI.map((option) => (
+                          <Option key={option.value} value={option.value}>
+                            {option.label}
+                          </Option>
+                        ))}
+                      </Select>
+                    )}
                   </Modal>
+
 
                   <br/>
 
@@ -232,6 +239,7 @@ function BookAppointment() {
                          setDate(dayjs(value).format("DD-MM-YYYY"));
                          setIsAvailable(false);
                      }}
+                     disabledDate={disabledDate}
                     />
                     <TimePicker
                     format="HH:mm"
@@ -241,6 +249,7 @@ function BookAppointment() {
                          setIsAvailable(false);
                          setTime(dayjs(value).format("HH:mm"));
                      }}
+                 
                     />
                 {!isAvailable &&   <Button
                   className="primary-button mt-3 full-width-button"

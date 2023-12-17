@@ -13,7 +13,6 @@ function ListAppointments() {
   const dispatch = useDispatch();
   const [filter, setFilter] = useState('all');
 
-
   const getAppointmentsData = async () => {
     try {
       dispatch(showLoading());
@@ -37,7 +36,7 @@ function ListAppointments() {
       dataIndex: "name",
       render: (text, record) => (
         <span>
-          {record.volunterInfo.name} 
+          {record.volunterInfo.userName} 
         </span>
       ),
     },
@@ -126,7 +125,6 @@ function ListAppointments() {
         <Radio.Group
           onChange={(e) => setFilter(e.target.value)}
           value={filter}
-          
         >
           
           <Radio.Button value="buscar">Buscar Pet</Radio.Button>

@@ -59,7 +59,6 @@ function EditPet() {
     
           dispatch(hideLoading());
           if (response.data.success) {
-            console.log(response.data)
             setPet(response.data.data);
           }
         } catch (error) {

@@ -4,32 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../redux/alertsSlice";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import VolunterForm from "../components/volunter/VolunterForm";
-import moment from "moment";
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 
 function ApplyVolunter() {
+  
   dayjs.extend(customParseFormat);
+
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-
-  console.log('user')
-  console.log(user.name);  
-  console.log(user.email);
-
-
   const navigate = useNavigate();
-  const enviado = 'enviado';
 
-  const params = useParams();
   const [volunter, setVolunter] = useState(null);
 
   const onApply = async (values) => {
     try {
-      
       dispatch(showLoading());
       const response = await axios.post(
         "/api/user/apply-volunter-account",
@@ -42,7 +34,7 @@ function ApplyVolunter() {
             dayjs(values.timings[0]).format("HH:mm"),
             dayjs(values.timings[1]).format("HH:mm"),
           ],
-          status: enviado
+          
         },
         {
           headers: {

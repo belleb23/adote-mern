@@ -20,13 +20,15 @@ import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedRouteAdmin from "./components/ProtectedRouteAdmin";
+import ProtectedRouteAdminVolunteer from "./components/ProtectedRouteAdminVolunteer";
+
 import NewPet from "./pages/NewPet";
 import Applications from "./pages/Volunter/Applications";
-import FormTeste from "./pages/FormTeste";
 import BookAppointment from "./pages/BookAppointment";
 import ListAppointments from "./pages/ListAppointments";
 import VolunterAppointments from "./pages/Volunter/VolunterAppointments";
 import UserAppointments from "./pages/UserAppointments";
+import AdminAppointmnets from "./pages/Admin/AdminAppointmnets";
 
 import CalendarTeste from "./pages/CalendarTeste";
 import EditPet from "./pages/EditPet";
@@ -42,9 +44,19 @@ function App() {
       </div>
     )}
    <Toaster position="top-center" reverseOrder={false} />
+
     <Routes>
-      <Route path="/login" element={<Login/>}/>
-      <Route path="/register" element={<Register/>}/>
+
+      <Route 
+        path="/login" 
+        element={<Login/>
+      }/>
+      
+      <Route 
+        path="/register" 
+        element={<Register/>}
+      />
+
       <Route
         path="/"
         element={
@@ -53,6 +65,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/apply-volunter"
         element={
@@ -61,6 +74,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+
       <Route
         path="/notifications"
         element={
@@ -69,154 +83,156 @@ function App() {
           </ProtectedRoute>
         }
       />
-          <Route
-          path="/admin/list"
-          element={
-            <ProtectedRouteAdmin>
-              <List />
-            </ProtectedRouteAdmin>
-          }
+
+      <Route
+        path="/admin/list"
+        element={
+          <ProtectedRouteAdmin>
+            <List />
+          </ProtectedRouteAdmin>
+        }
+      />
+
+      <Route
+        path="/appointments"
+        element={
+          <ProtectedRoute>
+            <Appointments />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/volunter/profile/:userId"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/pets"
+        element={
+          <ProtectedRouteAdminVolunteer>
+            <Pets />
+          </ProtectedRouteAdminVolunteer>
+        }
+      /> 
+
+      <Route
+        path="/details-pet/:petId"
+        element={
+          <ProtectedRoute>
+            <DetailsPet />
+          </ProtectedRoute>
+        }
+      />    
+
+      <Route
+        path="/new-pet"
+        element={
+          <ProtectedRouteAdminVolunteer>
+            <NewPet />
+          </ProtectedRouteAdminVolunteer>
+        }
+      />  
+
+      <Route
+        path="/user-adoptions"
+        element={
+          <ProtectedRoute>
+            <UserAdoptions />
+          </ProtectedRoute>
+        }
+      />  
+
+      <Route
+        path="/volunter/applications"
+        element={
+          <ProtectedRouteAdminVolunteer>
+            <Applications />
+          </ProtectedRouteAdminVolunteer>
+        }
+      /> 
+
+
+      <Route
+        path="/book-appointment/:volunterId"
+        element={
+          <ProtectedRoute>
+            <BookAppointment />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/list-appointments"
+        element={
+          <ProtectedRoute>
+            <ListAppointments />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/volunter/appointments"
+        element={
+          <ProtectedRouteAdminVolunteer>
+            <VolunterAppointments />
+          </ProtectedRouteAdminVolunteer>
+        }
+      />
+
+
+      <Route
+        path="/calendario-teste"
+        element={
+          <ProtectedRouteAdminVolunteer>
+            <CalendarTeste />
+          </ProtectedRouteAdminVolunteer>
+        }
+      />
+
+      <Route
+        path="/edit-pet/:petId"
+        element={
+          <ProtectedRouteAdminVolunteer>
+            <EditPet />
+          </ProtectedRouteAdminVolunteer>
+        }
+      />
+
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/user-appointments"
+        element={
+          <ProtectedRoute>
+            <UserAppointments />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/admin-appointments"
+        element={
+          <ProtectedRouteAdmin>
+            <AdminAppointmnets />
+          </ProtectedRouteAdmin>
+        }
+      />
+
+        <Route path="/access-denied" 
+          element={<AccessDenied />} 
         />
-
-        <Route
-          path="/appointments"
-          element={
-            <ProtectedRoute>
-              <Appointments />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/volunter/profile/:userId"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/pets"
-          element={
-            <ProtectedRoute>
-              <Pets />
-            </ProtectedRoute>
-          }
-        /> 
-
-<Route
-          path="/details-pet/:petId"
-          element={
-            <ProtectedRoute>
-              <DetailsPet />
-            </ProtectedRoute>
-          }
-        />    
-
-<Route
-          path="/new-pet"
-          element={
-            <ProtectedRoute>
-              <NewPet />
-            </ProtectedRoute>
-          }
-        />  
-
-<Route
-          path="/user-adoptions"
-          element={
-            <ProtectedRoute>
-              <UserAdoptions />
-            </ProtectedRoute>
-          }
-        />  
-
-<Route
-          path="/volunter/applications"
-          element={
-            <ProtectedRoute>
-              <Applications />
-            </ProtectedRoute>
-          }
-        /> 
-
-        <Route
-          path="/formteste"
-          element={
-            <ProtectedRoute>
-              <FormTeste />
-            </ProtectedRoute>
-          }
-        />  
- 
- <Route
-          path="/book-appointment/:volunterId"
-          element={
-            <ProtectedRoute>
-              <BookAppointment />
-            </ProtectedRoute>
-          }
-        />
-
-<Route
-          path="/list-appointments"
-          element={
-            <ProtectedRoute>
-              <ListAppointments />
-            </ProtectedRoute>
-          }
-        />
-
-<Route
-          path="/volunter/appointments"
-          element={
-            <ProtectedRoute>
-              <VolunterAppointments />
-            </ProtectedRoute>
-          }
-        />
-
-
-<Route
-          path="/calendario-teste"
-          element={
-            <ProtectedRoute>
-              <CalendarTeste />
-            </ProtectedRoute>
-          }
-        />
-
-<Route
-          path="/edit-pet/:petId"
-          element={
-            <ProtectedRoute>
-              <EditPet />
-            </ProtectedRoute>
-          }
-        />
-
-<Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-
-<Route
-          path="/user-appointments"
-          element={
-            <ProtectedRoute>
-              <UserAppointments />
-            </ProtectedRoute>
-          }
-        />
-
-
-
-<Route path="/access-denied" element={<AccessDenied />} />
 
     </Routes>
 

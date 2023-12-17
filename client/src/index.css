@@ -246,3 +246,14 @@ p {
     }
   }
 }
+
+.tooltip {
+  position: absolute;
+  background-color: purple;
+  color: white;
+  padding: 10px; /* Ajuste o padding conforme desejado */
+  border-radius: 5px;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 16px; /* Ajuste o tamanho da fonte conforme desejado */
+}

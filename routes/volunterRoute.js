@@ -8,6 +8,13 @@ const Pet = require("../models/petModel")
 const Application = require ("../models/applicationModel");
 const adminMiddleware = require("../middlewares/adminMiddleware");
 
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+  cloud_name: 'dv7fyoaof',
+  api_key: '826388641662275',
+  api_secret: '7KyUmaHmrLyq2hTssQtDRGMhj1k'
+});
+
 
 router.get("/get-volunter-info-by-user-id/:id", authMiddleware, async (req, res) => {
   try {
@@ -100,14 +107,14 @@ try {
   const unseenNotifications = user.unseenNotifications;
   unseenNotifications.push({
     type: "appointment-status-changed",
-    message: `Your appointment status has been ${status}`,
-    onClickPath: "/appointments",
+    message: `Sua visita foi ${status}`,
+    onClickPath: "/list-appointments",
   });
 
   await user.save();
 
   res.status(200).send({
-    message: "Appointment status updated successfully",
+    message: "Visita status alterada com sucesso",
     success: true
   });
 } catch (error) {
@@ -171,10 +178,26 @@ router.put('/change-application-status', authMiddleware, async (req, res) => {
 
 router.put("/update-pet", authMiddleware, async (req, res) => {
   try {
+    if (req.body.image) {
+      const uploadedImage = await cloudinary.uploader.upload(req.body.image, {
+        folder: 'pets',
+        eager: { width: 300, height: 300, crop: 'pad' }
+      });
+
+      req.body.urlPic = uploadedImage.secure_url; 
+    }
+
     const pet = await Pet.findOneAndUpdate(
       { _id: req.body.petId },
-      req.body
+      req.body, {new: true}
     );
+
+    const application = await Application.findOneAndUpdate(
+      { petId: req.body.petId },  
+      { petInfo: req.body } ,
+      { new: true }
+    );
+
     res.status(200).send({
       success: true,
       message: "Pet updated successfully",

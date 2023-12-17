@@ -9,9 +9,16 @@ const Application = require ("../models/applicationModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
-const moment = require("moment");
-const dayjs = require("dayjs");
-const { subHours, addHours, format } = require('date-fns');
+
+// const cloudinary = ("../cloudinary/cloudinary");
+
+//config cloudinary
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+  cloud_name: 'dv7fyoaof',
+  api_key: '826388641662275',
+  api_secret: '7KyUmaHmrLyq2hTssQtDRGMhj1k'
+});
 
 
 router.post("/register", async (req, res) => {
@@ -105,7 +112,7 @@ router.post("/apply-volunter-account", authMiddleware, async (req, res) => {
         volunterId: newvolunter._id,
         name: newvolunter.userName,
       },
-      onClickPath: "/admin/volunteerslist",
+      onClickPath: "/admin/list",
     });
     await User.findByIdAndUpdate(adminUser._id, { unseenNotifications });
     res.status(200).send({
@@ -134,7 +141,7 @@ router.post("/mark-all-notifications-as-seen", authMiddleware, async (req, res) 
     updatedUser.password = undefined;
     res.status(200).send({
       success: true,
-      message: "All notifications marked as seen",
+      message: "Todas as notificações marcadas como vistas",
       data: updatedUser,
     });
   } catch (error) {
@@ -189,7 +196,6 @@ router.get("/get-all-approved-volunteers", authMiddleware, async (req, res) => {
 
 router.get("/check-is-admin", authMiddleware, (req, res) => {
   try {
-    // Verifique se o usuário tem a propriedade isAdmin definida como true
     if (req.user.isAdmin) {
       res.json({ isAdmin: true });
     } else {
@@ -203,7 +209,15 @@ router.get("/check-is-admin", authMiddleware, (req, res) => {
 
 router.post('/pets', authMiddleware, async (req, res) => {
   try {
-    const newpet = new Pet({ ...req.body});
+    const uploadedImage = await cloudinary.uploader.upload(req.body.image, {
+      folder: 'pets', 
+      eager: { width: 300, height: 300, crop: 'pad' } 
+    });
+
+    const newpet = new Pet({ 
+      ...req.body, 
+      urlPic: uploadedImage.secure_url
+    });
     await newpet.save();
 
     res.status(201).json({
@@ -281,7 +295,6 @@ router.get('/check-application', authMiddleware, async (req, res) => {
   try {
     const { petId, userId } = req.query;
 
-    // Verifique se existe uma aplicação com base no petId e userId
     const existingApplication = await Application.findOne({ petId, userId });
 
     if (existingApplication) {
@@ -297,10 +310,6 @@ router.get('/check-application', authMiddleware, async (req, res) => {
 
 router.post('/user-adoptions', authMiddleware, async (req, res) => {
   try {
-    // const userId = await User.findOne({ _id: req.body.userId });
-    // const userAdoptions = await Application.find({ userId });
-
-    console.log(req.body.userId)
     const user = await User.findOne({ _id: req.body.userId });
     const applications = await Application.find({ userId: user._id });
    
@@ -330,6 +339,22 @@ router.get('/all-applications', async (req, res) => {
       success: false,
       error: error.message,
     });
+  }
+});
+
+router.get("/get-application-info-by-id/:id", authMiddleware, async (req, res) => {
+  try {
+
+    const application = await Application.findOne({ userId: req.params.id });
+    res.status(200).send({
+      success: true,
+      message: "Application info fetched successfully",
+      data: application,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Error getting volunter info", success: false, error });
   }
 });
 
@@ -363,7 +388,6 @@ router.post("/book-appointment", authMiddleware, async (req, res) => {
 
 router.post("/check-booking-avilability", authMiddleware, async (req, res) => {
   try {
-  
     const date = req.body.date;
     const time = req.body.time;
     const [year, month, day] = date.split('-').map(Number);
@@ -409,21 +433,39 @@ router.post("/check-booking-avilability", authMiddleware, async (req, res) => {
       }
     }
 
-    // const formattedStartTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}`;
-    // const formattedEndTime = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}`;
-    
     const fromTime = `${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}`;
     const toTime = `${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}`;
 
     const volunterId = req.body.volunterId;
+    const volunteer = await Volunter.findById(volunterId);
+    const timings = volunteer.timings;
+
+    const startTime = timings[0];
+    const endTime = timings[1];
+
+    let isTimeAvailable = false;
+  
+    if (time >= startTime && time <= endTime) {
+      isTimeAvailable = true;
+    }
+
+    if (!isTimeAvailable) {
+      return res.status(200).send({
+        message: "Marcar dentro do intervalo disponível do voluntário",
+        success: false,
+      });
+    }
+
     const appointments = await Appointment.find({
       volunterId,
       date,
       time: { $gte: fromTime, $lte: toTime },
+  
     });
+
     if (appointments.length > 0) {
       return res.status(200).send({
-        message: "Visita indisponível",
+        message: "Horário já reservado, por favor, escolha outro",
         success: false,
       });
     } else {
@@ -467,7 +509,12 @@ router.put("/update-user-profile", authMiddleware, async (req, res) => {
       { _id: req.body.userId },
       req.body
     );
-      
+
+    const application = await Application.findOneAndUpdate(
+      { userId: req.body.userId },  
+      { userInfo: req.body } ,
+      { new: true }
+    );
 
     res.status(200).send({
       success: true,
@@ -480,5 +527,8 @@ router.put("/update-user-profile", authMiddleware, async (req, res) => {
       .send({ message: "Erro ao recuperar informacao do usuário", success: false, error });
   }
 });
+
+
+
 
 module.exports = router;

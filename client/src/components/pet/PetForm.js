@@ -10,6 +10,7 @@ function PetForm({ onFinish, initivalValues }) {
   const [showFivQuestion, setShowFivQuestion] = React.useState(false);
   const [showVermQuestion, setShowVermQuestion] = React.useState(false);
 
+
   const handleIllnessChange = (value) => {
     setShowIllnessType(value === true);
   };
@@ -19,10 +20,34 @@ function PetForm({ onFinish, initivalValues }) {
     setShowVermQuestion(value === 'cachorro');
   };
 
+  const [image = "", setImage] = React.useState("");
+
+  const validatePositiveNumber = (_, value) => {
+    if (value >= 0) {
+      return Promise.resolve();
+    }
+    return Promise.reject('O valor não pode ser negativo');
+  };
+
+  const onFileSelect = async (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader(file);
+    reader.readAsDataURL(file);
+    reader.onloadend = async () => {
+      console.log(reader.result);
+      setImage(reader.result);
+      console.log(image)
+    };
+  };
+
+  const onFinishHandler = async (values) => {
+    await onFinish({ ...values, image });
+  };
+
   return (
     <Form
       layout="vertical"
-       onFinish={onFinish}
+       onFinish={onFinishHandler}
        initialValues={{
          ...initivalValues,
          ...(initivalValues && {
@@ -64,7 +89,12 @@ function PetForm({ onFinish, initivalValues }) {
         </Col>
         <Col span={8} xs={24} sm={24} lg={8}>
           <Form.Item label="Idade em meses/anos" name="age"
-          rules={[{ required: true, message: 'Por favor, insira a idade do pet' }]}
+          rules={[
+            { required: true, message: 'Por favor, insira a idade do pet' },
+            {
+              validator: validatePositiveNumber,
+            }
+          ]}
           >
             <Input placeholder="Idade" type="number"/>
         </Form.Item>
@@ -169,24 +199,27 @@ function PetForm({ onFinish, initivalValues }) {
           </Form.Item>
         </Col>
 
-        {/* <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Foto" name="profilePic"
-             required rules={[{ required: true, message: 'Por favor, insira a foto do pet' }]}
-          >
-            <Upload listType="picture">
-              <Button className="upload-button" icon={<UploadOutlined />}>Carregar Imagem</Button>
-            </Upload>
-          </Form.Item>
-        </Col> */}
-
-        <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Imagem URL" name="urlPic"
-            required
-            rules={[{ required: true, message: 'Por favor, insira a url do pet' }]}
-          >
-            <Input placeholder="Url" />
+        <Col span={23} xs={23} sm={23} lg={23}>
+          <Form.Item label="Foto do Pet" name="urlPic">
+            <div>
+              <label htmlFor="urlPic" className="cursor-pointer" />
+              <input
+                type="file"
+                onChange={onFileSelect}
+                className="file-input border-0"
+                id="file-input"
+              />
+            </div>
           </Form.Item>
         </Col>
+
+        {image && (
+          <img
+            src={image}
+            alt="profile pic"
+            style={{ width: '15%', height: '15%', float: 'left', marginRight: '10px' }}
+          />
+        )}
       
       </Row>
 

@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row, TimePicker, Checkbox, Select } from "antd";
+import { Button, Col, Form, Input, Row, TimePicker, Checkbox, Select, DatePicker } from "antd";
 import moment from "moment";
 import React from "react";
 import dayjs from 'dayjs';
@@ -92,7 +92,7 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
       <Row gutter={20}>
 
         <Col span={8} xs={24} sm={24} lg={8}>
-          <Form.Item label="Como você lidaria em uma situação de resgate de um animal ?"
+          <Form.Item label="Como você lidaria em uma situação de resgate de animal ?"
             required
             name="situation"
             rules={[{ required: true }]}
@@ -128,10 +128,10 @@ function VolunterForm({ onFinish, initivalValues, btn }) {
             rules={[{ required: true }]}
           >
               <Checkbox.Group>
-                <Checkbox value="postagem">Postagem redes sociais</Checkbox>
-                <Checkbox value="doacoes">Retirar doações</Checkbox>
-                <Checkbox value="recepcionar">Recepcionar visitantes</Checkbox>
-                <Checkbox value="postar">Apoio feira de adoção</Checkbox>
+                <Checkbox value="postagem redes sociais">Postagem redes sociais</Checkbox>
+                <Checkbox value="retirar doacoes">Retirar doações</Checkbox>
+                <Checkbox value="recepcionar visitantes">Recepcionar visitantes</Checkbox>
+                <Checkbox value="apoio feira adocao">Apoio feira de adoção</Checkbox>
             </Checkbox.Group>
           </Form.Item>
         </Col>

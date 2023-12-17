@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import "../layout.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Badge } from "antd";
 import UserDropdown from "./UserDropdown";
+import { clearUser } from "../redux/userSlice";
 
 function Layout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch(); 
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,12 +31,6 @@ function Layout({ children }) {
       path: `/appointments`,
       icon: "ri-calendar-line",
     },
-    // {
-    //   name: "Doações",
-    //   path: "/applications",
-    //   icon: "ri-wallet-3-line",
-    // }
-    // ,
     {
       name: "Ser Voluntário",
       path: "/apply-volunter",
@@ -62,13 +59,6 @@ function Layout({ children }) {
       path: "/calendario-teste",
       icon: "ri-calendar-line",
     },
-    // {
-    //   name: "Doações",
-    //   path: `/volunter/profile/${user?._id}`,
-    //   icon: "ri-wallet-3-line",
-    // },
-
-
   ];
 
   const adminMenu = [
@@ -89,7 +79,7 @@ function Layout({ children }) {
     },
     {
       name: "Visitas",
-      path: `/calendario-teste`,
+      path: `/admin-appointments`,
       icon: "ri-calendar-line",
     },
    
@@ -103,9 +93,13 @@ function Layout({ children }) {
       <div className="d-flex layout">
         <div className="sidebar">
           <div className="sidebar-header">
-            <h1 className="logo">AdoteVL</h1>
-            <br/>
-            <h1 className="role">{user?.name} - {role}</h1>
+            {user && (
+              <>
+                <h1 className="logo">AdoteVL</h1>
+                <br/>
+                <h1 className="role">{user.name} - {role}</h1>
+              </>
+            )}
           </div>
 
           <div className="menu">
@@ -126,6 +120,7 @@ function Layout({ children }) {
               className={`d-flex menu-item `}
               onClick={() => {
                 localStorage.clear();
+                dispatch(clearUser());
                 navigate("/login");
               }}
             >

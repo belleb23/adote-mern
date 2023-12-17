@@ -43,8 +43,6 @@ function NewPet() {
     }
   };
 
-
-
   return (
     <Layout>
       <h1 className="page-title">Novo Pet</h1>
