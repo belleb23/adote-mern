@@ -17,6 +17,23 @@ The site was created for an NGO dedicated to pet adoption, aiming to connect ani
 - Admin panel for managing pets and users
 - Responsive design for mobile and desktop
 
+## User Types
+
+There are three types of users on this platform:
+
+1. **Admin**:  
+   - Manage all aspects of the site including adding, updating, and deleting pet listings.
+   - Oversee user accounts and handle administrative tasks.
+   
+2. **Normal User**:  
+   - Browse and search for pets available for adoption.
+   - Register and log in to view detailed information about pets and start the adoption process.
+   
+3. **Volunteer**:  
+   - Assist in managing pet listings and user inquiries.
+   - Help with the day-to-day operations of the site under the supervision of an admin.
+
+
 ## Technologies Used
 
 - MongoDB
