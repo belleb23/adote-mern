@@ -6,7 +6,7 @@ The site was created for an NGO dedicated to pet adoption, aiming to connect ani
 
 ## Preview
 
-<img src="" alt="Gif App" />
+<img src="https://github.com/belleb23/adote-mern/assets/115180927/3a80872d-3481-4b06-beda-263f6907ba82" alt="Gif App" />
 
 ## Features
 
